@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.log
+
+# 微信开发者工具本地配置
+miniprogram/project.private.config.json
+
+# 临时目录
+.cowork-temp/

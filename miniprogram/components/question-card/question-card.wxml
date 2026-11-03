@@ -1,0 +1,26 @@
+<!-- 问题卡片组件（广场与「我的」共用） -->
+<view class="card" bindtap="onTap" data-id="{{item._id}}">
+  <view class="card-head">
+    <text class="cat-tag" style="background:{{catColor}}">{{catName}}</text>
+    <text class="city">📍{{item.city}}</text>
+  </view>
+  <view class="card-title">{{item.title}}</view>
+  <view class="card-desc" wx:if="{{item.desc}}">{{item.desc}}</view>
+
+  <view class="options" wx:if="{{options.length}}">
+    <view class="opt {{option.isRecommend ? 'pick' : ''}}" wx:for="{{options}}" wx:for-item="option" wx:key="key">
+      <view class="opt-bar" style="width:{{option.barWidth}}%"></view>
+      <text class="opt-text">{{option.isRecommend ? '✓ ' : ''}}{{option.text}}</text>
+      <text class="opt-pct">{{option.pct}}%</text>
+    </view>
+  </view>
+
+  <view class="card-foot">
+    <view class="foot-left">
+      <text>💬 {{item.answerCount}} 回答</text>
+      <text>📊 {{item.totalVotes}} 人选</text>
+    </view>
+    <text wx:if="{{item.adopted}}" class="badge-adopt">🏆 已解决</text>
+    <text wx:else style="color:#FF6B4A">等待回答 →</text>
+  </view>
+</view>

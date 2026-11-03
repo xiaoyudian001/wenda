@@ -1,0 +1,42 @@
+<view class="appbar">
+  <view class="appbar-row">
+    <view>
+      <view class="appbar-title">问搭</view>
+      <view class="appbar-sub">把选择困难，交给别人</view>
+    </view>
+    <view style="font-size:44rpx" bindtap="onCompose">✍️</view>
+  </view>
+</view>
+
+<scroll-view class="cats" scroll-x enable-flex>
+  <view
+    wx:for="{{cats}}"
+    wx:key="key"
+    class="cat-chip {{cat === item.key ? 'on' : ''}}"
+    bindtap="onCat"
+    data-key="{{item.key}}"
+  >{{item.icon}} {{item.name}}</view>
+</scroll-view>
+
+<view class="sort-bar">
+  <view class="sort-chip {{sort === 'hot' ? 'on' : ''}}" bindtap="onSort" data-sort="hot">🔥 最热</view>
+  <view class="sort-chip {{sort === 'new' ? 'on' : ''}}" bindtap="onSort" data-sort="new">🕐 最新</view>
+  <view class="sort-chip {{sort === 'pending' ? 'on' : ''}}" bindtap="onSort" data-sort="pending">⏳ 待回答</view>
+</view>
+
+<view class="list" wx:if="{{list.length}}">
+  <question-card
+    wx:for="{{list}}"
+    wx:key="_id"
+    item="{{item}}"
+    bind:tap="onOpenDetail"
+  />
+  <view class="load-more" wx:if="{{hasMore}}" bindtap="onLoadMore">加载更多 ↓</view>
+  <view class="load-more" wx:else>— 已经到底了 —</view>
+</view>
+
+<view class="empty" wx:else>
+  <view class="empty-ico">🍃</view>
+  <view class="empty-title">这个分类还没有问题</view>
+  <view class="empty-desc">来提第一个问题吧</view>
+</view>

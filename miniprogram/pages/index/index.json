@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "question-card": "/components/question-card/question-card"
+  },
+  "navigationBarTitleText": "问搭"
+}

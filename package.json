@@ -1,0 +1,17 @@
+{
+  "name": "wenda",
+  "version": "0.1.0",
+  "description": "问搭 · 微信小程序 · 把选择困难交给别人",
+  "private": true,
+  "scripts": {
+    "build:seed": "node seed/build-seed.js",
+    "icons": "node tools/make-icons.js",
+    "verify": "node tools/verify.js",
+    "test": "node tools/test-api.js",
+    "check": "node tools/verify.js && node tools/test-api.js",
+    "serve": "node tools/serve.js 8899",
+    "serve:admin": "node tools/serve.js 8900 ."
+  },
+  "keywords": ["wechat-miniprogram", "qa", "wenda"],
+  "license": "UNLICENSED"
+}

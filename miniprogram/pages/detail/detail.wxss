@@ -1,0 +1,49 @@
+/* 回答输入面板 */
+.reply-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+.reply-panel {
+  width: 100%;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 36rpx 32rpx calc(36rpx + env(safe-area-inset-bottom));
+}
+.reply-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+}
+.reply-textarea {
+  width: 100%;
+  height: 220rpx;
+  background: #F5F6F8;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+.reply-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #86909C;
+  margin: 12rpx 0 24rpx;
+}
+.reply-submit {
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: #FF6B4A;
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}

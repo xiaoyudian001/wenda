@@ -1,0 +1,98 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">问题详情</view>
+    <view style="width:40rpx" bindtap="onShare">↗</view>
+  </view>
+</view>
+
+<block wx:if="{{question}}">
+  <view class="detail-card">
+    <view class="card-head">
+      <text class="cat-tag" style="background:{{catColor}}">{{catName}}</text>
+      <text class="city">📍{{question.city}}</text>
+    </view>
+    <view class="detail-title">{{question.title}}</view>
+    <view class="detail-desc" wx:if="{{question.desc}}">{{question.desc}}</view>
+
+    <view class="options" wx:if="{{options.length}}">
+      <view
+        class="opt {{option.isRecommend ? 'pick' : ''}}"
+        wx:for="{{options}}"
+        wx:for-item="option"
+        wx:key="key"
+        bindtap="onVote"
+        data-key="{{option.key}}"
+      >
+        <view class="opt-bar" style="width:{{option.barWidth}}%"></view>
+        <text class="opt-text">{{option.isRecommend ? '✓ ' : ''}}{{option.text}}</text>
+        <text class="opt-pct">{{option.pct}}%</text>
+      </view>
+    </view>
+
+    <view class="asker">
+      <view class="avatar {{avatarCls}}">{{question.asker.avatarText}}</view>
+      <view>
+        <view class="asker-name">{{question.asker.nickname}}</view>
+        <view class="asker-time">{{createdText}} 提问</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-title">全部回答 ({{answers.length}})</view>
+
+  <view wx:if="{{answers.length}}">
+    <view class="answer {{item.adopted ? 'adopted' : ''}}" wx:for="{{answers}}" wx:key="_id">
+      <view class="adopt-flag" wx:if="{{item.adopted}}">🏆 已采纳</view>
+      <view class="asker">
+        <view class="avatar avatar-sm {{item.avatarCls}}">{{item.author.avatarText}}</view>
+        <view>
+          <view class="asker-name">{{item.author.nickname}}</view>
+          <view class="asker-time">{{item.timeText}} · {{item.author.city}}</view>
+        </view>
+      </view>
+      <view class="answer-content">{{item.content}}</view>
+      <view class="rec" wx:if="{{item.recommendOption}}">👍 我选：{{item.recommendOption}}</view>
+      <view class="answer-foot">
+        <view class="like {{item.liked ? 'on' : ''}}" catchtap="onLike" data-id="{{item._id}}">
+          {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
+        </view>
+        <text
+          class="adopt-btn"
+          wx:if="{{canAdopt && !question.adopted}}"
+          catchtap="onAdopt"
+          data-id="{{item._id}}"
+        >采纳这条</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else style="padding:90rpx 60rpx">
+    <view class="empty-ico">💭</view>
+    <view class="empty-title">还没有人回答</view>
+    <view class="empty-desc">第一个回答的人，会被记住很久</view>
+  </view>
+
+  <view style="height:140rpx"></view>
+
+  <view class="actionbar">
+    <view class="btn btn-ghost" bindtap="onShare">分享</view>
+    <view class="btn btn-primary" bindtap="onToggleReply">写回答</view>
+  </view>
+</block>
+
+<!-- 回答输入面板 -->
+<view class="reply-mask" wx:if="{{replyOpen}}" bindtap="onCloseReply">
+  <view class="reply-panel" catchtap="onPanelTap">
+    <view class="reply-title">写下你的建议</view>
+    <textarea
+      class="reply-textarea"
+      placeholder="说说你会怎么选，以及为什么（给出理由的回答更容易被采纳）"
+      value="{{replyText}}"
+      bindinput="onReplyInput"
+      maxlength="500"
+    />
+    <view class="reply-count">{{replyText.length}}/500</view>
+    <view class="reply-submit" bindtap="onSubmitAnswer">发布回答</view>
+  </view>
+</view>

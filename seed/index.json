@@ -1,0 +1,60 @@
+{
+  "stats": {
+    "questionCount": 147,
+    "answerCount": 160,
+    "userCount": 115,
+    "pendingCount": 41,
+    "adoptedCount": 106,
+    "byCategory": {
+      "eat": 22,
+      "wear": 25,
+      "play": 24,
+      "kid": 30,
+      "gift": 22,
+      "buy": 24
+    }
+  },
+  "categories": [
+    {
+      "key": "eat",
+      "name": "吃什么",
+      "icon": "🍜",
+      "color": "#FF7A45"
+    },
+    {
+      "key": "wear",
+      "name": "穿什么",
+      "icon": "👕",
+      "color": "#597EF7"
+    },
+    {
+      "key": "play",
+      "name": "去哪玩",
+      "icon": "🎈",
+      "color": "#36CFC9"
+    },
+    {
+      "key": "kid",
+      "name": "带孩子",
+      "icon": "🧸",
+      "color": "#9254DE"
+    },
+    {
+      "key": "gift",
+      "name": "送什么",
+      "icon": "🎁",
+      "color": "#EB2F96"
+    },
+    {
+      "key": "buy",
+      "name": "买不买",
+      "icon": "🛒",
+      "color": "#52C41A"
+    }
+  ],
+  "files": [
+    "users",
+    "questions",
+    "answers"
+  ]
+}

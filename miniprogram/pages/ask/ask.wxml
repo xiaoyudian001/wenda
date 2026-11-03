@@ -1,0 +1,84 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">提个问题</view>
+    <view style="width:40rpx"></view>
+  </view>
+</view>
+
+<scroll-view scroll-y class="form-scroll">
+  <view class="form">
+    <view class="form-group">
+      <view class="form-label">选择分类<text class="form-label-req">*</text></view>
+      <view class="pick-cats">
+        <view
+          class="pick-cat {{cat === item.key ? 'on' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="key"
+          bindtap="onCat"
+          data-key="{{item.key}}"
+        >{{item.icon}} {{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">你的问题<text class="form-label-req">*</text></view>
+      <input
+        class="input"
+        placeholder="例如：今天中午吃什么"
+        value="{{title}}"
+        bindinput="onTitleInput"
+        maxlength="50"
+      />
+      <view class="hint">像平时跟朋友说话那样问，越具体越容易得到好答案</view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">补充说明</view>
+      <textarea
+        class="textarea"
+        placeholder="说清楚你的限制条件（预算、人数、忌口、时间…）"
+        value="{{desc}}"
+        bindinput="onDescInput"
+        maxlength="300"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">
+        给出几个选项
+        <text class="form-label-tip">（选填，但强烈建议）</text>
+      </view>
+      <view class="opt-input" wx:for="{{options}}" wx:key="index">
+        <view class="opt-idx">{{index + 1}}</view>
+        <input
+          class="input"
+          placeholder="选项 {{index + 1}}"
+          value="{{item}}"
+          data-index="{{index}}"
+          bindinput="onOptionInput"
+        />
+        <view class="del-btn" bindtap="onDelOption" data-index="{{index}}">×</view>
+      </view>
+      <view class="add-opt" bindtap="onAddOption">+ 再加一个选项</view>
+      <view class="hint">带选项的问题平均能多拿到 3 倍回答，因为回答者只要点一下就好</view>
+    </view>
+
+    <view class="form-group">
+      <view class="switch-row">
+        <view>
+          <view style="font-size:28rpx">匿名提问</view>
+          <view class="hint" style="margin-top:6rpx">开启后别人只看到问题，看不到你的昵称</view>
+        </view>
+        <switch checked="{{anonymous}}" bindchange="onAnonymousChange" color="#FF6B4A" />
+      </view>
+    </view>
+
+    <view style="height:60rpx"></view>
+  </view>
+</scroll-view>
+
+<view class="actionbar">
+  <view class="btn btn-ghost" bindtap="onReset">清空</view>
+  <view class="btn btn-primary" bindtap="onSubmit">发布问题</view>
+</view>

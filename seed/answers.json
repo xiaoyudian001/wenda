@@ -1,0 +1,2616 @@
+[
+  {
+    "_id": "a_0001dto",
+    "questionId": "q_00017he",
+    "author": {
+      "_id": "u_000b6li",
+      "nickname": "吃货小陈",
+      "avatarText": "吃货",
+      "city": "北京"
+    },
+    "recommendOption": "沙县",
+    "likes": 24,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793502000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_00111r4",
+    "questionId": "q_0011sia",
+    "author": {
+      "_id": "u_001u4yo",
+      "nickname": "营养师小林",
+      "avatarText": "营养",
+      "city": "广州"
+    },
+    "recommendOption": "番茄炒蛋",
+    "likes": 0,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793520000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_00219o9",
+    "questionId": "q_0021c5w",
+    "author": {
+      "_id": "u_002g7zl",
+      "nickname": "健身教练大K",
+      "avatarText": "健身",
+      "city": "深圳"
+    },
+    "recommendOption": "水煮蛋",
+    "likes": 26,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793538000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0031x91",
+    "questionId": "q_0031gr4",
+    "author": {
+      "_id": "u_003ve32",
+      "nickname": "爱吃的小周",
+      "avatarText": "爱吃",
+      "city": "杭州"
+    },
+    "recommendOption": "自己下厨",
+    "likes": 24,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793556000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_004nfbd",
+    "questionId": "q_0041s6o",
+    "author": {
+      "_id": "u_0041qyr",
+      "nickname": "早餐党老王",
+      "avatarText": "早餐",
+      "city": "武汉"
+    },
+    "recommendOption": "燕麦粥",
+    "likes": 3,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793574000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_00518t6",
+    "questionId": "q_0051hz9",
+    "author": {
+      "_id": "u_0051szj",
+      "nickname": "点菜担当阿May",
+      "avatarText": "点菜",
+      "city": "广州"
+    },
+    "recommendOption": "粤菜",
+    "likes": 27,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793592000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_00649zi",
+    "questionId": "q_0061o1n",
+    "author": {
+      "_id": "u_00619zc",
+      "nickname": "注册营养师老李",
+      "avatarText": "注册",
+      "city": "成都"
+    },
+    "recommendOption": "苹果",
+    "likes": 17,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793610000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_007c5en",
+    "questionId": "q_007lhp0",
+    "author": {
+      "_id": "u_007d751",
+      "nickname": "时令老张",
+      "avatarText": "时令",
+      "city": "南京"
+    },
+    "recommendOption": "炖萝卜",
+    "likes": 19,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793628000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0081dqu",
+    "questionId": "q_0081ak6",
+    "author": {
+      "_id": "u_008zfmj",
+      "nickname": "二年级家长",
+      "avatarText": "二年",
+      "city": "天津"
+    },
+    "recommendOption": "煎饼果子",
+    "likes": 18,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793646000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0091wpm",
+    "questionId": "q_0091h0j",
+    "author": {
+      "_id": "u_009hm5d",
+      "nickname": "行政小刘",
+      "avatarText": "行政",
+      "city": "深圳"
+    },
+    "recommendOption": "水果切盘",
+    "likes": 11,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793664000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0101ja7",
+    "questionId": "q_0102nhe",
+    "author": {
+      "_id": "u_010co3t",
+      "nickname": "懒人厨房",
+      "avatarText": "懒人",
+      "city": "广州"
+    },
+    "recommendOption": "紫菜蛋花汤",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793682000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_011c9ke",
+    "questionId": "q_0114xpv",
+    "author": {
+      "_id": "u_01115h2",
+      "nickname": "打工人阿凯",
+      "avatarText": "打工",
+      "city": "北京"
+    },
+    "recommendOption": "馄饨",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793700000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_012jcr7",
+    "questionId": "q_0121vqd",
+    "author": {
+      "_id": "u_012ayoz",
+      "nickname": "厨房小白",
+      "avatarText": "厨房",
+      "city": "成都"
+    },
+    "recommendOption": "去小馆子",
+    "likes": 31,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793718000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0131a6s",
+    "questionId": "q_013kogp",
+    "author": {
+      "_id": "u_001u4yo",
+      "nickname": "营养师小林",
+      "avatarText": "营养",
+      "city": "广州"
+    },
+    "recommendOption": "玉米+牛奶",
+    "likes": 11,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793736000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_01418jh",
+    "questionId": "q_01414h0",
+    "author": {
+      "_id": "u_013bph0",
+      "nickname": "治愈系小圆",
+      "avatarText": "治愈",
+      "city": "上海"
+    },
+    "recommendOption": "炸鸡",
+    "likes": 28,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793754000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_01515pl",
+    "questionId": "q_01518d3",
+    "author": {
+      "_id": "u_014bw9n",
+      "nickname": "孕妈小林",
+      "avatarText": "孕妈",
+      "city": "深圳"
+    },
+    "recommendOption": "清蒸鱼",
+    "likes": 1,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793772000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_016k57q",
+    "questionId": "q_016jwct",
+    "author": {
+      "_id": "u_0151cow",
+      "nickname": "通勤穿搭博主",
+      "avatarText": "通勤",
+      "city": "上海"
+    },
+    "recommendOption": "白衬衫+西裤",
+    "likes": 18,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793790000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_017gl5x",
+    "questionId": "q_017l370",
+    "author": {
+      "_id": "u_0161dkv",
+      "nickname": "穿搭博主小林",
+      "avatarText": "穿搭",
+      "city": "广州"
+    },
+    "recommendOption": "牛仔外套+白T",
+    "likes": 11,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793808000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_018fw7m",
+    "questionId": "q_0181726",
+    "author": {
+      "_id": "u_0175zmo",
+      "nickname": "通勤党老王",
+      "avatarText": "通勤",
+      "city": "杭州"
+    },
+    "recommendOption": "雨鞋",
+    "likes": 19,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793826000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_019ximj",
+    "questionId": "q_01915sv",
+    "author": {
+      "_id": "u_0181xyh",
+      "nickname": "HR老张",
+      "avatarText": "HR",
+      "city": "北京"
+    },
+    "recommendOption": "深色西装",
+    "likes": 1,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793844000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0207kdk",
+    "questionId": "q_020t87a",
+    "author": {
+      "_id": "u_019bccu",
+      "nickname": "四季穿搭",
+      "avatarText": "四季",
+      "city": "上海"
+    },
+    "recommendOption": "风衣",
+    "likes": 3,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793862000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0211wrc",
+    "questionId": "q_021h5jb",
+    "author": {
+      "_id": "u_0201hwg",
+      "nickname": "衬衫研究者",
+      "avatarText": "衬衫",
+      "city": "南京"
+    },
+    "recommendOption": "真丝",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793880000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0221gkb",
+    "questionId": "q_022autg",
+    "author": {
+      "_id": "u_0211tg6",
+      "nickname": "极简主义者",
+      "avatarText": "极简",
+      "city": "深圳"
+    },
+    "recommendOption": "同色深浅",
+    "likes": 8,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793898000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0232wj3",
+    "questionId": "q_02316rr",
+    "author": {
+      "_id": "u_02211bz",
+      "nickname": "买手阿May",
+      "avatarText": "买手",
+      "city": "北京"
+    },
+    "recommendOption": "国产品牌",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793916000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_024rk5v",
+    "questionId": "q_0248gbx",
+    "author": {
+      "_id": "u_0231dbt",
+      "nickname": "约会穿搭笔记",
+      "avatarText": "约会",
+      "city": "成都"
+    },
+    "recommendOption": "浅色连衣裙",
+    "likes": 1,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793934000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_025moro",
+    "questionId": "q_025qs1z",
+    "author": {
+      "_id": "u_024gjrr",
+      "nickname": "职场小刘",
+      "avatarText": "职场",
+      "city": "上海"
+    },
+    "recommendOption": "衬衫",
+    "likes": 25,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793952000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_026gams",
+    "questionId": "q_0261j1l",
+    "author": {
+      "_id": "u_025c967",
+      "nickname": "带娃日常",
+      "avatarText": "带娃",
+      "city": "广州"
+    },
+    "recommendOption": "分体运动服",
+    "likes": 3,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793970000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0271q7q",
+    "questionId": "q_027162w",
+    "author": {
+      "_id": "u_026dyvj",
+      "nickname": "步数一万",
+      "avatarText": "步数",
+      "city": "杭州"
+    },
+    "recommendOption": "软底运动鞋",
+    "likes": 30,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1793988000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0281rlm",
+    "questionId": "q_028schi",
+    "author": {
+      "_id": "u_0271i4t",
+      "nickname": "直男改造中",
+      "avatarText": "直男",
+      "city": "深圳"
+    },
+    "recommendOption": "衬衫+休闲裤",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794006000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0298eyn",
+    "questionId": "q_029vh5t",
+    "author": {
+      "_id": "u_02819u2",
+      "nickname": "拍照姿势党",
+      "avatarText": "拍照",
+      "city": "北京"
+    },
+    "recommendOption": "高腰裤+紧身上衣",
+    "likes": 3,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794024000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0303nzl",
+    "questionId": "q_0301kid",
+    "author": {
+      "_id": "u_029ff7l",
+      "nickname": "整理师",
+      "avatarText": "整理",
+      "city": "南京"
+    },
+    "recommendOption": "用收纳箱分区",
+    "likes": 24,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794042000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0311s49",
+    "questionId": "q_0311lj2",
+    "author": {
+      "_id": "u_030b3zn",
+      "nickname": "商务通勤",
+      "avatarText": "商务",
+      "city": "上海"
+    },
+    "recommendOption": "深色西装+衬衫",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794060000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0321oya",
+    "questionId": "q_032n0o4",
+    "author": {
+      "_id": "u_031fve1",
+      "nickname": "穿搭杂谈",
+      "avatarText": "穿搭",
+      "city": "成都"
+    },
+    "recommendOption": "棒球帽",
+    "likes": 4,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794078000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0331q8o",
+    "questionId": "q_0331mu4",
+    "author": {
+      "_id": "u_03219x4",
+      "nickname": "生活小技巧",
+      "avatarText": "生活",
+      "city": "广州"
+    },
+    "recommendOption": "塞报纸",
+    "likes": 29,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794096000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_034jb6i",
+    "questionId": "q_034ms2l",
+    "author": {
+      "_id": "u_0331rqw",
+      "nickname": "家庭教育讲师",
+      "avatarText": "家庭",
+      "city": "北京"
+    },
+    "recommendOption": "定规矩不催",
+    "likes": 30,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794114000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_03510f8",
+    "questionId": "q_035sc9t",
+    "author": {
+      "_id": "u_03411qb",
+      "nickname": "儿科医生张大夫",
+      "avatarText": "儿科",
+      "city": "深圳"
+    },
+    "recommendOption": "给两个选项",
+    "likes": 30,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794132000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0361hk5",
+    "questionId": "q_036fi7z",
+    "author": {
+      "_id": "u_035450w",
+      "nickname": "儿童心理咨询师",
+      "avatarText": "儿童",
+      "city": "上海"
+    },
+    "recommendOption": "提前约定输的规则",
+    "likes": 12,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794150000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_03710a0",
+    "questionId": "q_0371531",
+    "author": {
+      "_id": "u_036hs71",
+      "nickname": "育婴师小林",
+      "avatarText": "育婴",
+      "city": "广州"
+    },
+    "recommendOption": "试听一次",
+    "likes": 12,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794168000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_038yb07",
+    "questionId": "q_038i839",
+    "author": {
+      "_id": "u_037gknu",
+      "nickname": "育儿博主",
+      "avatarText": "育儿",
+      "city": "成都"
+    },
+    "recommendOption": "换成固定时段",
+    "likes": 6,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794186000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_039128t",
+    "questionId": "q_039zi4k",
+    "author": {
+      "_id": "u_038dbew",
+      "nickname": "教育专家",
+      "avatarText": "教育",
+      "city": "南京"
+    },
+    "recommendOption": "先问清再教回应",
+    "likes": 1,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794204000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_040aovc",
+    "questionId": "q_040s4wo",
+    "author": {
+      "_id": "u_039kbyw",
+      "nickname": "发展心理学者",
+      "avatarText": "发展",
+      "city": "北京"
+    },
+    "recommendOption": "给可扔的东西",
+    "likes": 3,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794222000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_04112qy",
+    "questionId": "q_041141z",
+    "author": {
+      "_id": "u_04010ed",
+      "nickname": "阅读推广人",
+      "avatarText": "阅读",
+      "city": "武汉"
+    },
+    "recommendOption": "亲子共读并提问",
+    "likes": 23,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794240000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0421bci",
+    "questionId": "q_042if92",
+    "author": {
+      "_id": "u_041cb8x",
+      "nickname": "幼师小雅",
+      "avatarText": "幼师",
+      "city": "广州"
+    },
+    "recommendOption": "坚持送",
+    "likes": 1,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794258000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0431wnz",
+    "questionId": "q_043w2u9",
+    "author": {
+      "_id": "u_042f83x",
+      "nickname": "理财老师",
+      "avatarText": "理财",
+      "city": "深圳"
+    },
+    "recommendOption": "定额发放",
+    "likes": 4,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794276000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_044jviw",
+    "questionId": "q_044aczc",
+    "author": {
+      "_id": "u_043y9o6",
+      "nickname": "心理咨询师",
+      "avatarText": "心理",
+      "city": "杭州"
+    },
+    "recommendOption": "不戳穿先引导",
+    "likes": 23,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794294000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0451ghe",
+    "questionId": "q_045444t",
+    "author": {
+      "_id": "u_044arht",
+      "nickname": "儿童社工",
+      "avatarText": "儿童",
+      "city": "天津"
+    },
+    "recommendOption": "多创造一起玩的机会",
+    "likes": 13,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794312000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0461h5z",
+    "questionId": "q_0461an4",
+    "author": {
+      "_id": "u_037gknu",
+      "nickname": "育儿博主",
+      "avatarText": "育儿",
+      "city": "北京"
+    },
+    "recommendOption": "先接纳情绪",
+    "likes": 27,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794330000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_047vsqw",
+    "questionId": "q_047bjd8",
+    "author": {
+      "_id": "u_045fjng",
+      "nickname": "眼科医生",
+      "avatarText": "眼科",
+      "city": "成都"
+    },
+    "recommendOption": "先做散瞳检查",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794348000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_048hlmf",
+    "questionId": "q_04815w0",
+    "author": {
+      "_id": "u_037gknu",
+      "nickname": "育儿博主",
+      "avatarText": "育儿",
+      "city": "南京"
+    },
+    "recommendOption": "沙漏计时",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794366000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_049h3es",
+    "questionId": "q_049dpcd",
+    "author": {
+      "_id": "u_046fqjz",
+      "nickname": "家庭咨询师",
+      "avatarText": "家庭",
+      "city": "上海"
+    },
+    "recommendOption": "互相补位",
+    "likes": 23,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794384000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0501d81",
+    "questionId": "q_050opef",
+    "author": {
+      "_id": "u_0471dga",
+      "nickname": "儿童心理师",
+      "avatarText": "儿童",
+      "city": "广州"
+    },
+    "recommendOption": "设置时长",
+    "likes": 19,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794402000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0519ckr",
+    "questionId": "q_051y9tb",
+    "author": {
+      "_id": "u_039kbyw",
+      "nickname": "发展心理学者",
+      "avatarText": "发展",
+      "city": "武汉"
+    },
+    "recommendOption": "允许慢慢来",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794420000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0521fke",
+    "questionId": "q_052144k",
+    "author": {
+      "_id": "u_038dbew",
+      "nickname": "教育专家",
+      "avatarText": "教育",
+      "city": "深圳"
+    },
+    "recommendOption": "不夸只描述",
+    "likes": 19,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794438000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_053cz5u",
+    "questionId": "q_053yqee",
+    "author": {
+      "_id": "u_0489tw2",
+      "nickname": "婚姻咨询师",
+      "avatarText": "婚姻",
+      "city": "北京"
+    },
+    "recommendOption": "按时间段轮",
+    "likes": 5,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794456000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0541bib",
+    "questionId": "q_054f7es",
+    "author": {
+      "_id": "u_0471dga",
+      "nickname": "儿童心理师",
+      "avatarText": "儿童",
+      "city": "南京"
+    },
+    "recommendOption": "认真解释",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794474000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0555dxg",
+    "questionId": "q_05512yw",
+    "author": {
+      "_id": "u_049x8y5",
+      "nickname": "亲子出行老张",
+      "avatarText": "亲子",
+      "city": "北京"
+    },
+    "recommendOption": "奥森公园",
+    "likes": 25,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794492000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_056pm1x",
+    "questionId": "q_0561gfe",
+    "author": {
+      "_id": "u_050c942",
+      "nickname": "带娃妈妈",
+      "avatarText": "带娃",
+      "city": "杭州"
+    },
+    "recommendOption": "儿童公园",
+    "likes": 14,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794510000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0571wsc",
+    "questionId": "q_05719ta",
+    "author": {
+      "_id": "u_051b2xf",
+      "nickname": "周末玩家",
+      "avatarText": "周末",
+      "city": "深圳"
+    },
+    "recommendOption": "亲子乐园",
+    "likes": 12,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794528000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_05810jm",
+    "questionId": "q_0581efc",
+    "author": {
+      "_id": "u_052yuzj",
+      "nickname": "独处爱好者",
+      "avatarText": "独处",
+      "city": "上海"
+    },
+    "recommendOption": "看展",
+    "likes": 29,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794546000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0591ciz",
+    "questionId": "q_0591kk7",
+    "author": {
+      "_id": "u_0531oiv",
+      "nickname": "旅行规划师",
+      "avatarText": "旅行",
+      "city": "成都"
+    },
+    "recommendOption": "西北",
+    "likes": 2,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794564000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_060ilen",
+    "questionId": "q_0601y42",
+    "author": {
+      "_id": "u_054bwo5",
+      "nickname": "孝子小林",
+      "avatarText": "孝子",
+      "city": "苏州"
+    },
+    "recommendOption": "自然景区",
+    "likes": 28,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794582000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_061t7zu",
+    "questionId": "q_0611k7p",
+    "author": {
+      "_id": "u_055bw63",
+      "nickname": "安全老张",
+      "avatarText": "安全",
+      "city": "广州"
+    },
+    "recommendOption": "查开放时间",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794600000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_062ugy1",
+    "questionId": "q_0621oty",
+    "author": {
+      "_id": "u_056jmhx",
+      "nickname": "露营老王",
+      "avatarText": "露营",
+      "city": "北京"
+    },
+    "recommendOption": "帐篷睡袋",
+    "likes": 25,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794618000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_063b1ko",
+    "questionId": "q_0631uqt",
+    "author": {
+      "_id": "u_057ihla",
+      "nickname": "运动搭子",
+      "avatarText": "运动",
+      "city": "上海"
+    },
+    "recommendOption": "夜跑",
+    "likes": 29,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794636000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_06415sr",
+    "questionId": "q_064fn02",
+    "author": {
+      "_id": "u_058c931",
+      "nickname": "带娃出行",
+      "avatarText": "带娃",
+      "city": "南京"
+    },
+    "recommendOption": "周边度假村",
+    "likes": 2,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794654000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0651rc7",
+    "questionId": "q_06513th",
+    "author": {
+      "_id": "u_051b2xf",
+      "nickname": "周末玩家",
+      "avatarText": "周末",
+      "city": "深圳"
+    },
+    "recommendOption": "桌游",
+    "likes": 27,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794672000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0661khy",
+    "questionId": "q_066w9z5",
+    "author": {
+      "_id": "u_059zlrk",
+      "nickname": "亲子策展人",
+      "avatarText": "亲子",
+      "city": "武汉"
+    },
+    "recommendOption": "儿童展",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794690000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0671yk8",
+    "questionId": "q_067wxt6",
+    "author": {
+      "_id": "u_060m3b1",
+      "nickname": "野餐党",
+      "avatarText": "野餐",
+      "city": "天津"
+    },
+    "recommendOption": "三明治",
+    "likes": 0,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794708000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0681pr6",
+    "questionId": "q_068gz3t",
+    "author": {
+      "_id": "u_061cjgs",
+      "nickname": "情侣出行",
+      "avatarText": "情侣",
+      "city": "上海"
+    },
+    "recommendOption": "郊区民宿",
+    "likes": 16,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794726000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_06917hy",
+    "questionId": "q_0691xtw",
+    "author": {
+      "_id": "u_062bw1k",
+      "nickname": "安全提醒",
+      "avatarText": "安全",
+      "city": "北京"
+    },
+    "recommendOption": "打车",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794744000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0709szq",
+    "questionId": "q_070nepf",
+    "author": {
+      "_id": "u_063deq1",
+      "nickname": "旅行规划",
+      "avatarText": "旅行",
+      "city": "成都"
+    },
+    "recommendOption": "西双版纳",
+    "likes": 22,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794762000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0711c58",
+    "questionId": "q_0711gz8",
+    "author": {
+      "_id": "u_064l8s3",
+      "nickname": "跨年党",
+      "avatarText": "跨年",
+      "city": "广州"
+    },
+    "recommendOption": "江边",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794780000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_072qiue",
+    "questionId": "q_072787j",
+    "author": {
+      "_id": "u_0651dkf",
+      "nickname": "办公室老王",
+      "avatarText": "办公",
+      "city": "北京"
+    },
+    "recommendOption": "两份礼物",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794798000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_07316hb",
+    "questionId": "q_0731vkm",
+    "author": {
+      "_id": "u_0661dqp",
+      "nickname": "直男送礼指南",
+      "avatarText": "直男",
+      "city": "上海"
+    },
+    "recommendOption": "耳机",
+    "likes": 5,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794816000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0743d2u",
+    "questionId": "q_0741368",
+    "author": {
+      "_id": "u_067i7lz",
+      "nickname": "贴心女儿",
+      "avatarText": "贴心",
+      "city": "杭州"
+    },
+    "recommendOption": "给爸实用工具",
+    "likes": 25,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794834000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0759wyf",
+    "questionId": "q_0751pn7",
+    "author": {
+      "_id": "u_068gkoy",
+      "nickname": "育儿妈妈",
+      "avatarText": "育儿",
+      "city": "成都"
+    },
+    "recommendOption": "积木",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794852000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0761kk8",
+    "questionId": "q_07619q6",
+    "author": {
+      "_id": "u_0691nm9",
+      "nickname": "恋爱脑研究员",
+      "avatarText": "恋爱",
+      "city": "南京"
+    },
+    "recommendOption": "口红",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794870000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0775q8q",
+    "questionId": "q_07715t9",
+    "author": {
+      "_id": "u_054bwo5",
+      "nickname": "孝子小林",
+      "avatarText": "孝子",
+      "city": "武汉"
+    },
+    "recommendOption": "按摩仪",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794888000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0781r62",
+    "questionId": "q_0781fe3",
+    "author": {
+      "_id": "u_070gjqf",
+      "nickname": "职场前辈",
+      "avatarText": "职场",
+      "city": "深圳"
+    },
+    "recommendOption": "红包",
+    "likes": 14,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794906000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0791qrk",
+    "questionId": "q_0791ywf",
+    "author": {
+      "_id": "u_071jh8a",
+      "nickname": "闺蜜小美",
+      "avatarText": "闺蜜",
+      "city": "广州"
+    },
+    "recommendOption": "手写信",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794924000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_080xqrx",
+    "questionId": "q_080pfnf",
+    "author": {
+      "_id": "u_072b3ok",
+      "nickname": "商务人士",
+      "avatarText": "商务",
+      "city": "北京"
+    },
+    "recommendOption": "茶叶",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794942000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_081cd4k",
+    "questionId": "q_0811g6d",
+    "author": {
+      "_id": "u_073anjr",
+      "nickname": "兄弟老李",
+      "avatarText": "兄弟",
+      "city": "杭州"
+    },
+    "recommendOption": "电影票",
+    "likes": 7,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794960000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_082s2kw",
+    "questionId": "q_08214kc",
+    "author": {
+      "_id": "u_0741wci",
+      "nickname": "家长群观察员",
+      "avatarText": "家长",
+      "city": "南京"
+    },
+    "recommendOption": "送定制感谢信",
+    "likes": 26,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794978000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0831qcj",
+    "questionId": "q_083dqct",
+    "author": {
+      "_id": "u_075i7k8",
+      "nickname": "贴心伴侣",
+      "avatarText": "贴心",
+      "city": "上海"
+    },
+    "recommendOption": null,
+    "likes": 8,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1794996000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_084uxhu",
+    "questionId": "q_08418rf",
+    "author": {
+      "_id": "u_076c5mh",
+      "nickname": "孝顺子女",
+      "avatarText": "孝顺",
+      "city": "成都"
+    },
+    "recommendOption": "收音机",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795014000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0852b8j",
+    "questionId": "q_0851m0v",
+    "author": {
+      "_id": "u_077k2w9",
+      "nickname": "猫奴",
+      "avatarText": "猫奴",
+      "city": "深圳"
+    },
+    "recommendOption": "猫抓板",
+    "likes": 28,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795032000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_08616e2",
+    "questionId": "q_0861agn",
+    "author": {
+      "_id": "u_078c6s8",
+      "nickname": "家长张姐",
+      "avatarText": "家长",
+      "city": "广州"
+    },
+    "recommendOption": "不送",
+    "likes": 29,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795050000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_087fgll",
+    "questionId": "q_087atu6",
+    "author": {
+      "_id": "u_079bwlr",
+      "nickname": "婚礼策划",
+      "avatarText": "婚礼",
+      "city": "天津"
+    },
+    "recommendOption": "巧克力",
+    "likes": 9,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795068000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_08811gl",
+    "questionId": "q_0883lqw",
+    "author": {
+      "_id": "u_080aoqy",
+      "nickname": "创业朋友",
+      "avatarText": "创业",
+      "city": "北京"
+    },
+    "recommendOption": "花篮",
+    "likes": 17,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795086000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_08955mg",
+    "questionId": "q_089sitc",
+    "author": {
+      "_id": "u_0811420",
+      "nickname": "理性消费党",
+      "avatarText": "理性",
+      "city": "上海"
+    },
+    "recommendOption": "先试用",
+    "likes": 4,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795104000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_09013mn",
+    "questionId": "q_0901cme",
+    "author": {
+      "_id": "u_0821l29",
+      "nickname": "数码测评人",
+      "avatarText": "数码",
+      "city": "深圳"
+    },
+    "recommendOption": "等大促",
+    "likes": 20,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795122000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_091141k",
+    "questionId": "q_091pp6m",
+    "author": {
+      "_id": "u_002g7zl",
+      "nickname": "健身教练大K",
+      "avatarText": "健身",
+      "city": "广州"
+    },
+    "recommendOption": "改成私教",
+    "likes": 4,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795140000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_092wpqq",
+    "questionId": "q_0921sjq",
+    "author": {
+      "_id": "u_083w9ny",
+      "nickname": "知识付费观察者",
+      "avatarText": "知识",
+      "city": "北京"
+    },
+    "recommendOption": "问退款政策",
+    "likes": 0,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795158000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_093j039",
+    "questionId": "q_0936c33",
+    "author": {
+      "_id": "u_084j5t6",
+      "nickname": "老司机",
+      "avatarText": "老司",
+      "city": "南京"
+    },
+    "recommendOption": "等新款降价",
+    "likes": 24,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795176000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0941g57",
+    "questionId": "q_0941hmt",
+    "author": {
+      "_id": "u_085ar81",
+      "nickname": "养猫七年",
+      "avatarText": "养猫",
+      "city": "杭州"
+    },
+    "recommendOption": "先试一小袋",
+    "likes": 24,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795194000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0951hqf",
+    "questionId": "q_095zw7t",
+    "author": {
+      "_id": "u_0861de9",
+      "nickname": "摄影爱好者",
+      "avatarText": "摄影",
+      "city": "成都"
+    },
+    "recommendOption": "买二手",
+    "likes": 19,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795212000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_096pmet",
+    "questionId": "q_096oszn",
+    "author": {
+      "_id": "u_087eudv",
+      "nickname": "职业规划师",
+      "avatarText": "职业",
+      "city": "武汉"
+    },
+    "recommendOption": "先免费学",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795230000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0971pd7",
+    "questionId": "q_0971j0r",
+    "author": {
+      "_id": "u_088ayov",
+      "nickname": "厨房小张",
+      "avatarText": "厨房",
+      "city": "天津"
+    },
+    "recommendOption": "看需求",
+    "likes": 30,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795248000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_098li9f",
+    "questionId": "q_09833w9",
+    "author": {
+      "_id": "u_089ab5y",
+      "nickname": "买房老李",
+      "avatarText": "买房",
+      "city": "上海"
+    },
+    "recommendOption": "再租两年",
+    "likes": 10,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795266000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_0991qd2",
+    "questionId": "q_0991wp2",
+    "author": {
+      "_id": "u_0901i80",
+      "nickname": "订阅经济观察",
+      "avatarText": "订阅",
+      "city": "深圳"
+    },
+    "recommendOption": "开三个月",
+    "likes": 15,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795284000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_100zxwo",
+    "questionId": "q_100gzey",
+    "author": {
+      "_id": "u_091bwe0",
+      "nickname": "子女视角",
+      "avatarText": "子女",
+      "city": "北京"
+    },
+    "recommendOption": "先买血压计",
+    "likes": 26,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795302000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_1013kou",
+    "questionId": "q_10164jb",
+    "author": {
+      "_id": "u_092bzl5",
+      "nickname": "效率工具使用者",
+      "avatarText": "效率",
+      "city": "广州"
+    },
+    "recommendOption": "先学提示词",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795320000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_1021c6i",
+    "questionId": "q_102kr1y",
+    "author": {
+      "_id": "u_093ons7",
+      "nickname": "航拍爱好者",
+      "avatarText": "航拍",
+      "city": "成都"
+    },
+    "recommendOption": "先租",
+    "likes": 13,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795338000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_103144o",
+    "questionId": "q_10314wn",
+    "author": {
+      "_id": "u_0941v8k",
+      "nickname": "记账爱好者",
+      "avatarText": "记账",
+      "city": "南京"
+    },
+    "recommendOption": "先看看账",
+    "likes": 7,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795356000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_1041i36",
+    "questionId": "q_104dskz",
+    "author": {
+      "_id": "u_0951wks",
+      "nickname": "家庭财务规划",
+      "avatarText": "家庭",
+      "city": "上海"
+    },
+    "recommendOption": "先租大点",
+    "likes": 0,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795374000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a_105hqdk",
+    "questionId": "q_1051h26",
+    "author": {
+      "_id": "u_096c6pw",
+      "nickname": "家长内参",
+      "avatarText": "家长",
+      "city": "杭州"
+    },
+    "recommendOption": "试听",
+    "likes": 21,
+    "adopted": true,
+    "status": "normal",
+    "createdAt": 1795392000000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0001hj4",
+    "questionId": "q_00017he",
+    "author": {
+      "_id": "u_097ew22",
+      "nickname": "独居阿汤",
+      "avatarText": "独居",
+      "city": "北京"
+    },
+    "content": "一个人吃饭就别讲究了，但也别凑合。我一般固定吃同一家，连着吃三天把菜单吃透，不用每天做选择反而省心。",
+    "recommendOption": "沙县",
+    "likes": 14,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793509200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_001v5y4",
+    "questionId": "q_0011sia",
+    "author": {
+      "_id": "u_098njrv",
+      "nickname": "川妹子小周",
+      "avatarText": "川妹",
+      "city": "成都"
+    },
+    "content": "别做复杂的，两个人两个菜上限。番茄炒蛋加一个青菜，五分钟上桌，碗就两个。复杂的菜做完了更累。",
+    "recommendOption": "番茄炒蛋",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793527200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0021ivc",
+    "questionId": "q_0102nhe",
+    "author": {
+      "_id": "u_099c98g",
+      "nickname": "广东阿婆",
+      "avatarText": "广东",
+      "city": "广州"
+    },
+    "content": "广东人的答案是「煲汤要时间」。但如果你懒得煲，超市的浓缩汤底加料包，五分钟也能有那口味道，别觉得这是偷懒。",
+    "recommendOption": "紫菜蛋花汤",
+    "likes": 8,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793689200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_00318g7",
+    "questionId": "q_0081ak6",
+    "author": {
+      "_id": "u_001u4yo",
+      "nickname": "营养师小林",
+      "avatarText": "营养",
+      "city": "广州"
+    },
+    "content": "补充一句：烤肠不建议当日常，钠和添加剂都高，偶尔一次没关系，天天吃不行。煎饼果子加个蛋至少是正经主食。",
+    "recommendOption": "煎饼果子",
+    "likes": 0,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793653200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0041hk6",
+    "questionId": "q_0031gr4",
+    "author": {
+      "_id": "u_100geer",
+      "nickname": "美食博主老陈",
+      "avatarText": "美食",
+      "city": "上海"
+    },
+    "content": "不想排队就避开「饭点」。我一般11点或13点半到，同一家店不用等，菜品还更全。",
+    "recommendOption": "日料",
+    "likes": 7,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793563200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_005gl20",
+    "questionId": "q_013kogp",
+    "author": {
+      "_id": "u_002g7zl",
+      "nickname": "健身教练大K",
+      "avatarText": "健身",
+      "city": "深圳"
+    },
+    "content": "再补一个：别低估蛋白质的作用。鸡蛋的饱腹感来自蛋白质，很多人早餐只吃碳水，九点半必然饿，这不是自制力问题。",
+    "recommendOption": "玉米+牛奶",
+    "likes": 11,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793743200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0061ykc",
+    "questionId": "q_0121vqd",
+    "author": {
+      "_id": "u_098njrv",
+      "nickname": "川妹子小周",
+      "avatarText": "川妹",
+      "city": "成都"
+    },
+    "content": "如果对方是朋友，在家做反而更自在，客人还会夸你。但如果是客户或者不熟的人，在家做会暴露你厨艺差距，不礼貌。",
+    "recommendOption": "去小馆子",
+    "likes": 3,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793725200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0074lku",
+    "questionId": "q_01414h0",
+    "author": {
+      "_id": "u_10116so",
+      "nickname": "甜品店小方",
+      "avatarText": "甜品",
+      "city": "上海"
+    },
+    "content": "甜品吧。加个巧克力，比炸鸡治愈而且不撑。炸鸡吃到第三块就腻了，甜品吃完还想再来一口。",
+    "recommendOption": "奶茶甜品",
+    "likes": 6,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793761200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_00812dv",
+    "questionId": "q_016jwct",
+    "author": {
+      "_id": "u_0181xyh",
+      "nickname": "HR老张",
+      "avatarText": "HR",
+      "city": "北京"
+    },
+    "content": "补充：如果你们公司有dress code，优先服从公司规则，这个比我的建议重要。",
+    "recommendOption": "白衬衫+西裤",
+    "likes": 2,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793797200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0099mcj",
+    "questionId": "q_01915sv",
+    "author": {
+      "_id": "u_10211pv",
+      "nickname": "前HR周姐",
+      "avatarText": "前H",
+      "city": "上海"
+    },
+    "content": "我说深色西装，但更准确的是「合身」。不合身的西装比不穿西装更减分，肩线不合身就等于没穿。",
+    "recommendOption": "深色西装",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793851200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0101wrc",
+    "questionId": "q_021h5jb",
+    "author": {
+      "_id": "u_0201hwg",
+      "nickname": "衬衫研究者",
+      "avatarText": "衬衫",
+      "city": "北京"
+    },
+    "content": "补一个细节：看「免烫」标不代表免皱，但好的免烫面料确实比普通棉抗皱。日常选稍厚一点的，透光显廉价。",
+    "recommendOption": "真丝",
+    "likes": 2,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793887200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0112wj3",
+    "questionId": "q_02316rr",
+    "author": {
+      "_id": "u_02211bz",
+      "nickname": "买手阿May",
+      "avatarText": "买手",
+      "city": "广州"
+    },
+    "content": "补：充绒量要问「含绒量」和「蓬松度（FP值）」。蓬松度高的更轻更暖，同样充绒量下差别很大。",
+    "recommendOption": "国产品牌",
+    "likes": 5,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1793923200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0128eyn",
+    "questionId": "q_029vh5t",
+    "author": {
+      "_id": "u_02819u2",
+      "nickname": "拍照姿势党",
+      "avatarText": "拍照",
+      "city": "上海"
+    },
+    "content": "还有一点：露脚踝。视觉重心在脚踝时整体比例会拉长，长裙配平底鞋比配高跟更容易显高。",
+    "recommendOption": "高腰裤+紧身上衣",
+    "likes": 6,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794031200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0131rlm",
+    "questionId": "q_028schi",
+    "author": {
+      "_id": "u_0271i4t",
+      "nickname": "直男改造中",
+      "avatarText": "直男",
+      "city": "北京"
+    },
+    "content": "别穿新买的衣服。万一不舒服你全程都在拉扯衣服，注意力根本不在对方身上。穿你穿过最自在的那套。",
+    "recommendOption": "衬衫+休闲裤",
+    "likes": 9,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794013200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0141q8o",
+    "questionId": "q_0331mu4",
+    "author": {
+      "_id": "u_03219x4",
+      "nickname": "生活小技巧",
+      "avatarText": "生活",
+      "city": "杭州"
+    },
+    "content": "报纸要换成吸水纸或者厨房纸，效果更好，而且塞完一晚上能吸不少。塞报纸时记得塞到鞋头，那里最湿。",
+    "recommendOption": "塞报纸",
+    "likes": 16,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794103200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0153nzl",
+    "questionId": "q_0301kid",
+    "author": {
+      "_id": "u_029ff7l",
+      "nickname": "整理师",
+      "avatarText": "整理",
+      "city": "南京"
+    },
+    "content": "再补一个：真空压缩袋不要用来装羽绒和羊毛，会把蓬松度压坏，而且压缩袋不透气容易发霉。",
+    "recommendOption": "用收纳箱分区",
+    "likes": 12,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794049200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_01610f8",
+    "questionId": "q_035sc9t",
+    "author": {
+      "_id": "u_03411qb",
+      "nickname": "儿科医生张大夫",
+      "avatarText": "儿科",
+      "city": "广州"
+    },
+    "content": "再加一条：不要在情绪高峰讲道理。这时候你越讲他越对抗。不如先说「我知道你不想」，共情之后再说下一步，阻力会小很多。",
+    "recommendOption": "给两个选项",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794139200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0171hk5",
+    "questionId": "q_036fi7z",
+    "author": {
+      "_id": "u_035450w",
+      "nickname": "儿童心理咨询师",
+      "avatarText": "儿童",
+      "city": "上海"
+    },
+    "content": "还有一点很重要：别用「这有什么大不了的」回应。孩子的情绪被否定时，他学到的不是「输没关系」，而是「我的感受不重要」。",
+    "recommendOption": "提前约定输的规则",
+    "likes": 14,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794157200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_018128t",
+    "questionId": "q_039zi4k",
+    "author": {
+      "_id": "u_038dbew",
+      "nickname": "教育专家",
+      "avatarText": "教育",
+      "city": "北京"
+    },
+    "content": "补充一个界限：一定要教孩子说「我不喜欢」，然后离开现场。孩子有权拒绝互动，不需要每次都冲突到底。",
+    "recommendOption": "先问清再教回应",
+    "likes": 12,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794211200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_01912qy",
+    "questionId": "q_041141z",
+    "author": {
+      "_id": "u_04010ed",
+      "nickname": "阅读推广人",
+      "avatarText": "阅读",
+      "city": "武汉"
+    },
+    "content": "纸质书和电子书的区别不只是介质。孩子在纸质书上会翻页、会跳读，这是阅读能力的训练。用平板替代纸质书，长远会吃亏。",
+    "recommendOption": "亲子共读并提问",
+    "likes": 16,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794247200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_020vsqw",
+    "questionId": "q_047bjd8",
+    "author": {
+      "_id": "u_045fjng",
+      "nickname": "眼科医生",
+      "avatarText": "眼科",
+      "city": "成都"
+    },
+    "content": "补充：干预的黄金期是发现的越早越好。4.8 属于临界范围，要按医生要求做用眼干预，别信「护眼灯有用」的营销。",
+    "recommendOption": "先做散瞳检查",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794355200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0211ghe",
+    "questionId": "q_045444t",
+    "author": {
+      "_id": "u_044arht",
+      "nickname": "儿童社工",
+      "avatarText": "儿童",
+      "city": "天津"
+    },
+    "content": "还有一点：不要替孩子解释。你跟对方家长说「我家孩子有点内向」只会给他贴标签，让他更不自信。",
+    "recommendOption": "多创造一起玩的机会",
+    "likes": 11,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794319200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0221d81",
+    "questionId": "q_050opef",
+    "author": {
+      "_id": "u_0471dga",
+      "nickname": "儿童心理师",
+      "avatarText": "儿童",
+      "city": "深圳"
+    },
+    "content": "再补一条：家长自己刷手机的时间是决定性因素。孩子模仿的是你，不是你说的话。",
+    "recommendOption": "设置时长",
+    "likes": 4,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794409200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_023cz5u",
+    "questionId": "q_053yqee",
+    "author": {
+      "_id": "u_0489tw2",
+      "nickname": "婚姻咨询师",
+      "avatarText": "婚姻",
+      "city": "北京"
+    },
+    "content": "最关键的一点是把「带娃」拆成具体动作清单，而不是笼统的分工。笼统分工最后永远变成「我在带」。",
+    "recommendOption": "按时间段轮",
+    "likes": 5,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794463200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0241fke",
+    "questionId": "q_052144k",
+    "author": {
+      "_id": "u_038dbew",
+      "nickname": "教育专家",
+      "avatarText": "教育",
+      "city": "南京"
+    },
+    "content": "补充：夸奖要「延迟」并且「具体」。当场夸容易变成讨要表扬，隔天再提他做对的事，效果和持续性都更好。",
+    "recommendOption": "不夸只描述",
+    "likes": 13,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794445200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0259ckr",
+    "questionId": "q_051y9tb",
+    "author": {
+      "_id": "u_039kbyw",
+      "nickname": "发展心理学者",
+      "avatarText": "发展",
+      "city": "广州"
+    },
+    "content": "安全边界还是要有的：涉及安全的事（坐车、开水、楼梯）可以适当帮忙，但日常小事让他做。",
+    "recommendOption": "允许慢慢来",
+    "likes": 4,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794427200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0265dxg",
+    "questionId": "q_05512yw",
+    "author": {
+      "_id": "u_049x8y5",
+      "nickname": "亲子出行老张",
+      "avatarText": "亲子",
+      "city": "北京"
+    },
+    "content": "补充：两天行程别排满，留半天在家。孩子和家长的疲劳是叠加的，大人累了会冲孩子发火。",
+    "recommendOption": "奥森公园",
+    "likes": 2,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794499200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_02710jm",
+    "questionId": "q_0581efc",
+    "author": {
+      "_id": "u_052yuzj",
+      "nickname": "独处爱好者",
+      "avatarText": "独处",
+      "city": "广州"
+    },
+    "content": "如果实在不想出门，博物馆是个好选择——有内容、不用社交、还有冷气。",
+    "recommendOption": "看展",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794553200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_028ugy1",
+    "questionId": "q_0621oty",
+    "author": {
+      "_id": "u_056jmhx",
+      "nickname": "露营老王",
+      "avatarText": "露营",
+      "city": "北京"
+    },
+    "content": "再补三个最容易忘的：头灯（手电筒解放双手）、保温壶、驱蚊液。第一次露营这三个能救命。",
+    "recommendOption": "帐篷睡袋",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794625200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_029ilen",
+    "questionId": "q_0601y42",
+    "author": {
+      "_id": "u_054bwo5",
+      "nickname": "孝子小林",
+      "avatarText": "孝子",
+      "city": "苏州"
+    },
+    "content": "提前查好景区的代步车和休息点位置，比选景点更重要。老人走不动时，整趟行程的心情就毁了。",
+    "recommendOption": "自然景区",
+    "likes": 2,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794589200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_030b1ko",
+    "questionId": "q_0631uqt",
+    "author": {
+      "_id": "u_057ihla",
+      "nickname": "运动搭子",
+      "avatarText": "运动",
+      "city": "上海"
+    },
+    "content": "还有个零门槛的：快走。不用换衣服不用约人，下楼就能开始。很多人的问题不是不爱动，是启动成本太高。",
+    "recommendOption": "夜跑",
+    "likes": 10,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794643200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0311w0i",
+    "questionId": "q_05719ta",
+    "author": {
+      "_id": "u_103ab30",
+      "nickname": "亲子乐园",
+      "avatarText": "亲子",
+      "city": "深圳"
+    },
+    "content": "补充：去之前先查场馆有没有当天的活动表，有活动的话孩子的注意力能被占住很多时间，没活动就容易闹。",
+    "recommendOption": "亲子乐园",
+    "likes": 4,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794535200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0321ciz",
+    "questionId": "q_0591kk7",
+    "author": {
+      "_id": "u_0531oiv",
+      "nickname": "旅行规划师",
+      "avatarText": "旅行",
+      "city": "成都"
+    },
+    "content": "另外提醒：西北的机票和住宿在十一前一周会翻倍，早订是最大的省钱技巧，比选目的地更重要。",
+    "recommendOption": "西北",
+    "likes": 3,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794571200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0331rc7",
+    "questionId": "q_06513th",
+    "author": {
+      "_id": "u_051b2xf",
+      "nickname": "周末玩家",
+      "avatarText": "周末",
+      "city": "杭州"
+    },
+    "content": "补充：如果四个人以上，密室其实更合适——人多反而比密室逃脱更适合，因为可以分成两桌打牌。",
+    "recommendOption": "桌游",
+    "likes": 1,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794679200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_03416hb",
+    "questionId": "q_0731vkm",
+    "author": {
+      "_id": "u_0661dqp",
+      "nickname": "直男送礼指南",
+      "avatarText": "直男",
+      "city": "上海"
+    },
+    "content": "再补：如果你们有共同爱好，那本相关的书或周边比什么都强。礼物最好的状态是「他打开时想起我们一起做的事」。",
+    "recommendOption": "耳机",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794823200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_035qiue",
+    "questionId": "q_072787j",
+    "author": {
+      "_id": "u_0651dkf",
+      "nickname": "办公室老王",
+      "avatarText": "办公",
+      "city": "北京"
+    },
+    "content": "红包最省心也最不会出错。如果一定要有礼物，两份礼物的思路是「一件给新人，一件给家里」，比送一件给新人更周到。",
+    "recommendOption": "两份礼物",
+    "likes": 16,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794805200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0365q8q",
+    "questionId": "q_07715t9",
+    "author": {
+      "_id": "u_054bwo5",
+      "nickname": "孝子小林",
+      "avatarText": "孝子",
+      "city": "武汉"
+    },
+    "content": "补充：按摩仪要看力度调节，低档可以每天用，高档伤肌肉。买回来先试低档。",
+    "recommendOption": "按摩仪",
+    "likes": 1,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794895200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0371kk8",
+    "questionId": "q_07619q6",
+    "author": {
+      "_id": "u_0691nm9",
+      "nickname": "恋爱脑研究员",
+      "avatarText": "恋爱",
+      "city": "南京"
+    },
+    "content": "再补一点：如果你不确定她用哪个色号，就选一个色号通用的经典色，或者选「礼盒装」让她自己挑小样。",
+    "recommendOption": "口红",
+    "likes": 7,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794877200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0389wyf",
+    "questionId": "q_0751pn7",
+    "author": {
+      "_id": "u_068gkoy",
+      "nickname": "育儿妈妈",
+      "avatarText": "育儿",
+      "city": "成都"
+    },
+    "content": "补：如果送玩具，注意「可以两个人一起玩」的属性，比如拼图、桌游，比遥控车这类单人玩具更适合亲子。",
+    "recommendOption": "积木",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794859200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_039uxhu",
+    "questionId": "q_08418rf",
+    "author": {
+      "_id": "u_076c5mh",
+      "nickname": "孝顺子女",
+      "avatarText": "孝顺",
+      "city": "北京"
+    },
+    "content": "再补：收音机选带「一键调台」的，不要选需要精细操作的型号。老人用不了的功能就是装饰。",
+    "recommendOption": "收音机",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795021200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0401r62",
+    "questionId": "q_0781fe3",
+    "author": {
+      "_id": "u_070gjqf",
+      "nickname": "职场前辈",
+      "avatarText": "职场",
+      "city": "深圳"
+    },
+    "content": "补充：红包金额别太显眼，如果公司有同事一起凑，直接跟大部队走，别单独出头。",
+    "recommendOption": "红包",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1794913200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0411qcj",
+    "questionId": "q_083dqct",
+    "author": {
+      "_id": "u_075i7k8",
+      "nickname": "贴心伴侣",
+      "avatarText": "贴心",
+      "city": "上海"
+    },
+    "content": "再补一个：好一点的颈枕有记忆棉和支撑的区别，选支撑好的，不然在飞机上脖子更难受。",
+    "recommendOption": "颈眼罩",
+    "likes": 4,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795003200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_04213mn",
+    "questionId": "q_0901cme",
+    "author": {
+      "_id": "u_0821l29",
+      "nickname": "数码测评人",
+      "avatarText": "数码",
+      "city": "北京"
+    },
+    "content": "补充：算一笔账。手机的「够用」标准是三年不卡，电池健康低于80%才需要换。提前换是在为还用得上的性能付费。",
+    "recommendOption": "等大促",
+    "likes": 9,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795129200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_043141k",
+    "questionId": "q_091pp6m",
+    "author": {
+      "_id": "u_002g7zl",
+      "nickname": "健身教练大K",
+      "avatarText": "健身",
+      "city": "广州"
+    },
+    "content": "再补一个数据：健身卡用户平均一年的到店次数是 3~8 次。办卡时觉得自己会去的那个你，不是真的你。",
+    "recommendOption": "改成私教",
+    "likes": 17,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795147200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0441hqf",
+    "questionId": "q_095zw7t",
+    "author": {
+      "_id": "u_0861de9",
+      "nickname": "摄影爱好者",
+      "avatarText": "摄影",
+      "city": "深圳"
+    },
+    "content": "补充：如果只是手机拍照拍得不够好，其实不一定需要相机，先把手机镜头擦干净。",
+    "recommendOption": "买二手",
+    "likes": 9,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795219200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0451pd7",
+    "questionId": "q_0971j0r",
+    "author": {
+      "_id": "u_088ayov",
+      "nickname": "厨房小张",
+      "avatarText": "厨房",
+      "city": "成都"
+    },
+    "content": "补充：如果你已经有烤箱，气炸功能基本是烤箱的简化版，溢价买的是便利不是能力。",
+    "recommendOption": "看需求",
+    "likes": 3,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795255200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_046hqdk",
+    "questionId": "q_1051h26",
+    "author": {
+      "_id": "u_096c6pw",
+      "nickname": "家长内参",
+      "avatarText": "家长",
+      "city": "杭州"
+    },
+    "content": "补一句：报班最大的成本不是钱，是时间和往返路上的消耗，这两项对家长和孩子都是稀缺资源。",
+    "recommendOption": "试听",
+    "likes": 14,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795399200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_047j039",
+    "questionId": "q_0936c33",
+    "author": {
+      "_id": "u_084j5t6",
+      "nickname": "老司机",
+      "avatarText": "老司",
+      "city": "南京"
+    },
+    "content": "再补：如果你现在这辆车没有明显故障，那换车的动机往往不是需求，是「到了该换的年纪」这种心理节点，这通常不理性。",
+    "recommendOption": "等新款降价",
+    "likes": 0,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795183200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0481qd2",
+    "questionId": "q_0991wp2",
+    "author": {
+      "_id": "u_0901i80",
+      "nickname": "订阅经济观察",
+      "avatarText": "订阅",
+      "city": "深圳"
+    },
+    "content": "补充：算一下你过去三个月实际用了几次，如果不到年费的1/3，说明你大概率用不完。",
+    "recommendOption": "开三个月",
+    "likes": 0,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795291200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0491c6i",
+    "questionId": "q_102kr1y",
+    "author": {
+      "_id": "u_093ons7",
+      "nickname": "航拍爱好者",
+      "avatarText": "航拍",
+      "city": "成都"
+    },
+    "content": "补充：航拍最大的隐性成本是「炸了要赔」和「时间被审核流程吃掉」，不是设备本身。",
+    "recommendOption": "先租",
+    "likes": 12,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795345200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_050zxwo",
+    "questionId": "q_100gzey",
+    "author": {
+      "_id": "u_091bwe0",
+      "nickname": "子女视角",
+      "avatarText": "子女",
+      "city": "上海"
+    },
+    "content": "再补：如果你要送智能设备，先确认家里是否有人会帮他们设置。没人能帮的智能设备，一周后就在抽屉里了。",
+    "recommendOption": "先买血压计",
+    "likes": 12,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795309200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_051li9f",
+    "questionId": "q_09833w9",
+    "author": {
+      "_id": "u_089ab5y",
+      "nickname": "买房老李",
+      "avatarText": "买房",
+      "city": "广州"
+    },
+    "content": "补充一个硬指标：月供不要超过家庭税后收入的40%。超过这条线，一旦行业下行或失业，断供风险是真实的。",
+    "recommendOption": "再租两年",
+    "likes": 0,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795273200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_0523kou",
+    "questionId": "q_10164jb",
+    "author": {
+      "_id": "u_092bzl5",
+      "nickname": "效率工具使用者",
+      "avatarText": "效率",
+      "city": "北京"
+    },
+    "content": "补充：判断标准很简单——课程里教的东西，官方文档是不是都能免费查到。如果能，就不值那个价。",
+    "recommendOption": "先学提示词",
+    "likes": 15,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795327200000,
+    "isSeed": true
+  },
+  {
+    "_id": "a2_053144o",
+    "questionId": "q_10314wn",
+    "author": {
+      "_id": "u_0941v8k",
+      "nickname": "记账爱好者",
+      "avatarText": "记账",
+      "city": "武汉"
+    },
+    "content": "补充：记账的重点不是记，是分类。记完不分类等于没记，你还是不知道该砍哪几笔。",
+    "recommendOption": "先看看账",
+    "likes": 5,
+    "adopted": false,
+    "status": "normal",
+    "createdAt": 1795363200000,
+    "isSeed": true
+  }
+]

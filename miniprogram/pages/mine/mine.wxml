@@ -1,0 +1,69 @@
+<view class="profile">
+  <view class="profile-top">
+    <view class="avatar">{{user.avatarText || '我'}}</view>
+    <view>
+      <view class="profile-name">{{user.nickname || '我'}}</view>
+      <view class="profile-sub">决策积分 {{user.points || 0}} · 已解决 {{stats.adoptCount || 0}} 个问题</view>
+    </view>
+  </view>
+</view>
+
+<view class="stats">
+  <view class="stat">
+    <view class="stat-num">{{stats.questionCount || 0}}</view>
+    <view class="stat-label">我的提问</view>
+  </view>
+  <view class="stat-sep"></view>
+  <view class="stat">
+    <view class="stat-num">{{stats.answerCount || 0}}</view>
+    <view class="stat-label">我的回答</view>
+  </view>
+  <view class="stat-sep"></view>
+  <view class="stat">
+    <view class="stat-num">{{stats.adoptCount || 0}}</view>
+    <view class="stat-label">被采纳</view>
+  </view>
+</view>
+
+<view class="menu">
+  <view class="menu-item" bindtap="onMenu" data-name="我的提问">
+    <text class="menu-ico">📝</text><text>我的提问</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="我的回答">
+    <text class="menu-ico">💬</text><text>我的回答</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="我的采纳">
+    <text class="menu-ico">🏆</text><text>我的采纳</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="我的收藏">
+    <text class="menu-ico">🔖</text><text>我的收藏</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="决策复盘">
+    <text class="menu-ico">📊</text><text>决策复盘</text><text class="menu-arrow">›</text>
+  </view>
+</view>
+
+<view class="menu">
+  <view class="menu-item" bindtap="onMenu" data-name="设置">
+    <text class="menu-ico">⚙️</text><text>设置</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="隐私与安全">
+    <text class="menu-ico">🛡️</text><text>隐私与安全</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onMenu" data-name="意见反馈">
+    <text class="menu-ico">💬</text><text>意见反馈</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onReset">
+    <text class="menu-ico">🧹</text><text>重置本地演示数据</text><text class="menu-arrow">›</text>
+  </view>
+</view>
+
+<view class="section-title" wx:if="{{myQuestions.length}}">我提过的问题</view>
+<view class="list" wx:if="{{myQuestions.length}}">
+  <question-card
+    wx:for="{{myQuestions}}"
+    wx:key="_id"
+    item="{{item}}"
+    bind:tap="onOpenDetail"
+  />
+</view>
