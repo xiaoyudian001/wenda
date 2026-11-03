@@ -54,7 +54,16 @@ wenda/
 │
 ├── tools/
 │   ├── serve.js                本地静态服务器
-│   └── make-icons.js           tabBar 图标生成器
+│   ├── make-icons.js           tabBar 图标生成器
+│   ├── build-single.js         打包单文件 demo
+│   ├── build-site.js           生成静态站点
+│   ├── publish-github.js       一键发布 GitHub Pages
+│   ├── verify.js               项目自检
+│   └── test-api.js             数据层端到端测试
+│
+├── dist/                       构建产物
+│   ├── wenda-demo.html         单文件 demo（双击即开）
+│   └── site/                   静态站点（可部署）
 │
 └── docs/
     ├── PRD.md                  产品需求文档
@@ -67,7 +76,16 @@ wenda/
 
 ## 快速开始
 
-### 1. 看原型（最快，1 分钟）
+### 0. 最快：双击打开单文件 demo（零依赖）
+
+```
+F:\daily\wenda\dist\wenda-demo.html
+```
+
+所有 CSS / JS / 数据内联在一个 HTML 里，双击即开，无需服务器。发给任何人都能直接看。
+详细说明见 [部署文档](docs/DEPLOY.md)。
+
+### 1. 看原型（开发时）
 
 ```bash
 node tools/serve.js 8899
@@ -134,12 +152,16 @@ node tools/serve.js 8900 F:\daily\wenda
 
 ```bash
 npm run build:seed   # 重建种子数据（改完 *.src.txt 后跑）
+npm run build:single # 打包单文件 demo → dist/wenda-demo.html
+npm run build:site   # 生成静态站点 → dist/site/
 npm run icons        # 重新生成 tabBar 图标
 npm run verify       # 项目自检（JSON/JS/数据一致性/结构）
 npm run test         # 数据层端到端测试（38 项）
 npm run check        # 自检 + 测试
 npm run serve        # 原型预览 http://127.0.0.1:8899
 npm run serve:admin  # 后台预览 http://127.0.0.1:8900/admin/index.html
+npm run serve:site   # 站点预览 http://127.0.0.1:8902
+npm run publish:gh -- <owner> <repo>   # 一键发布到 GitHub Pages
 ```
 
 ---
@@ -165,6 +187,7 @@ npm run serve:admin  # 后台预览 http://127.0.0.1:8900/admin/index.html
 - [数据模型](docs/DATA-MODEL.md)
 - [验证指标](docs/METRICS.md)
 - [冷启动手册](docs/COLD-START.md)
+- [本地运行与发布](docs/DEPLOY.md)
 
 ---
 
