@@ -8,6 +8,11 @@
 
 <scroll-view scroll-y class="form-scroll">
   <view class="form">
+    <view class="draft-hint" wx:if="{{draftRestored}}">
+      <text class="draft-hint-text">已恢复你上次没写完的内容</text>
+      <text class="draft-hint-clear" bindtap="onReset">清空</text>
+    </view>
+
     <view class="form-group">
       <view class="form-label">选择分类<text class="form-label-req">*</text></view>
       <view class="pick-cats">

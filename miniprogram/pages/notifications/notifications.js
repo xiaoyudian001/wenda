@@ -22,14 +22,21 @@ Page({
   onShow() {
     util.guard(this); // 页面卸载后不再 setData
     tracker.track(tracker.EVENTS.LIST_VIEW, '', { page: 'notifications' });
-    this.load();
+    this.refresh();
+  },
+
+  /** 重新从第一页拉取（每次进入页面都刷新，避免重复追加） */
+  refresh() {
+    this.setData({ page: 1, list: [], hasMore: false });
+    return this.load();
   },
 
   load() {
     if (this.data.loading) return Promise.resolve();
     this.setData({ loading: true });
+    const page = this.data.page;
     return api
-      .listNotifications({ page: this.data.page, size: 20 })
+      .listNotifications({ page, size: 20 })
       .then((res) => {
         const list = (res.list || []).map((n) => {
           const meta = TYPE_META[n.type] || TYPE_META.system;
@@ -41,17 +48,33 @@ Page({
           };
         });
         this.setData({
-          list: this.data.page === 1 ? list : this.data.list.concat(list),
-          unreadCount: res.unreadCount || 0,
+          list: page === 1 ? list : this.data.list.concat(list),
           hasMore: !!res.hasMore,
-          page: this.data.page + 1,
-          allRead: list.length > 0 && list.every((n) => n.read),
+          page: page + 1,
         });
-        // 拉取后自动把本页标记已读
+        // 拉取后自动把本页标记已读，并同步刷新未读数
         const ids = list.filter((n) => !n.read).map((n) => n._id);
-        if (ids.length) {
-          api.readNotifications(ids).catch(() => {});
+        if (!ids.length) {
+          this.setData({ unreadCount: res.unreadCount || 0 });
+          return;
         }
+        return api
+          .readNotifications(ids)
+          .then(() => {
+            // 已读后重新拉一次统计，保证未读数与列表一致
+            return api.listNotifications({ page: 1, size: 1 });
+          })
+          .then((stat) => {
+            this.setData({
+              unreadCount: stat.unreadCount || 0,
+              list: this.data.list.map((n) =>
+                ids.indexOf(n._id) > -1 ? Object.assign({}, n, { read: true }) : n
+              ),
+            });
+          })
+          .catch(() => {
+            // 标记已读失败时保持原状，不谎报已读
+          });
       })
       .catch((err) => {
         console.error('[问搭] 加载通知失败:', err);
@@ -87,8 +110,8 @@ Page({
           .readNotifications([])
           .then(() => {
             util.toast('已全部标为已读');
-            this.setData({ page: 1 });
-            this.load();
+            this.setData({ page: 1, list: [], unreadCount: 0 });
+            return this.load();
           })
           .catch(() => util.toast('操作失败'));
       },

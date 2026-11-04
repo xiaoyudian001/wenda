@@ -108,7 +108,8 @@
           "scene": null
         }
       ]
-    }
+    },
+    "current": "提问"
   },
   "simulatorPluginLibVersion": {},
   "editorSetting": {}

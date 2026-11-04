@@ -40,14 +40,14 @@
   <view class="switch-row">
     <view class="switch-text">
       <view class="switch-title">有人回答我的问题</view>
-      <view class="switch-desc">新回答到达时提醒你</view>
+      <view class="switch-desc">在「消息通知」里标记提醒</view>
     </view>
     <switch checked="{{settings.notifyAnswer}}" bindchange="onToggle" data-key="notifyAnswer" color="#FF6B4A" />
   </view>
   <view class="switch-row">
     <view class="switch-text">
       <view class="switch-title">我的回答被采纳</view>
-      <view class="switch-desc">决定生效时告诉你一声</view>
+      <view class="switch-desc">在「消息通知」里标记提醒</view>
     </view>
     <switch checked="{{settings.notifyAdopt}}" bindchange="onToggle" data-key="notifyAdopt" color="#FF6B4A" />
   </view>
@@ -57,6 +57,9 @@
       <view class="switch-desc">每天推一个值得围观的问题</view>
     </view>
     <switch checked="{{settings.notifyHot}}" bindchange="onToggle" data-key="notifyHot" color="#FF6B4A" />
+  </view>
+  <view class="hint-note">
+    提醒目前显示在应用内「消息通知」，还没有系统级推送
   </view>
 </view>
 
@@ -94,7 +97,16 @@
       <view class="switch-title">意见反馈</view>
       <view class="switch-desc">告诉我们哪里不好用</view>
     </view>
-    <text class="menu-arrow">›</text>
+    <text class="menu-arrow" wx:if="{{feedbackCount}}">{{feedbackCount}} 条</text>
+    <text class="menu-arrow" wx:else>›</text>
+  </view>
+  <view class="switch-row" bindtap="onShowFeedbacks">
+    <view class="switch-text">
+      <view class="switch-title">我的反馈记录</view>
+      <view class="switch-desc">查看已保存到本机的反馈</view>
+    </view>
+    <text class="menu-arrow" wx:if="{{feedbackCount}}">{{feedbackCount}}</text>
+    <text class="menu-arrow" wx:else>›</text>
   </view>
   <view class="switch-row" bindtap="onAbout">
     <view class="switch-text">

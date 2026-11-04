@@ -9,6 +9,7 @@ Page({
     city: '',
     editingProfile: false,
     focusSection: '',
+    feedbackCount: 0,
   },
 
   onShow(options) {
@@ -35,6 +36,38 @@ Page({
       .catch((err) => {
         console.error('[问搭] 加载设置失败:', err);
       });
+    this.loadFeedbackCount();
+  },
+
+  loadFeedbackCount() {
+    api
+      .listFeedbacks()
+      .then((res) => this.setData({ feedbackCount: res.total || 0 }))
+      .catch(() => {});
+  },
+
+  /** 查看本机保存的反馈记录 */
+  onShowFeedbacks() {
+    api
+      .listFeedbacks()
+      .then((res) => {
+        const list = res.list || [];
+        if (!list.length) {
+          util.toast('还没有保存过反馈');
+          return;
+        }
+        wx.showModal({
+          title: `我的反馈（${list.length} 条）`,
+          content:
+            list
+              .slice(0, 5)
+              .map((f, i) => `${i + 1}. ${f.content}`)
+              .join('\n\n') + (list.length > 5 ? `\n\n（还有 ${list.length - 5} 条）` : ''),
+          showCancel: false,
+          confirmText: '知道了',
+        });
+      })
+      .catch(() => util.toast('读取失败'));
   },
 
   onToggle(e) {
@@ -134,8 +167,26 @@ Page({
       editable: true,
       placeholderText: '说说你想改进的地方',
       success: (res) => {
-        if (!res.confirm || !res.content) return;
-        util.toast('已收到，谢谢反馈');
+        if (!res.confirm) return;
+        const content = (res.content || '').trim();
+        if (!content) {
+          util.toast('说点什么吧');
+          return;
+        }
+        api
+          .saveFeedback({ content, category: 'other' })
+          .then((r) => {
+            const total = (r && r.total) || 1;
+            const local = !r || !r.feedback || r.feedback.source === 'local';
+            this.setData({ feedbackCount: total });
+            util.toast(
+              local ? `已保存到本机（第 ${total} 条）` : '已提交，谢谢反馈'
+            );
+          })
+          .catch((err) => {
+            console.error('[问搭] 保存反馈失败:', err);
+            util.toast(err.message || '保存失败');
+          });
       },
     });
   },

@@ -427,6 +427,40 @@ function mockSaveSettings(patch) {
   return store.settings;
 }
 
+/**
+ * mock 版：保存意见反馈。
+ * 反馈只存在本机（云端尚未接入），所以这里返回的是本地记录，
+ * 页面必须如实告诉用户“已保存到本机”，不能说“已收到，谢谢反馈”。
+ */
+function mockSaveFeedback(payload) {
+  const store = getStore();
+  const list = store.feedbacks || (store.feedbacks = []);
+  const content = String((payload && payload.content) || '').trim();
+  if (!content) throw new Error('反馈内容不能为空');
+  const rec = {
+    _id: 'fb_local_' + Date.now() + '_' + list.length,
+    content: content.slice(0, 500),
+    category: (payload && payload.category) || 'other',
+    source: 'local',
+    handled: false,
+    createdAt: Date.now(),
+  };
+  list.push(rec);
+  saveMockStore(store);
+  return { feedback: rec, total: list.length };
+}
+
+/** mock 版：读取本机保存的反馈 */
+function mockListFeedbacks() {
+  const store = getStore();
+  // 同一毫秒创建的反馈用 id 后缀做稳定排序，避免顺序随机跳动
+  const list = (store.feedbacks || []).slice().sort((a, b) => {
+    if (b.createdAt !== a.createdAt) return b.createdAt - a.createdAt;
+    return String(b._id).localeCompare(String(a._id));
+  });
+  return { list, total: list.length };
+}
+
 /** mock 版：通知列表 */
 function mockListNotifications(params) {
   const store = getStore();
@@ -564,6 +598,20 @@ module.exports = {
   /** 保存个人资料 */
   updateProfile(payload) {
     return request('updateProfile', payload, () => mockUpdateProfile(payload));
+  },
+
+  /**
+   * 保存意见反馈。
+   * 目前只落本机（云端未接入），返回的 feedback.source 会标明来源，
+   * 页面据此如实告知用户保存位置。
+   */
+  saveFeedback(payload) {
+    return request('saveFeedback', payload, () => mockSaveFeedback(payload));
+  },
+
+  /** 读取本机保存的反馈 */
+  listFeedbacks() {
+    return request('listFeedbacks', {}, () => mockListFeedbacks());
   },
 
   /** 通知列表 */

@@ -44,6 +44,14 @@
   flex: 1;
 }
 
+.hint-note {
+  padding: 16rpx 30rpx 22rpx;
+  font-size: 22rpx;
+  color: #86909C;
+  line-height: 1.5;
+  background: #fff;
+}
+
 .card-list {
   background: #fff;
   padding: 0 30rpx;
