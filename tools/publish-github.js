@@ -169,13 +169,29 @@ const steps = [
   [`git remote add origin ${remote}`, TMP],
   ['git add -A', TMP],
   [`git -c user.name="${gitName}" -c user.email="${gitEmail}" commit -q -m "chore: 发布问搭 demo (${new Date().toISOString().slice(0, 10)})"`, TMP],
-  ['git push -f origin gh-pages', TMP],
 ];
+
+/** 执行 git 命令，遇到代理连接失败时自动重试直连 */
+function runGit(dir, cmd) {
+  // 某些网络环境下 git 默认的 HTTP/2 会被重置，强制 HTTP/1.1 更稳
+  const withProto = cmd.replace(/^git /, 'git -c "http.version=HTTP/1.1" ');
+  try {
+    return shIn(dir, withProto);
+  } catch (e) {
+    const msg = ((e.stdout || '') + (e.stderr || '')).trim();
+    const isProxyError = /Could not connect to 127\.0\.0\.1|Failed to connect|proxy|Connection was reset/i.test(msg);
+    if (!isProxyError) throw e;
+    console.log('  (代理不可用，改用直连重试)');
+    // 清空 GitHub 专用代理后重试
+    const bypassed = withProto.replace(/^git /, 'git -c "http.https://github.com/.proxy=" ');
+    return shIn(dir, bypassed);
+  }
+}
 
 for (const [cmd, cwd] of steps) {
   console.log(`  $ ${cmd}`);
   try {
-    shIn(cwd, cmd);
+    runGit(cwd, cmd);
   } catch (e) {
     console.error('\n❌ 执行失败:', cmd);
     const msg = (e.stdout || '') + (e.stderr || '');
@@ -184,8 +200,24 @@ for (const [cmd, cwd] of steps) {
     console.error('  · 仓库不存在 → 先在 GitHub 上创建 ' + owner + '/' + repo);
     console.error('  · 凭据无 repo 权限 → 检查 token 的 scope');
     console.error('  · 仓库禁止 force push → 在 Settings → Branches 里放开');
+    console.error('  · 本机代理未启动 → 用 gitproxy off 关闭代理，或启动代理软件');
     process.exit(1);
   }
+}
+
+// 推送单独处理（需要代理回退逻辑）
+console.log('  $ git push -f origin gh-pages');
+try {
+  runGit(TMP, 'git push -f origin gh-pages');
+} catch (e) {
+  console.error('\n❌ 推送失败');
+  console.error(((e.stdout || '') + (e.stderr || '')).trim() || e.message);
+  console.error('\n可能原因：');
+  console.error('  · 仓库不存在 → 先在 GitHub 上创建 ' + owner + '/' + repo);
+  console.error('  · 凭据无 repo 权限 → 检查 token 的 scope');
+  console.error('  · 仓库禁止 force push → 在 Settings → Branches 里放开');
+  console.error('  · 本机代理未启动 → 用 gitproxy off 关闭代理，或启动代理软件');
+  process.exit(1);
 }
 
 // 延迟清理：git 进程退出瞬间仍可能占用 .git 内的文件，立即删会 EPERM。
