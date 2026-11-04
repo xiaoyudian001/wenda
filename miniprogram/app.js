@@ -20,17 +20,37 @@ App({
     mockStore: null,
   },
 
-  onLaunch() {
+  onLaunch(options) {
+    this.globalData.launchOptions = options || {};
     this.initDataLayer();
   },
 
-  onShow() {
+  onShow(options) {
     tracker.track(tracker.EVENTS.APP_OPEN, '', { source: 'app_show' });
+    this.trackShareEnter(options);
   },
 
   onHide() {
     // 退到后台时把队列里的埋点刷出去，避免丢失
     tracker.flush();
+  },
+
+  /**
+   * 分享来源归因。
+   * 小程序通过分享卡片进入时，onShow 的 options.scene 会带上场景值，
+   * 这里记录成 share_enter 事件，用于计算裂变系数 K。
+   */
+  trackShareEnter(options) {
+    if (!options || !options.scene) return;
+    const app = getApp();
+    // 场景值 1007/1008/1044 等代表「从分享卡片进入」
+    const isFromShare = [1007, 1008, 1044].indexOf(options.scene) > -1;
+    if (!isFromShare) return;
+    tracker.track(tracker.EVENTS.SHARE_ENTER, options.query && options.query.id ? options.query.id : '', {
+      scene: options.scene,
+      path: options.path || '',
+    });
+    void app;
   },
 
   /**
