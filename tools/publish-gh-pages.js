@@ -43,7 +43,22 @@ run('git add -A', TMP);
 run(`git -c user.name="wjw" -c user.email="780522454@qq.com" commit -q -m "chore: publish site"`, TMP);
 const out = run(`git remote add origin https://github.com/xiaoyudian001/wenda.git`, TMP);
 console.log('推送中...');
-const push = run(`git ${GIT_OPTS} push -f origin gh-pages`, TMP);
-console.log(push.trim());
+let push;
+let lastError;
+for (let attempt = 1; attempt <= 3; attempt++) {
+  try {
+    push = run(`git ${GIT_OPTS} push -f origin gh-pages`, TMP);
+    break;
+  } catch (err) {
+    lastError = err;
+    const detail = String((err && err.stderr) || err.message || '');
+    const retryable = /Connection was reset|Recv failure|Failed to connect|timed out/i.test(detail);
+    if (!retryable || attempt === 3) throw err;
+    console.warn(`第 ${attempt} 次推送网络失败，3 秒后重试…`);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 3000);
+  }
+}
+if (lastError && !push) throw lastError;
+console.log((push || '').trim());
 console.log('\n✅ 已发布到 gh-pages');
 console.log('   https://xiaoyudian001.github.io/wenda/');
