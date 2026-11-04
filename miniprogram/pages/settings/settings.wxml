@@ -1,0 +1,121 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">设置</view>
+    <view style="width:40rpx"></view>
+  </view>
+</view>
+
+<scroll-view class="settings-scroll" scroll-y scroll-with-animation scroll-into-view="{{focusSection === '隐私与安全' ? 'sec-privacy' : (focusSection === '意见反馈' ? 'sec-feedback' : '')}}">
+<!-- 个人资料 -->
+<view class="profile-block">
+  <view class="profile-edit" wx:if="{{!editingProfile}}" bindtap="onEditProfile">
+    <view class="avatar">{{nickname}}</view>
+    <view class="profile-info">
+      <view class="profile-name">{{nickname}}</view>
+      <view class="profile-sub">{{city || '未设置城市'}} · 点击编辑</view>
+    </view>
+    <text class="menu-arrow">›</text>
+  </view>
+
+  <view class="profile-form" wx:if="{{editingProfile}}">
+    <view class="form-group">
+      <view class="form-label">昵称</view>
+      <input class="textarea" value="{{nickname}}" bindinput="onNicknameInput" maxlength="20" placeholder="怎么称呼你" />
+    </view>
+    <view class="form-group">
+      <view class="form-label">城市</view>
+      <input class="textarea" value="{{city}}" bindinput="onCityInput" maxlength="16" placeholder="只到城市级" />
+    </view>
+    <view class="form-actions">
+      <view class="btn btn-ghost" bindtap="onCancelEdit">取消</view>
+      <view class="btn btn-primary" bindtap="onSaveProfile">保存</view>
+    </view>
+  </view>
+</view>
+
+<!-- 通知 -->
+<view class="section-title">通知</view>
+<view class="card-list">
+  <view class="switch-row">
+    <view class="switch-text">
+      <view class="switch-title">有人回答我的问题</view>
+      <view class="switch-desc">新回答到达时提醒你</view>
+    </view>
+    <switch checked="{{settings.notifyAnswer}}" bindchange="onToggle" data-key="notifyAnswer" color="#FF6B4A" />
+  </view>
+  <view class="switch-row">
+    <view class="switch-text">
+      <view class="switch-title">我的回答被采纳</view>
+      <view class="switch-desc">决定生效时告诉你一声</view>
+    </view>
+    <switch checked="{{settings.notifyAdopt}}" bindchange="onToggle" data-key="notifyAdopt" color="#FF6B4A" />
+  </view>
+  <view class="switch-row">
+    <view class="switch-text">
+      <view class="switch-title">热门问题推送</view>
+      <view class="switch-desc">每天推一个值得围观的问题</view>
+    </view>
+    <switch checked="{{settings.notifyHot}}" bindchange="onToggle" data-key="notifyHot" color="#FF6B4A" />
+  </view>
+</view>
+
+<!-- 偏好 -->
+<view class="section-title">偏好</view>
+<view class="card-list">
+  <view class="switch-row">
+    <view class="switch-text">
+      <view class="switch-title">默认匿名提问</view>
+      <view class="switch-desc">提问题时自动勾选匿名</view>
+    </view>
+    <switch checked="{{settings.anonymousDefault}}" bindchange="onToggle" data-key="anonymousDefault" color="#FF6B4A" />
+  </view>
+  <view class="switch-row">
+    <view class="switch-text">
+      <view class="switch-title">显示投票人数</view>
+      <view class="switch-desc">关闭后只显示百分比</view>
+    </view>
+    <switch checked="{{settings.showVoteCount}}" bindchange="onToggle" data-key="showVoteCount" color="#FF6B4A" />
+  </view>
+</view>
+
+<!-- 其他 -->
+<view class="section-title">其他</view>
+<view class="card-list">
+  <view class="switch-row" bindtap="onClearCache">
+    <view class="switch-text">
+      <view class="switch-title">清除本地缓存</view>
+      <view class="switch-desc">清理本机的搜索与页面缓存</view>
+    </view>
+    <text class="menu-arrow">›</text>
+  </view>
+  <view class="switch-row" id="sec-feedback" bindtap="onFeedback">
+    <view class="switch-text">
+      <view class="switch-title">意见反馈</view>
+      <view class="switch-desc">告诉我们哪里不好用</view>
+    </view>
+    <text class="menu-arrow">›</text>
+  </view>
+  <view class="switch-row" bindtap="onAbout">
+    <view class="switch-text">
+      <view class="switch-title">关于问搭</view>
+      <view class="switch-desc">v0.2 · 一个只解决小纠结的社区</view>
+    </view>
+    <text class="menu-arrow">›</text>
+  </view>
+</view>
+
+<!-- 隐私说明（从「我的」页直接跳来时展开） -->
+<view class="section-title" id="sec-privacy">隐私与安全</view>
+<view class="card-list">
+  <view class="switch-row" bindtap="onPrivacy">
+    <view class="switch-text">
+      <view class="switch-title">查看隐私说明</view>
+      <view class="switch-desc">位置仅到城市级 · 匿名提问不显示昵称</view>
+    </view>
+    <text class="menu-arrow">›</text>
+  </view>
+</view>
+
+<view style="height:60rpx"></view>
+</scroll-view>

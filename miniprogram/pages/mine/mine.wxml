@@ -1,45 +1,106 @@
 <view class="profile">
   <view class="profile-top">
     <view class="avatar">{{user.avatarText || '我'}}</view>
-    <view>
+    <view style="flex:1">
       <view class="profile-name">{{user.nickname || '我'}}</view>
       <view class="profile-sub">决策积分 {{user.points || 0}} · 已解决 {{stats.adoptCount || 0}} 个问题</view>
     </view>
+    <view class="search-btn" bindtap="onSearch">🔍</view>
   </view>
 </view>
 
 <view class="stats">
-  <view class="stat">
+  <view class="stat" bindtap="onTab" data-tab="questions">
     <view class="stat-num">{{stats.questionCount || 0}}</view>
     <view class="stat-label">我的提问</view>
   </view>
   <view class="stat-sep"></view>
-  <view class="stat">
+  <view class="stat" bindtap="onTab" data-tab="answers">
     <view class="stat-num">{{stats.answerCount || 0}}</view>
     <view class="stat-label">我的回答</view>
   </view>
   <view class="stat-sep"></view>
-  <view class="stat">
+  <view class="stat" bindtap="onTab" data-tab="adopted">
     <view class="stat-num">{{stats.adoptCount || 0}}</view>
     <view class="stat-label">被采纳</view>
   </view>
 </view>
 
+<view class="mine-tabs">
+  <view class="mine-tab {{tab === 'questions' ? 'on' : ''}}" bindtap="onTab" data-tab="questions">提问</view>
+  <view class="mine-tab {{tab === 'answers' ? 'on' : ''}}" bindtap="onTab" data-tab="answers">回答</view>
+  <view class="mine-tab {{tab === 'adopted' ? 'on' : ''}}" bindtap="onTab" data-tab="adopted">采纳</view>
+</view>
+
+<!-- 我的提问 -->
+<block wx:if="{{tab === 'questions'}}">
+  <view class="list" wx:if="{{myQuestions.length}}">
+    <question-card
+      wx:for="{{myQuestions}}"
+      wx:key="_id"
+      item="{{item}}"
+      bind:tap="onOpenDetail"
+    />
+  </view>
+  <view class="empty" wx:else>
+    <view class="empty-ico">📝</view>
+    <view class="empty-title">还没提过问题</view>
+    <view class="empty-desc">把纠结的事丢出来，会有人帮你选</view>
+  </view>
+</block>
+
+<!-- 我的回答 -->
+<block wx:if="{{tab === 'answers'}}">
+  <view class="list" wx:if="{{myAnswers.length}}">
+    <view class="ans-item" wx:for="{{myAnswers}}" wx:key="_id" bindtap="onOpenDetail" data-id="{{item.questionId}}">
+      <view class="ans-title">{{item.title || '（问题已删除）'}}</view>
+      <view class="ans-content">{{item.content}}</view>
+      <view class="ans-foot">
+        <text>❤️ {{item.likes || 0}}</text>
+        <text wx:if="{{item.adopted}}" class="badge-adopt">🏆 已采纳</text>
+        <text wx:else>{{item.timeText}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:else>
+    <view class="empty-ico">💬</view>
+    <view class="empty-title">还没回答过问题</view>
+    <view class="empty-desc">别人的纠结，就是你的经验</view>
+  </view>
+</block>
+
+<!-- 被采纳 -->
+<block wx:if="{{tab === 'adopted'}}">
+  <view class="list" wx:if="{{adoptedAnswers.length}}">
+    <view class="ans-item" wx:for="{{adoptedAnswers}}" wx:key="_id" bindtap="onOpenDetail" data-id="{{item.questionId}}">
+      <view class="ans-title">{{item.title || '（问题已删除）'}}</view>
+      <view class="ans-content">{{item.content}}</view>
+      <view class="ans-foot">
+        <text>🏆 已被提问者采纳</text>
+        <text>{{item.timeText}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:else>
+    <view class="empty-ico">🏆</view>
+    <view class="empty-title">还没有回答被采纳</view>
+    <view class="empty-desc">写出你的理由，比只投票更有用</view>
+  </view>
+</block>
+
 <view class="menu">
-  <view class="menu-item" bindtap="onMenu" data-name="我的提问">
-    <text class="menu-ico">📝</text><text>我的提问</text><text class="menu-arrow">›</text>
-  </view>
-  <view class="menu-item" bindtap="onMenu" data-name="我的回答">
-    <text class="menu-ico">💬</text><text>我的回答</text><text class="menu-arrow">›</text>
-  </view>
-  <view class="menu-item" bindtap="onMenu" data-name="我的采纳">
-    <text class="menu-ico">🏆</text><text>我的采纳</text><text class="menu-arrow">›</text>
-  </view>
   <view class="menu-item" bindtap="onMenu" data-name="我的收藏">
-    <text class="menu-ico">🔖</text><text>我的收藏</text><text class="menu-arrow">›</text>
+    <text class="menu-ico">🔖</text><text>我的收藏</text>
+    <text class="menu-arrow" wx:if="{{favoriteCount}}">{{favoriteCount}}</text>
+    <text class="menu-arrow" wx:else>›</text>
   </view>
   <view class="menu-item" bindtap="onMenu" data-name="决策复盘">
     <text class="menu-ico">📊</text><text>决策复盘</text><text class="menu-arrow">›</text>
+  </view>
+  <view class="menu-item" bindtap="onTab" data-tab="questions">
+    <text class="menu-ico">🕐</text><text>待解决的问题</text>
+    <text class="menu-arrow" wx:if="{{pendingCount}}">{{pendingCount}}</text>
+    <text class="menu-arrow" wx:else>›</text>
   </view>
 </view>
 
@@ -58,12 +119,4 @@
   </view>
 </view>
 
-<view class="section-title" wx:if="{{myQuestions.length}}">我提过的问题</view>
-<view class="list" wx:if="{{myQuestions.length}}">
-  <question-card
-    wx:for="{{myQuestions}}"
-    wx:key="_id"
-    item="{{item}}"
-    bind:tap="onOpenDetail"
-  />
-</view>
+<view style="height:60rpx"></view>

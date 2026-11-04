@@ -1,1 +1,76 @@
-/* 我的页样式复用全局 app.wxss */
+.search-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 36rpx;
+}
+
+.mine-tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #F2F3F5;
+}
+
+.mine-tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #86909C;
+  position: relative;
+}
+
+.mine-tab.on {
+  color: #FF6B4A;
+  font-weight: 600;
+}
+
+.mine-tab.on::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: #FF6B4A;
+  border-radius: 3rpx;
+}
+
+.ans-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.ans-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1D2129;
+  line-height: 1.4;
+}
+
+.ans-content {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #4E5969;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.ans-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+  font-size: 23rpx;
+  color: #86909C;
+}

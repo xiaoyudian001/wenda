@@ -31,6 +31,27 @@ page {
   border-bottom: 1rpx solid #E5E6EB;
   padding: 20rpx 32rpx;
 }
+.appbar-search {
+  width: 68rpx;
+  height: 68rpx;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 34rpx;
+}
+.appbar-compose {
+  width: 68rpx;
+  height: 68rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 34rpx;
+}
 
 .cats {
   display: flex;

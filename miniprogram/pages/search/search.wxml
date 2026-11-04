@@ -1,0 +1,51 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">搜索</view>
+    <view style="width:40rpx"></view>
+  </view>
+</view>
+
+<view class="search-bar">
+  <view class="search-box">
+    <text class="search-ico">🔍</text>
+    <input
+      class="search-input"
+      placeholder="搜问题、地点、分类"
+      value="{{keyword}}"
+      bindinput="onInput"
+      bindconfirm="onConfirm"
+      confirm-type="search"
+      focus="{{true}}"
+    />
+    <text class="search-clear" wx:if="{{keyword}}" bindtap="onClear">✕</text>
+  </view>
+  <view class="search-go" bindtap="onConfirm">搜索</view>
+</view>
+
+<view class="result-hint" wx:if="{{searched}}">
+  找到 {{total}} 个相关问题
+</view>
+
+<view class="list" wx:if="{{list.length}}">
+  <question-card
+    wx:for="{{list}}"
+    wx:key="_id"
+    item="{{item}}"
+    bind:tap="onOpenDetail"
+  />
+  <view class="load-more" wx:if="{{hasMore}}" bindtap="onLoadMore">加载更多 ↓</view>
+  <view class="load-more" wx:else>— 已经到底了 —</view>
+</view>
+
+<view class="empty" wx:elif="{{searched && !loading}}">
+  <view class="empty-ico">🔍</view>
+  <view class="empty-title">没有找到相关问题</view>
+  <view class="empty-desc">换个词试试，或者直接提个新问题</view>
+</view>
+
+<view class="empty" wx:elif="{{!searched}}">
+  <view class="empty-ico">💡</view>
+  <view class="empty-title">搜点什么</view>
+  <view class="empty-desc">试试「咖啡机」「买不买」「成都」</view>
+</view>

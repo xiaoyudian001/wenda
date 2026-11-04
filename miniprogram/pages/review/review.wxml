@@ -1,0 +1,71 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">决策复盘</view>
+    <view style="width:40rpx"></view>
+  </view>
+</view>
+
+<view class="review-hero">
+  <view class="hero-title">你的选择留下了什么</view>
+  <view class="hero-desc">问搭记录你提过的问题、给过的回答，以及它们最后有没有被采纳</view>
+</view>
+
+<view class="review-stats">
+  <view class="rstat">
+    <view class="rstat-num">{{stat.totalQuestions || 0}}</view>
+    <view class="rstat-label">提过的问题</view>
+  </view>
+  <view class="rstat">
+    <view class="rstat-num">{{stat.decidedCount || 0}}</view>
+    <view class="rstat-label">已解决</view>
+  </view>
+  <view class="rstat">
+    <view class="rstat-num">{{stat.pendingCount || 0}}</view>
+    <view class="rstat-label">待解决</view>
+  </view>
+</view>
+
+<view class="review-stats">
+  <view class="rstat">
+    <view class="rstat-num">{{stat.totalAnswers || 0}}</view>
+    <view class="rstat-label">给过的回答</view>
+  </view>
+  <view class="rstat">
+    <view class="rstat-num">{{stat.adoptedCount || 0}}</view>
+    <view class="rstat-label">被采纳</view>
+  </view>
+  <view class="rstat">
+    <view class="rstat-num">{{stat.likedCount || 0}}</view>
+    <view class="rstat-label">收到点赞</view>
+  </view>
+</view>
+
+<view class="reason-card" wx:if="{{stat.totalAnswers}}">
+  <view class="reason-head">
+    <text class="reason-label">你的回答有多少写了理由</text>
+    <text class="reason-pct">{{stat.reasonRate}}%</text>
+  </view>
+  <view class="reason-bar">
+    <view class="reason-fill" style="width:{{stat.reasonRate}}%"></view>
+  </view>
+  <view class="reason-tip" wx:if="{{stat.reasonRate < 50}}">
+    写了理由的回答更容易被采纳，也更容易被记住
+  </view>
+</view>
+
+<view class="section-title" wx:if="{{decidedQuestions.length}}">已解决的问题</view>
+<view class="list" wx:if="{{decidedQuestions.length}}">
+  <question-card
+    wx:for="{{decidedQuestions}}"
+    wx:key="_id"
+    item="{{item}}"
+    bind:tap="onOpenDetail"
+  />
+</view>
+
+<view class="empty" wx:elif="{{!stat.totalQuestions}}">
+  <view class="empty-ico">📊</view>
+  <view class="empty-title">还没有决策记录</view>
+  <view class="empty-desc">提个问题，或者回答别人的问题，复盘就有内容了</view>
+</view>

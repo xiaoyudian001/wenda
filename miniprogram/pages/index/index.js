@@ -84,6 +84,10 @@ Page({
     wx.switchTab({ url: '/pages/ask/ask' });
   },
 
+  onSearch() {
+    wx.navigateTo({ url: '/pages/search/search' });
+  },
+
   onShareAppMessage() {
     tracker.track(tracker.EVENTS.SHARE_CLICK, '', { page: 'index' });
     return {

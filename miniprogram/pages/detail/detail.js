@@ -15,6 +15,13 @@ Page({
     canAdopt: false,
     replyOpen: false,
     replyText: '',
+    favorited: false,
+    myVote: '',
+    reportOpen: false,
+    reportReason: 'spam',
+    reportDetail: '',
+    pickedOption: '',
+    replyOption: '',
   },
 
   onLoad(options) {
@@ -59,6 +66,7 @@ Page({
           createdText: util.timeAgo(q.createdAt),
           canAdopt: q.asker && q.asker._id === myId,
         });
+        this.loadFavoriteState();
       })
       .catch((err) => {
         console.error('[问搭] 加载详情失败:', err);
@@ -73,7 +81,10 @@ Page({
       .vote(this.data.qid, key)
       .then((res) => {
         if (res && res.question) {
-          this.setData({ options: util.optionMetrics(res.question.options) });
+          this.setData({
+            options: util.optionMetrics(res.question.options),
+            myVote: key,
+          });
           util.toast('已投票');
         }
       })
@@ -81,6 +92,66 @@ Page({
         console.error('[问搭] 投票失败:', err);
         util.toast('投票失败');
       });
+  },
+
+  /** 查询收藏状态 */
+  loadFavoriteState() {
+    api
+      .myFavorites()
+      .then((res) => {
+        const ids = (res.list || []).map((q) => q._id);
+        this.setData({ favorited: ids.indexOf(this.data.qid) > -1 });
+      })
+      .catch(() => {});
+  },
+
+  onToggleFavorite() {
+    api
+      .toggleFavorite(this.data.qid)
+      .then((res) => {
+        this.setData({ favorited: !!res.favorited });
+        util.toast(res.favorited ? '已收藏' : '已取消收藏');
+      })
+      .catch((err) => {
+        console.error('[问搭] 收藏失败:', err);
+        util.toast('操作失败');
+      });
+  },
+
+  // ---------- 举报 ----------
+  onOpenReport() {
+    this.setData({ reportOpen: true, reportReason: 'spam', reportDetail: '' });
+  },
+
+  onCloseReport() {
+    this.setData({ reportOpen: false });
+  },
+
+  onReportPanelTap() {
+    // 阻止冒泡
+  },
+
+  onPickReason(e) {
+    this.setData({ reportReason: e.currentTarget.dataset.key });
+  },
+
+  onReportDetail(e) {
+    this.setData({ reportDetail: e.detail.value });
+  },
+
+  onSubmitReport() {
+    api
+      .report({
+        targetType: 'question',
+        targetId: this.data.qid,
+        reason: this.data.reportReason,
+        detail: this.data.reportDetail,
+      })
+      .then(() => {
+        this.setData({ reportOpen: false });
+        util.toast('已提交，我们会尽快处理');
+      })
+      .catch(() => util.toast('提交失败'));
   },
 
   onLike(e) {
@@ -121,7 +192,7 @@ Page({
   },
 
   onToggleReply() {
-    this.setData({ replyOpen: true });
+    this.setData({ replyOpen: true, replyOption: '' });
   },
 
   onCloseReply() {
@@ -136,17 +207,26 @@ Page({
     this.setData({ replyText: e.detail.value });
   },
 
+  onPickReplyOption(e) {
+    const key = e.currentTarget.dataset.key;
+    this.setData({ replyOption: this.data.replyOption === key ? '' : key });
+  },
+
   onSubmitAnswer() {
     const content = (this.data.replyText || '').trim();
     if (!content) {
       util.toast('先写点什么');
       return;
     }
+    // 如果选了“我选：X”，把选项文字带上，方便别人一眼看懂
+    const picked = this.data.replyOption
+      ? (this.data.options.find((o) => o.key === this.data.replyOption) || {}).text || ''
+      : '';
     api
-      .addAnswer(this.data.qid, content, null)
+      .addAnswer(this.data.qid, content, picked || null)
       .then(() => {
         tracker.track(tracker.EVENTS.ANSWER_PUBLISH, this.data.qid, { length: content.length });
-        this.setData({ replyOpen: false, replyText: '' });
+        this.setData({ replyOpen: false, replyText: '', replyOption: '' });
         util.toast('回答成功');
         this.loadDetail();
       })

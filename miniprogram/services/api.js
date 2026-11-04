@@ -247,6 +247,113 @@ function mockLike(answerId) {
   return { likes: ans.likes, liked: !!liked[answerId] };
 }
 
+/** mock 版：收藏问题（可取消） */
+function mockToggleFavorite(questionId) {
+  const store = getStore();
+  const q = store.questions.find((x) => x._id === questionId);
+  if (!q) throw new Error('问题不存在');
+  const favs = store.favorites || (store.favorites = []);
+  const idx = favs.indexOf(questionId);
+  let favorited;
+  if (idx > -1) {
+    favs.splice(idx, 1);
+    favorited = false;
+  } else {
+    favs.push(questionId);
+    favorited = true;
+  }
+  saveMockStore(store);
+  return { favorited, count: favs.length };
+}
+
+/** mock 版：搜索问题 */
+function mockSearchQuestions(params) {
+  const { keyword = '', page = 1, size = PAGE_SIZE } = params;
+  const kw = String(keyword).trim().toLowerCase();
+  const store = getStore();
+  let list = store.questions.slice();
+  if (kw) {
+    list = list.filter((q) => {
+      const hay = [q.title, q.desc, q.catName, q.city].join(' ').toLowerCase();
+      return hay.indexOf(kw) > -1;
+    });
+  }
+  list.sort((a, b) => (b.heat || 0) - (a.heat || 0));
+  const start = (page - 1) * size;
+  return {
+    list: list.slice(start, start + size),
+    total: list.length,
+    hasMore: start + size < list.length,
+  };
+}
+
+/** mock 版：举报 */
+function mockReport(payload) {
+  const store = getStore();
+  const reports = store.reports || (store.reports = []);
+  const rec = {
+    _id: 'r_local_' + Date.now(),
+    targetType: payload.targetType || 'question',
+    targetId: payload.targetId || '',
+    reason: payload.reason || 'other',
+    detail: payload.detail || '',
+    createdAt: Date.now(),
+  };
+  reports.push(rec);
+  saveMockStore(store);
+  return { reportId: rec._id };
+}
+
+/** mock 版：我的收藏 */
+function mockMyFavorites() {
+  const store = getStore();
+  const favs = store.favorites || [];
+  const list = store.questions.filter((q) => favs.indexOf(q._id) > -1);
+  return { list, total: list.length };
+}
+
+/** mock 版：决策复盘（统计我做过的选择） */
+function mockMyDecisions() {
+  const store = getStore();
+  const u = me();
+  const myAnswers = store.answers.filter((a) => a.author && a.author._id === u._id);
+  const myQuestions = store.questions.filter((q) => q.asker && q.asker._id === u._id);
+  const decided = myQuestions.filter((q) => q.adopted);
+  const pending = myQuestions.filter((q) => !q.adopted);
+  const withReason = myAnswers.filter((a) => a.content && a.content.length >= 20);
+  return {
+    totalQuestions: myQuestions.length,
+    totalAnswers: myAnswers.length,
+    decidedCount: decided.length,
+    pendingCount: pending.length,
+    adoptedCount: myAnswers.filter((a) => a.adopted).length,
+    likedCount: myAnswers.reduce((s, a) => s + (a.likes || 0), 0),
+    reasonRate: myAnswers.length ? Math.round((withReason.length / myAnswers.length) * 100) : 0,
+    decidedQuestions: decided.slice(0, 10),
+  };
+}
+
+/** mock 版：设置项读取 */
+function mockGetSettings() {
+  const store = getStore();
+  const defaults = {
+    notifyAnswer: true,
+    notifyAdopt: true,
+    notifyHot: false,
+    anonymousDefault: false,
+    showVoteCount: true,
+  };
+  return Object.assign({}, defaults, store.settings || {});
+}
+
+/** mock 版：设置项保存 */
+function mockSaveSettings(patch) {
+  const store = getStore();
+  store.settings = Object.assign({}, mockGetSettings(), patch || {});
+  saveMockStore(store);
+  return store.settings;
+}
+
 /**
  * 统一入口：优先云函数，失败自动降级 mock。
  * @param {string} action 云函数 action
@@ -297,6 +404,41 @@ module.exports = {
 
   like(answerId) {
     return request('like', { answerId }, () => mockLike(answerId));
+  },
+
+  /** 收藏/取消收藏问题 */
+  toggleFavorite(questionId) {
+    return request('toggleFavorite', { questionId }, () => mockToggleFavorite(questionId));
+  },
+
+  /** 搜索问题 */
+  searchQuestions(params) {
+    return request('searchQuestions', params, () => mockSearchQuestions(params));
+  },
+
+  /** 举报问题或回答 */
+  report(payload) {
+    return request('report', payload, () => mockReport(payload));
+  },
+
+  /** 我的收藏列表 */
+  myFavorites() {
+    return request('myFavorites', {}, () => mockMyFavorites());
+  },
+
+  /** 决策复盘数据 */
+  myDecisions() {
+    return request('myDecisions', {}, () => mockMyDecisions());
+  },
+
+  /** 读取设置 */
+  getSettings() {
+    return request('getSettings', {}, () => mockGetSettings());
+  },
+
+  /** 保存设置 */
+  saveSettings(patch) {
+    return request('saveSettings', patch, () => mockSaveSettings(patch));
   },
 
   mine() {

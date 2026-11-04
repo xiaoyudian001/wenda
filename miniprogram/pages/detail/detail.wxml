@@ -2,7 +2,10 @@
   <view class="appbar-row">
     <view style="font-size:38rpx" bindtap="onBack">←</view>
     <view style="font-size:32rpx;font-weight:600">问题详情</view>
-    <view style="width:40rpx" bindtap="onShare">↗</view>
+    <view style="display:flex;align-items:center;gap:24rpx">
+      <text style="font-size:38rpx" bindtap="onToggleFavorite">{{favorited ? '🔖' : '📄'}}</text>
+      <text style="font-size:38rpx" bindtap="onOpenReport">⋯</text>
+    </view>
   </view>
 </view>
 
@@ -17,7 +20,7 @@
 
     <view class="options" wx:if="{{options.length}}">
       <view
-        class="opt {{option.isRecommend ? 'pick' : ''}}"
+        class="opt {{option.isRecommend ? 'pick' : ''}} {{myVote === option.key ? 'mine' : ''}}"
         wx:for="{{options}}"
         wx:for-item="option"
         wx:key="key"
@@ -29,6 +32,7 @@
         <text class="opt-pct">{{option.pct}}%</text>
       </view>
     </view>
+    <view class="vote-hint" wx:if="{{options.length}}">点一下选项就是你的选择，不用写理由也行</view>
 
     <view class="asker">
       <view class="avatar {{avatarCls}}">{{question.asker.avatarText}}</view>
@@ -36,6 +40,11 @@
         <view class="asker-name">{{question.asker.nickname}}</view>
         <view class="asker-time">{{createdText}} 提问</view>
       </view>
+    </view>
+
+    <view class="detail-actions">
+      <view class="dact" bindtap="onToggleFavorite">{{favorited ? '已收藏' : '收藏'}}</view>
+      <view class="dact" bindtap="onOpenReport">举报</view>
     </view>
   </view>
 
@@ -85,6 +94,21 @@
 <view class="reply-mask" wx:if="{{replyOpen}}" bindtap="onCloseReply">
   <view class="reply-panel" catchtap="onPanelTap">
     <view class="reply-title">写下你的建议</view>
+
+    <view class="reply-pick" wx:if="{{options.length}}">
+      <view class="reply-pick-label">你选哪个？（选填）</view>
+      <view class="reply-pick-list">
+        <view
+          class="reply-pick-item {{replyOption === option.key ? 'on' : ''}}"
+          wx:for="{{options}}"
+          wx:for-item="option"
+          wx:key="key"
+          bindtap="onPickReplyOption"
+          data-key="{{option.key}}"
+        >{{option.text}}</view>
+      </view>
+    </view>
+
     <textarea
       class="reply-textarea"
       placeholder="说说你会怎么选，以及为什么（给出理由的回答更容易被采纳）"
@@ -94,5 +118,43 @@
     />
     <view class="reply-count">{{replyText.length}}/500</view>
     <view class="reply-submit" bindtap="onSubmitAnswer">发布回答</view>
+  </view>
+</view>
+
+<!-- 举报面板 -->
+<view class="reply-mask" wx:if="{{reportOpen}}" bindtap="onCloseReport">
+  <view class="reply-panel" catchtap="onReportPanelTap">
+    <view class="reply-title">举报这个问题</view>
+    <view class="report-list">
+      <view
+        class="report-item {{reportReason === 'spam' ? 'on' : ''}}"
+        bindtap="onPickReason"
+        data-key="spam"
+      >垃圾广告或诈骗</view>
+      <view
+        class="report-item {{reportReason === 'abuse' ? 'on' : ''}}"
+        bindtap="onPickReason"
+        data-key="abuse"
+      >辱骂、攻击或人身攻击</view>
+      <view
+        class="report-item {{reportReason === 'privacy' ? 'on' : ''}}"
+        bindtap="onPickReason"
+        data-key="privacy"
+      >涉及隐私或个人信息</view>
+      <view
+        class="report-item {{reportReason === 'other' ? 'on' : ''}}"
+        bindtap="onPickReason"
+        data-key="other"
+      >其他</view>
+    </view>
+    <textarea
+      class="reply-textarea"
+      style="height:140rpx"
+      placeholder="补充说明（选填）"
+      value="{{reportDetail}}"
+      bindinput="onReportDetail"
+      maxlength="200"
+    />
+    <view class="reply-submit" bindtap="onSubmitReport">提交举报</view>
   </view>
 </view>

@@ -1,0 +1,22 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">我的收藏</view>
+    <view style="width:40rpx"></view>
+  </view>
+</view>
+
+<view class="list" wx:if="{{list.length}}">
+  <question-card
+    wx:for="{{list}}"
+    wx:key="_id"
+    item="{{item}}"
+    bind:tap="onOpenDetail"
+  />
+</view>
+
+<view class="empty" wx:elif="{{!loading}}">
+  <view class="empty-ico">🔖</view>
+  <view class="empty-title">还没有收藏</view>
+  <view class="empty-desc">在问题详情页点右上角即可收藏</view>
+</view>

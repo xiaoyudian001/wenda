@@ -384,19 +384,142 @@ const handlers = {
 
   // ---------- 举报 ----------
   async report(event, openid) {
-    const { targetId, targetType = 'question', reason = '' } = event;
+    const { targetId, targetType = 'question', reason = '', detail = '' } = event;
     if (!targetId) return fail('缺少举报对象');
     await db.collection(REPORT).add({
       data: {
         targetId,
         targetType,
         reason: String(reason).slice(0, 200),
+        detail: String(detail).slice(0, 200),
         openid,
         status: 'pending',
         createdAt: Date.now(),
       },
     });
     return ok({ reported: true });
+  },
+
+  // ---------- 收藏 / 取消收藏 ----------
+  async toggleFavorite(event, openid) {
+    const { questionId } = event;
+    if (!questionId) return fail('缺少问题 id');
+
+    const exist = await db
+      .collection(VOTE)
+      .where({ openid, questionId, type: 'favorite' })
+      .limit(1)
+      .get();
+
+    if (exist.data.length) {
+      await db.collection(VOTE).where({ openid, questionId, type: 'favorite' }).remove();
+      const cRes = await db.collection(VOTE).where({ questionId, type: 'favorite' }).count();
+      return ok({ favorited: false, count: cRes.total });
+    }
+
+    await db.collection(VOTE).add({
+      data: { openid, questionId, type: 'favorite', createdAt: Date.now() },
+    });
+    const cRes = await db.collection(VOTE).where({ questionId, type: 'favorite' }).count();
+    return ok({ favorited: true, count: cRes.total });
+  },
+
+  // ---------- 搜索 ----------
+  async searchQuestions(event, openid) {
+    const { keyword = '', page = 1, size = 10 } = event;
+    const kw = String(keyword).trim();
+    if (!kw) return ok({ list: [], total: 0, hasMore: false });
+
+    const where = { status: _.neq('hidden') };
+    // 小程序云开发支持正则搜索，这里限制字段范围避免全表扫
+    const reg = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const qRes = await db
+      .collection(QUESTION)
+      .where(where)
+      .or([{ title: reg }, { desc: reg }])
+      .skip((page - 1) * size)
+      .limit(size)
+      .get();
+    const totalRes = await db
+      .collection(QUESTION)
+      .where(where)
+      .or([{ title: reg }, { desc: reg }])
+      .count();
+
+    return ok({
+      list: qRes.data,
+      total: totalRes.total,
+      hasMore: page * size < totalRes.total,
+    });
+  },
+
+  // ---------- 我的收藏 ----------
+  async myFavorites(event, openid) {
+    const vRes = await db
+      .collection(VOTE)
+      .where({ openid, type: 'favorite' })
+      .orderBy('createdAt', 'desc')
+      .limit(100)
+      .get();
+    const ids = vRes.data.map((v) => v.questionId);
+    if (!ids.length) return ok({ list: [], total: 0 });
+
+    const qRes = await db.collection(QUESTION).where({ _id: dbCmd.in(ids) }).get();
+    const map = {};
+    qRes.data.forEach((q) => {
+      map[q._id] = q;
+    });
+    // 保持收藏时间倒序
+    const list = ids.map((id) => map[id]).filter(Boolean);
+    return ok({ list, total: list.length });
+  },
+
+  // ---------- 决策复盘 ----------
+  async myDecisions(event, openid) {
+    const qRes = await db.collection(QUESTION).where({ 'asker._id': openid }).limit(200).get();
+    const aRes = await db.collection(ANSWER).where({ 'author._id': openid }).limit(200).get();
+    const decided = qRes.data.filter((q) => q.adopted);
+    const withReason = aRes.data.filter((a) => a.content && a.content.length >= 20);
+    return ok({
+      totalQuestions: qRes.data.length,
+      totalAnswers: aRes.data.length,
+      decidedCount: decided.length,
+      pendingCount: qRes.data.length - decided.length,
+      adoptedCount: aRes.data.filter((a) => a.adopted).length,
+      likedCount: aRes.data.reduce((s, a) => s + (a.likes || 0), 0),
+      reasonRate: aRes.data.length ? Math.round((withReason.length / aRes.data.length) * 100) : 0,
+      decidedQuestions: decided.slice(0, 10),
+    });
+  },
+
+  // ---------- 设置 ----------
+  async getSettings(event, openid) {
+    const res = await db.collection(USER).where({ _id: openid }).limit(1).get();
+    const settings = (res.data[0] && res.data[0].settings) || {};
+    return ok(
+      Object.assign(
+        {
+          notifyAnswer: true,
+          notifyAdopt: true,
+          notifyHot: false,
+          anonymousDefault: false,
+          showVoteCount: true,
+        },
+        settings
+      )
+    );
+  },
+
+  async saveSettings(event, openid) {
+    const patch = {};
+    ['notifyAnswer', 'notifyAdopt', 'notifyHot', 'anonymousDefault', 'showVoteCount'].forEach((k) => {
+      if (typeof event[k] === 'boolean') patch[k] = event[k];
+    });
+    const res = await db.collection(USER).where({ _id: openid }).limit(1).get();
+    const current = (res.data[0] && res.data[0].settings) || {};
+    const merged = Object.assign({}, current, patch);
+    await db.collection(USER).where({ _id: openid }).update({ data: { settings: merged } });
+    return ok(merged);
   },
 
   // ---------- 事件埋点（批量） ----------

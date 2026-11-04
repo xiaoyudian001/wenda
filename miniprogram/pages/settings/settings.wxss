@@ -1,0 +1,60 @@
+.profile-block {
+  background: #fff;
+  padding: 28rpx 30rpx;
+}
+
+.profile-edit {
+  display: flex;
+  align-items: center;
+}
+
+.profile-info {
+  flex: 1;
+  margin-left: 22rpx;
+}
+
+.profile-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1D2129;
+}
+
+.profile-sub {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #86909C;
+}
+
+.profile-form {
+  padding-top: 8rpx;
+}
+
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 30rpx;
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+.card-list {
+  background: #fff;
+  padding: 0 30rpx;
+}
+
+.switch-text {
+  flex: 1;
+}
+
+.switch-title {
+  font-size: 29rpx;
+  color: #1D2129;
+}
+
+.switch-desc {
+  margin-top: 6rpx;
+  font-size: 23rpx;
+  color: #86909C;
+}

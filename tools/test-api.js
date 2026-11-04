@@ -162,6 +162,58 @@ function check(name, cond, extra) {
   const m2 = await api.mine();
   check('重置后我的提问为空', m2.myQuestions.length === 0);
 
+  // ---------- 9.5 新功能：收藏 / 搜索 / 举报 / 复盘 / 设置 ----------
+  console.log('\n【9.5】新功能接口');
+
+  const list0 = await api.listQuestions({ cat: 'all', sort: 'hot', page: 1, size: 5 });
+  const baseQ = list0.list[0];
+  check('取到基准问题', !!baseQ && !!baseQ._id, baseQ && baseQ.title);
+
+  // 收藏
+  const fav1 = await api.toggleFavorite(baseQ._id);
+  check('收藏成功', fav1.favorited === true);
+  const favList = await api.myFavorites();
+  check('我的收藏包含该问题', favList.list.some((q) => q._id === baseQ._id));
+  check('收藏总数为 1', favList.total === 1);
+  const fav2 = await api.toggleFavorite(baseQ._id);
+  check('再次调用取消收藏', fav2.favorited === false);
+  const favList2 = await api.myFavorites();
+  check('取消后收藏列表为空', favList2.total === 0);
+
+  // 搜索
+  const sr = await api.searchQuestions({ keyword: baseQ.title.slice(0, 4), page: 1, size: 10 });
+  check('搜索能命中', sr.list.length >= 1, `命中 ${sr.list.length} 条`);
+  check('搜索结果含目标问题', sr.list.some((q) => q._id === baseQ._id));
+  const srEmpty = await api.searchQuestions({ keyword: 'zzz不存在zzz', page: 1, size: 10 });
+  check('无匹配时返回空列表', srEmpty.list.length === 0);
+  check('无匹配时 hasMore 为 false', srEmpty.hasMore === false);
+
+  // 搜索大小写与特殊字符
+  const srSpecial = await api.searchQuestions({ keyword: '.*+?^$', page: 1, size: 5 });
+  check('特殊字符不会报错', Array.isArray(srSpecial.list));
+
+  // 举报
+  const rp = await api.report({ targetType: 'question', targetId: baseQ._id, reason: 'spam', detail: '测试' });
+  check('举报提交成功', !!rp.reportId);
+
+  // 决策复盘
+  const dr = await api.myDecisions();
+  check('复盘返回统计对象', !!dr);
+  check('复盘有 totalQuestions', typeof dr.totalQuestions === 'number');
+  check('复盘有 totalAnswers', typeof dr.totalAnswers === 'number');
+  check('复盘有 reasonRate', typeof dr.reasonRate === 'number');
+  check('复盘 decidedQuestions 是数组', Array.isArray(dr.decidedQuestions));
+
+  // 设置
+  const s1 = await api.getSettings();
+  check('设置有默认值', s1 && typeof s1.notifyAnswer === 'boolean');
+  check('默认开启回答通知', s1.notifyAnswer === true);
+  const s2 = await api.saveSettings({ notifyHot: true, anonymousDefault: true });
+  check('保存设置生效', s2.notifyHot === true && s2.anonymousDefault === true);
+  check('未改动的项保留', s2.notifyAnswer === true);
+  const s3 = await api.getSettings();
+  check('重新读取设置一致', s3.notifyHot === true);
+
   // ---------- 10. 埋点 ----------
   console.log('\n【10】事件埋点');
   const tracker = require(path.join(__dirname, '..', 'miniprogram', 'services', 'tracker.js'));

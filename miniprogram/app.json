@@ -3,7 +3,11 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/ask/ask",
-    "pages/mine/mine"
+    "pages/mine/mine",
+    "pages/search/search",
+    "pages/favorites/favorites",
+    "pages/review/review",
+    "pages/settings/settings"
   ],
   "window": {
     "backgroundTextStyle": "light",

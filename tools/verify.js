@@ -202,6 +202,117 @@ if (!fs.existsSync(path.join(mp, 'cloudfunctions', 'seed', 'seed.bundle.json')))
   ok('seed 云函数已打包种子数据');
 }
 
+// ---------- 4.5 新功能：路由与接口契约 ----------
+console.log('\n【4.5】功能契约一致性');
+
+// 页面跳转地址必须都已注册
+const pageRoutes = new Set(appJson.pages.map((p) => '/' + p));
+const allPageSrc = walk(mp, (f) => f.endsWith('.js'));
+let routeCount = 0;
+allPageSrc.forEach((f) => {
+  const src = fs.readFileSync(f, 'utf8');
+  const re = /(?:navigateTo|switchTab|redirectTo)\(\{\s*url:\s*[`'"](\/[^`'"]*)[`'"]/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const target = m[1].split('?')[0];
+    routeCount++;
+    if (!pageRoutes.has(target)) {
+      err(`${path.relative(ROOT, f)} 跳转到未注册页面: ${target}`);
+    }
+  }
+});
+ok(`${routeCount} 处页面跳转目标均已注册`);
+
+// api.js 暴露的方法，页面里调用时不能写错
+const apiLayerSrc = fs.readFileSync(path.join(mp, 'services', 'api.js'), 'utf8');
+const apiExports = new Set(
+  (apiLayerSrc.match(/^\s{2}([a-zA-Z]+)\s*\(/gm) || []).map((s) => s.trim().replace('(', ''))
+);
+const requiredApi = [
+  'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
+  'adopt', 'like', 'mine', 'toggleFavorite', 'searchQuestions',
+  'report', 'myFavorites', 'myDecisions', 'getSettings', 'saveSettings',
+];
+requiredApi.forEach((m) => {
+  if (!apiExports.has(m)) err(`api.js 缺少对外方法: ${m}`);
+});
+ok(`api.js 对外方法齐全 (${requiredApi.length} 个)`);
+
+// 页面里调用的 api.xxx 必须存在
+// 页面里常见链式写法 api\n  .method()，所以允许中间有换行与空白
+let apiCallCount = 0;
+allPageSrc.forEach((f) => {
+  const src = fs.readFileSync(f, 'utf8');
+  const re = /\bapi\s*\.\s*([a-zA-Z]+)\s*\(/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    apiCallCount++;
+    if (!apiExports.has(m[1])) {
+      err(`${path.relative(ROOT, f)} 调用了不存在的 api.${m[1]}()`);
+    }
+  }
+});
+ok(`${apiCallCount} 处 api 调用均有对应实现`);
+
+// 云函数必须有对应的 handler（mock 与云端契约一致）
+const qaSrc = fs.readFileSync(path.join(mp, 'cloudfunctions', 'qa', 'index.js'), 'utf8');
+const handlerNames = new Set(
+  (qaSrc.match(/async ([a-zA-Z]+)\(event, openid\)/g) || []).map((s) =>
+    s.replace('async ', '').replace('(event, openid)', '')
+  )
+);
+const cloudActions = [
+  'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
+  'adopt', 'like', 'mine', 'report', 'toggleFavorite', 'searchQuestions',
+  'myFavorites', 'myDecisions', 'getSettings', 'saveSettings',
+];
+cloudActions.forEach((a) => {
+  if (!handlerNames.has(a)) err(`云函数 qa 缺少 handler: ${a}`);
+});
+ok(`云函数 handler 齐全 (${cloudActions.length} 个)`);
+
+// 「我的」页不能有占位菜单
+// （合法防御：toast 兜底分支允许，但不能再出现 'V2 规划中' 这种未实现标记）
+const mineSrc = fs.readFileSync(path.join(mp, 'pages', 'mine', 'mine.js'), 'utf8');
+if (/V2 规划中/.test(mineSrc)) {
+  err('「我的」页仍有占位菜单（V2 规划中）');
+} else {
+  ok('「我的」页无占位菜单');
+}
+
+// 「我的」页的每个菜单项都必须有对应跳转
+const mineWxml = fs.readFileSync(path.join(mp, 'pages', 'mine', 'mine.wxml'), 'utf8');
+const menuNames = [...mineWxml.matchAll(/data-name="([^"]+)"/g)].map((m) => m[1]);
+menuNames.forEach((n) => {
+  // 菜单名可能以对象键形式出现（`我的收藏: '/path'`）或直接比较（`=== '我的收藏'`）
+  const hasRoute =
+    mineSrc.indexOf(`${n}: '/`) > -1 || mineSrc.indexOf(`'${n}'`) > -1;
+  if (!hasRoute) err(`「我的」页菜单「${n}」没有对应跳转`);
+});
+ok(`${menuNames.length} 个菜单项均有跳转`);
+
+// data-tab 绑定的 tab 必须有对应处理分支
+// tab 值通过 data-tab 传入，onTab 统一处理；检查各 tab 在 wxml 里都有对应区块
+const tabNames = [...new Set([...mineWxml.matchAll(/data-tab="([^"]+)"/g)].map((m) => m[1]))];
+tabNames.forEach((t) => {
+  if (mineSrc.indexOf('onTab') === -1) {
+    err('「我的」页使用 data-tab 但没有 onTab 处理函数');
+  }
+  // wxml 里应有 tab === 'xxx' 的条件渲染
+  if (mineWxml.indexOf(`tab === '${t}'`) === -1) {
+    err(`「我的」页 tab「${t}」没有对应的内容区块`);
+  }
+});
+ok(`${tabNames.size} 个 tab 均有内容区块`);
+
+// 新页面的 wxml 不能有未处理的空态
+// （settings 是固定设置列表，不需要空态；其余都是内容列表，必须处理）
+['search', 'favorites', 'review'].forEach((p) => {
+  const wxml = fs.readFileSync(path.join(mp, 'pages', p, p + '.wxml'), 'utf8');
+  if (!/empty/.test(wxml)) err(`页面 ${p} 缺少空态处理`);
+});
+ok('列表型新页面均有空态处理');
+
 // ---------- 5. 数据层引用 ----------
 console.log('\n【5】数据层引用');
 const apiSrc = fs.readFileSync(path.join(mp, 'services', 'api.js'), 'utf8');
