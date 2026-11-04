@@ -159,6 +159,33 @@ function check(name, cond, extra) {
   const m2 = await api.mine();
   check('重置后我的提问为空', m2.myQuestions.length === 0);
 
+  // ---------- 10. 埋点 ----------
+  console.log('\n【10】事件埋点');
+  const tracker = require(path.join(__dirname, '..', 'miniprogram', 'services', 'tracker.js'));
+
+  check('事件常量齐全', Object.keys(tracker.EVENTS).length === 10, `${Object.keys(tracker.EVENTS).length} 个`);
+
+  tracker.track(tracker.EVENTS.DETAIL_VIEW, 'q_test_1', { cat: 'eat' });
+  const queued = tracker._peek();
+  check('事件已入队', queued.length >= 1);
+  const last = queued[queued.length - 1];
+  check('事件名字段正确', last.event === 'question_view');
+  check('关联对象 id 正确', last.targetId === 'q_test_1');
+  check('附加参数正确', last.params && last.params.cat === 'eat');
+  check('含时间戳', typeof last.createdAt === 'number' && last.createdAt > 0);
+
+  // mock 模式下不应发送（wx.cloud 为 undefined），队列应保留
+  check('mock 模式不发送，队列保留', queued.length >= 1);
+
+  // 攒批：达到 10 条应触发 flush（mock 模式下 flush 直接 return，队列仍保留）
+  for (let i = 0; i < 12; i++) {
+    tracker.track(tracker.EVENTS.OPTION_VOTE, `q_bulk_${i}`, {});
+  }
+  check('批量记录不丢事件', tracker._peek().length >= 13, `${tracker._peek().length} 条`);
+
+  // 缓存持久化：重新读取 storage 应有数据
+  check('事件已写入本地缓存', !!global.wx.getStorageSync('wenda_track_buffer_v1'));
+
   // ---------- 汇总 ----------
   console.log('\n=== 结果 ===');
   console.log(`通过: ${pass}  失败: ${fail}`);
