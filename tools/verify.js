@@ -205,15 +205,22 @@ if (!fs.existsSync(path.join(mp, 'cloudfunctions', 'seed', 'seed.bundle.json')))
 // ---------- 5. 数据层引用 ----------
 console.log('\n【5】数据层引用');
 const apiSrc = fs.readFileSync(path.join(mp, 'services', 'api.js'), 'utf8');
-if (!fs.existsSync(path.join(mp, 'data', 'seed.json'))) {
-  err('miniprogram/data/seed.json 缺失，mock 模式无法工作');
+// 注意：小程序运行时不支持 require('*.json')，必须是 .js 模块
+if (!fs.existsSync(path.join(mp, 'data', 'seed.js'))) {
+  err('miniprogram/data/seed.js 缺失，mock 模式无法工作（请运行 node seed/build-seed.js）');
 } else {
-  ok('mock 数据文件存在');
+  ok('mock 数据文件存在 (seed.js)');
 }
-if (!apiSrc.includes("require('../data/seed.json')")) {
-  err('api.js 未正确引用 seed.json（应为 ../data/seed.json）');
+if (!apiSrc.includes("require('../data/seed.js')")) {
+  err('api.js 未正确引用 seed.js（应为 require(\'../data/seed.js\')）');
+} else {
+  ok('api.js 正确引用 seed.js');
 }
-const mockSeed = JSON.parse(fs.readFileSync(path.join(mp, 'data', 'seed.json'), 'utf8'));
+// 小程序不支持 require json，防止回退
+if (/require\(['"][^'"]*\.json['"]\)/.test(apiSrc)) {
+  err('api.js 中存在 require(\'*.json\')，小程序运行时不支持');
+}
+const mockSeed = JSON.parse(fs.readFileSync(path.join(mp, 'data', 'seed.js'), 'utf8').replace(/^[\s\S]*?module\.exports\s*=\s*/, '').replace(/;\s*$/, ''));
 if (mockSeed.questions.length !== bundle.questions.length) {
   err('mock 数据与 seed.bundle 不一致，请重新运行 node seed/build-seed.js');
 } else {

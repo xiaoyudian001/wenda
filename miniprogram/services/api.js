@@ -6,9 +6,11 @@
  *
  * 对外 API 全部返回 Promise，页面层不需要关心底层是云还是 mock。
  */
-// 注意：路径是 ../data/seed.json（相对本文件所在目录 miniprogram/services/）
-// 写成 ../../data/seed.json 会解析到项目根的 data/ 目录，导致真机运行报模块找不到
-const seedData = require('../data/seed.json');
+// 注意两点：
+// 1) 微信小程序运行时的 require 不支持 .json 文件，只能引入 .js 模块
+// 2) 路径是 ../data/seed.js（相对本文件所在目录 miniprogram/services/）
+// 写成 ../../data/... 会解析到项目根目录，导致真机运行报模块找不到
+const seedData = require('../data/seed.js');
 
 const PAGE_SIZE = 10;
 
@@ -62,7 +64,7 @@ function me() {
   return store.me;
 }
 
-/** 云函数调用封装 */
+/** 云函数调用封装（带超时，避免无云环境时挂起） */
 function callCloud(action, payload) {
   return new Promise((resolve, reject) => {
     if (typeof wx.cloud === 'undefined') {
@@ -72,6 +74,7 @@ function callCloud(action, payload) {
     wx.cloud.callFunction({
       name: 'qa',
       data: Object.assign({ action }, payload || {}),
+      timeout: 8000,
       success(res) {
         const r = res.result || {};
         if (r.code === 0) resolve(r.data);

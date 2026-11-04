@@ -40,6 +40,15 @@ App({
    */
   initDataLayer() {
     const that = this;
+
+    // 游客模式（appid = touristappid）没有云环境，直接走本地 mock，
+    // 避免云调用挂起导致列表一直加载不出来
+    if (this.isGuestMode()) {
+      console.warn('[问搭] 游客模式，使用本地 mock 数据层');
+      that.globalData.useMock = true;
+      return;
+    }
+
     if (typeof wx.cloud === 'undefined') {
       console.warn('[问搭] 未检测到 wx.cloud，使用本地 mock 数据层');
       that.globalData.useMock = true;
@@ -51,6 +60,7 @@ App({
       wx.cloud.callFunction({
         name: 'qa',
         data: { action: 'bootstrap' },
+        timeout: 8000,
         success(res) {
           const r = res.result || {};
           if (r.code === 0 && r.user) {
@@ -61,6 +71,7 @@ App({
             wx.cloud.callFunction({
               name: 'seed',
               data: { action: 'import' },
+              timeout: 30000,
               success(seedRes) {
                 console.log('[问搭] 种子数据导入:', seedRes.result);
               },
@@ -78,6 +89,18 @@ App({
     } catch (e) {
       console.warn('[问搭] 云开发初始化异常，使用本地 mock:', e);
       that.globalData.useMock = true;
+    }
+  },
+
+  /** 是否为游客模式（无 AppID，无法使用云开发与上传） */
+  isGuestMode() {
+    try {
+      if (typeof wx.getAccountInfoSync !== 'function') return true;
+      const info = wx.getAccountInfoSync();
+      const appId = info && info.miniProgram && info.miniProgram.appId;
+      return !appId || appId === 'touristappid';
+    } catch (e) {
+      return true;
     }
   },
 

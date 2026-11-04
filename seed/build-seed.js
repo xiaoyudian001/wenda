@@ -359,9 +359,15 @@ function build() {
   }
 
   // 供小程序 mock 数据层使用
+  // 注意：微信小程序运行时的 require 不支持 .json 文件，只能引入 .js 模块
   const mpDir = path.join(SEED_DIR, '..', 'miniprogram', 'data');
   if (fs.existsSync(mpDir)) {
-    fs.writeFileSync(path.join(mpDir, 'seed.json'), JSON.stringify(bundle), 'utf8');
+    fs.writeFileSync(
+      path.join(mpDir, 'seed.js'),
+      '/* 自动生成，请勿手改；改内容请编辑 seed/*.src.txt 后运行 build-seed.js */\n' +
+        'module.exports = ' + JSON.stringify(bundle) + ';\n',
+      'utf8'
+    );
   }
 
   console.log('✅ 种子数据构建完成');
