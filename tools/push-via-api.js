@@ -81,6 +81,14 @@ function changedFiles() {
   return [...new Set([...tracked, ...untracked])].filter((f) => f && !f.startsWith('.cowork-temp/'));
 }
 
+/** 仓库内所有需要上传的文件（git 跟踪的全部文件） */
+function trackedFiles() {
+  return sh('git ls-files')
+    .split('\n')
+    .filter(Boolean)
+    .filter((f) => !f.startsWith('.cowork-temp/'));
+}
+
 (async () => {
   const token = getToken();
   const me = api('GET', '/user', undefined, token);
@@ -96,24 +104,40 @@ function changedFiles() {
     console.log(`远端 ${BRANCH} 不存在，将创建`);
   }
 
-  const files = changedFiles();
-  if (!files.length) {
-    console.log('工作区与本地 HEAD 一致，但需要确认远端是否已包含这些内容');
+  // 完整同步：上传仓库内所有跟踪文件，保证远端与本地一致
+  const all = trackedFiles();
+  const changedSet = new Set(changedFiles());
+  console.log(`仓库文件 ${all.length} 个，本次本地改动 ${changedSet.size} 个`);
+
+  // 取远端 tree，比对内容后只上传真正不同的文件
+  let remoteTree = {};
+  if (baseSha) {
+    try {
+      const t = api('GET', `/repos/${REPO}/git/trees/${baseSha}?recursive=1`, undefined, token);
+      (t.tree || []).forEach((n) => {
+        if (n.type === 'blob') remoteTree[n.path] = n.sha;
+      });
+    } catch (e) {
+      console.log('  · 未能读取远端 tree，将全量上传');
+    }
   }
-  console.log(`待同步文件 ${files.length} 个`);
+
+  const files = [];
+  for (const file of all) {
+    const abs = path.join(ROOT, file);
+    if (!fs.existsSync(abs)) continue;
+    const localSha = sh(`git hash-object "${file}"`).trim();
+    if (remoteTree[file] === localSha) continue;
+    files.push({ path: file, abs });
+  }
+  console.log(`需上传 ${files.length} 个`);
 
   // 用 blobs + tree + commit 构造提交，以远端 sha 为 base_tree
   const treeItems = [];
-  for (const file of files) {
-    const abs = path.join(ROOT, file);
-    if (!fs.existsSync(abs)) {
-      // 文件被删除：用 null 表示删除
-      treeItems.push({ path: file, mode: '100644', type: 'blob', sha: null });
-      continue;
-    }
-    const content = fs.readFileSync(abs).toString('base64');
+  for (const f of files) {
+    const content = fs.readFileSync(f.abs).toString('base64');
     const blob = api('POST', `/repos/${REPO}/git/blobs`, { content, encoding: 'base64' }, token);
-    treeItems.push({ path: file, mode: '100644', type: 'blob', sha: blob.sha });
+    treeItems.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
   }
 
   const treeBody = { tree: treeItems };
