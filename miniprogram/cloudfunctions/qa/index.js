@@ -7,6 +7,7 @@
  *   users      用户
  *   votes      投票（questionId + optionKey + openid 唯一）
  *   reports    举报
+ *   notifications 站内通知
  *
  * action 列表：
  *   bootstrap       初始化：返回当前用户，不存在则创建
@@ -20,6 +21,22 @@
  *   mine            我的数据
  *   report          举报
  *   track           事件埋点（批量）
+ *   toggleFavorite  收藏/取消收藏
+ *   searchQuestions 搜索问题
+ *   myFavorites     我的收藏
+ *   myDecisions     决策复盘
+ *   getSettings     读取设置
+ *   saveSettings    保存设置
+ *   updateProfile   更新个人资料
+ *   listNotifications 通知列表
+ *   readNotifications 通知标记已读
+ *
+ * 审核后台专用（需 admin/ops 角色）：
+ *   adminList        内容列表
+ *   adminHide        隐藏/恢复内容
+ *   adminStats       数据看板
+ *   adminReports     举报列表
+ *   adminHandleReport 处理举报（dismiss / hide）
  */
 const cloud = require('wx-server-sdk');
 

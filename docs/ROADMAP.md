@@ -63,7 +63,7 @@
 | # | 动作 | 说明 |
 |---|---|---|
 | 1 | 申请真实 appid | mp.weixin.qq.com 注册。**社区/问答类目个人主体不开放，需要个体户或企业** |
-| 2 | 开通云开发 | 建 6 个集合：questions / answers / users / votes / reports / events |
+| 2 | 开通云开发 | 建 7 个集合：questions / answers / users / votes / reports / events / notifications |
 | 3 | 部署云函数 | `qa` 和 `seed` 右键「上传并部署」→ 云端安装依赖 |
 | 4 | 导入种子数据 | `wx.cloud.callFunction({ name: 'seed', data: { action: 'import' } })` |
 | 5 | 真机预览 | 点「预览」扫码，在真机上验证云函数调用 |
@@ -89,6 +89,7 @@
 |---|---|---|
 | 真机调试 | P0 | 云函数在真机和模拟器行为不一致，必须验 |
 | 埋点数据核对 | P0 | 确认 `events` 集合真的写入了数据 |
+| 通知链路 | P0 | 回答/采纳/点赞后 `notifications` 集合有记录，「我的」页红点数字对 |
 | 弱网处理 | P1 | 断网/弱网时的加载态与错误提示 |
 | 空态补全 | P1 | 零回答、无收藏、无采纳记录的占位 |
 | 内容审核兜底 | P1 | `msgSecCheck` 异常时的降级策略 |
