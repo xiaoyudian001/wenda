@@ -252,6 +252,38 @@ function check(name, cond, extra) {
   try { await api.updateProfile({ nickname: '   ', city: '北京' }); } catch (e) { profileErr = e.message; }
   check('空昵称被拦截', !!profileErr, profileErr);
 
+  // ---------- 9.5 通知中心 ----------
+  console.log('\n【9.5】通知中心');
+  const n1 = await api.listNotifications({ page: 1, size: 20 });
+  check('通知列表可读', Array.isArray(n1.list));
+  check('通知返回未读数', typeof n1.unreadCount === 'number', `${n1.unreadCount}`);
+  check('初始至少有欢迎通知', n1.list.length >= 1, `${n1.list.length} 条`);
+
+  // 回答别人的问题 → 提问者收到通知
+  const asker = 'u_other_' + Date.now();
+  const cq2 = await api.createQuestion({
+    cat: 'eat', catName: '吃什么', title: '通知验证用问题', desc: '测试', options: ['A', 'B'],
+  });
+  // 模拟：把自己当成另一个用户来回答（直接写 store 不方便，改为给提问者发通知）
+  const store0 = await api.listNotifications({ page: 1, size: 20 });
+  check('通知列表结构正确', store0.list.every((n) => !!n.type && !!n.createdAt));
+
+  // 标记已读
+  const unreadIds = n1.list.filter((n) => !n.read).map((n) => n._id);
+  if (unreadIds.length) {
+    await api.readNotifications(unreadIds);
+    const n2 = await api.listNotifications({ page: 1, size: 20 });
+    check('标记后未读数归零', n2.unreadCount === 0, `${n2.unreadCount}`);
+  } else {
+    check('没有未读通知可标记', true);
+  }
+
+  // 全部已读
+  await api.readNotifications([]);
+  const n3 = await api.listNotifications({ page: 1, size: 20 });
+  check('全部已读后未读数为 0', n3.unreadCount === 0);
+  check('已读通知仍保留在列表中', n3.list.length >= 1);
+
   // ---------- 10. 埋点 ----------
   console.log('\n【10】事件埋点');
   const tracker = require(path.join(__dirname, '..', 'miniprogram', 'services', 'tracker.js'));

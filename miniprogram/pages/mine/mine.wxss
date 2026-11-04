@@ -9,6 +9,38 @@
   border-radius: 36rpx;
 }
 
+/* 通知铃铛与未读角标 */
+.noti-btn {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  margin-left: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 36rpx;
+}
+.noti-btn.has {
+  background: #fff;
+}
+.noti-badge {
+  position: absolute;
+  top: 2rpx;
+  right: -4rpx;
+  min-width: 28rpx;
+  height: 28rpx;
+  line-height: 28rpx;
+  padding: 0 8rpx;
+  border-radius: 14rpx;
+  background: #fff;
+  color: #FF6B4A;
+  font-size: 20rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
 .mine-tabs {
   display: flex;
   background: #fff;

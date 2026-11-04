@@ -1,0 +1,42 @@
+<view class="appbar appbar-plain">
+  <view class="appbar-row">
+    <view style="font-size:38rpx" bindtap="onBack">←</view>
+    <view style="font-size:32rpx;font-weight:600">消息通知</view>
+    <view class="read-all" wx:if="{{unreadCount}}" bindtap="onReadAll">全部已读</view>
+    <view style="width:40rpx" wx:else></view>
+  </view>
+</view>
+
+<view class="unread-hint" wx:if="{{unreadCount}}">
+  {{unreadCount}} 条未读
+</view>
+
+<view class="noti-list" wx:if="{{list.length}}">
+  <view
+    class="noti-item {{item.read ? 'read' : ''}}"
+    wx:for="{{list}}"
+    wx:key="_id"
+    bindtap="onOpen"
+    data-qid="{{item.questionId}}"
+  >
+    <view class="noti-ico">{{item.icon}}</view>
+    <view class="noti-body">
+      <view class="noti-line1">
+        <text class="noti-actor">{{item.actorName}}</text>
+        <text class="noti-type">{{item.typeText}}</text>
+      </view>
+      <view class="noti-title" wx:if="{{item.title}}">{{item.title}}</view>
+      <view class="noti-content" wx:if="{{item.content}}">{{item.content}}</view>
+      <view class="noti-time">{{item.timeText}}</view>
+    </view>
+    <view class="noti-dot" wx:if="{{!item.read}}"></view>
+  </view>
+  <view class="load-more" wx:if="{{hasMore}}" bindtap="onLoadMore">加载更多 ↓</view>
+  <view class="load-more" wx:else>— 已经到底了 —</view>
+</view>
+
+<view class="empty" wx:else>
+  <view class="empty-ico">🔔</view>
+  <view class="empty-title">还没有新消息</view>
+  <view class="empty-desc">有人回答、采纳或点赞你的内容时会出现在这里</view>
+</view>

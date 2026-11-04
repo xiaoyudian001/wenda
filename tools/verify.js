@@ -232,6 +232,7 @@ const requiredApi = [
   'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
   'adopt', 'like', 'mine', 'toggleFavorite', 'searchQuestions',
   'report', 'myFavorites', 'myDecisions', 'getSettings', 'saveSettings', 'updateProfile',
+  'listNotifications', 'readNotifications',
 ];
 requiredApi.forEach((m) => {
   if (!apiExports.has(m)) err(`api.js 缺少对外方法: ${m}`);
@@ -265,12 +266,11 @@ const cloudActions = [
   'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
   'adopt', 'like', 'mine', 'report', 'toggleFavorite', 'searchQuestions',
   'myFavorites', 'myDecisions', 'getSettings', 'saveSettings', 'updateProfile',
+  'listNotifications', 'readNotifications',
 ];
 cloudActions.forEach((a) => {
   if (!handlerNames.has(a)) err(`云函数 qa 缺少 handler: ${a}`);
 });
-ok(`云函数 handler 齐全 (${cloudActions.length} 个)`);
-
 // bootstrap 的返回值必须按统一 ok({ user }) 结构读取：result.data.user
 const appSrc = fs.readFileSync(path.join(mp, 'app.js'), 'utf8');
 if (!/r\.data\s*&&\s*r\.data\.user/.test(appSrc)) {
@@ -330,6 +330,26 @@ const qaHandlerSrc = fs.readFileSync(path.join(mp, 'cloudfunctions', 'qa', 'inde
   }
 });
 ok('云函数支持举报查询与处理');
+
+// 通知中心必须完整：云函数 handler + 集合 + 页面 + 我的页入口
+['listNotifications', 'readNotifications'].forEach((h) => {
+  if (qaHandlerSrc.indexOf('async ' + h + '(') === -1) {
+    err(`云函数 qa 缺少通知 handler: ${h}`);
+  }
+});
+if (qaHandlerSrc.indexOf("const NOTIFICATION = 'notifications'") === -1) {
+  err('云函数 qa 未定义 notifications 集合');
+}
+const notiWxmlPath = path.join(mp, 'pages', 'notifications', 'notifications.wxml');
+if (!fs.existsSync(notiWxmlPath)) {
+  err('缺少通知中心页面');
+} else {
+  const mineWxml2 = fs.readFileSync(path.join(mp, 'pages', 'mine', 'mine.wxml'), 'utf8');
+  if (mineWxml2.indexOf('onNotifications') === -1) err('「我的」页缺少通知入口');
+  if (!/unreadCount/.test(mineWxml2)) err('「我的」页未展示未读数量');
+  ok('通知中心页面与入口已就位');
+}
+ok('云函数支持通知查询与已读');
 
 const adminActionMatch = qaHandlerSrc.match(/const adminActions = \[([\s\S]*?)\]/);
 if (!adminActionMatch) {

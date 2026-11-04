@@ -64,6 +64,46 @@ function me() {
   return store.me;
 }
 
+/** mock 通知：给本地演示提供一个可验证的通知中心初始状态 */
+function ensureMockNotifications(store) {
+  if (Array.isArray(store.notifications)) return store.notifications;
+  store.notifications = [
+    {
+      _id: 'n_welcome',
+      recipientId: 'me',
+      actorId: '',
+      actorName: '问搭',
+      type: 'system',
+      questionId: '',
+      answerId: '',
+      title: '欢迎来到问搭',
+      content: '把选择困难丢出来，也把你的理由留下来。',
+      read: false,
+      createdAt: Date.now() - 5 * 60 * 1000,
+    },
+  ];
+  return store.notifications;
+}
+
+function mockNotify(payload) {
+  const store = getStore();
+  const notifications = ensureMockNotifications(store);
+  if (!payload.recipientId || payload.recipientId === payload.actorId) return;
+  notifications.unshift({
+    _id: 'n_local_' + Date.now() + '_' + notifications.length,
+    recipientId: payload.recipientId,
+    actorId: payload.actorId || '',
+    actorName: payload.actorName || '有人',
+    type: payload.type || 'system',
+    questionId: payload.questionId || '',
+    answerId: payload.answerId || '',
+    title: payload.title || '',
+    content: payload.content || '',
+    read: false,
+    createdAt: Date.now(),
+  });
+}
+
 /** 云函数调用封装（带超时，避免无云环境时挂起） */
 function callCloud(action, payload) {
   return new Promise((resolve, reject) => {
@@ -162,6 +202,7 @@ function mockAddAnswer(questionId, content, recommendOption) {
   if (q.status === 'pending') q.status = 'answered';
   u.answerCount = (u.answerCount || 0) + 1;
   u.points = (u.points || 0) + 5;
+  mockNotify({ recipientId: q.asker && q.asker._id, actorId: u._id, actorName: u.nickname, type: 'answer', questionId, answerId: ans._id, title: q.title, content });
   saveMockStore(store);
   return { answer: ans };
 }
@@ -212,6 +253,8 @@ function mockAdopt(questionId, answerId) {
   store.answers.forEach((a) => {
     if (a.questionId === questionId) a.adopted = a._id === answerId;
   });
+  const u = me();
+  mockNotify({ recipientId: ans.author && ans.author._id, actorId: u._id, actorName: u.nickname, type: 'adopt', questionId, answerId, title: q.title, content: '采纳了你的回答' });
   saveMockStore(store);
   return { question: q };
 }
@@ -236,6 +279,7 @@ function mockMine() {
       questionCount: myQuestions.length,
       answerCount: myAnswers.length,
       adoptCount: myAnswers.filter((a) => a.adopted).length,
+      unreadCount: ensureMockNotifications(store).filter((n) => n.recipientId === u._id && !n.read).length,
     },
   };
 }
@@ -252,6 +296,8 @@ function mockLike(answerId) {
   } else {
     ans.likes = (ans.likes || 0) + 1;
     liked[answerId] = 1;
+    const u = me();
+    mockNotify({ recipientId: ans.author && ans.author._id, actorId: u._id, actorName: u.nickname, type: 'like', questionId: ans.questionId, answerId, title: '你的回答收到了一个赞', content: ans.content });
   }
   saveMockStore(store);
   return { likes: ans.likes, liked: !!liked[answerId] };
@@ -381,6 +427,38 @@ function mockSaveSettings(patch) {
   return store.settings;
 }
 
+/** mock 版：通知列表 */
+function mockListNotifications(params) {
+  const store = getStore();
+  const u = me();
+  const { page = 1, size = 20 } = params || {};
+  const list = ensureMockNotifications(store)
+    .filter((n) => n.recipientId === u._id)
+    .sort((a, b) => b.createdAt - a.createdAt);
+  const start = (page - 1) * size;
+  return {
+    list: list.slice(start, start + size),
+    total: list.length,
+    unreadCount: list.filter((n) => !n.read).length,
+    hasMore: start + size < list.length,
+  };
+}
+
+/** mock 版：标记通知已读 */
+function mockReadNotifications(ids) {
+  const store = getStore();
+  const u = me();
+  const idSet = Array.isArray(ids) && ids.length ? new Set(ids) : null;
+  ensureMockNotifications(store).forEach((n) => {
+    if (n.recipientId === u._id && !n.read && (!idSet || idSet.has(n._id))) {
+      n.read = true;
+      n.readAt = Date.now();
+    }
+  });
+  saveMockStore(store);
+  return { read: true };
+}
+
 /** mock 版：个人资料保存 */
 function mockUpdateProfile(payload) {
   const store = getStore();
@@ -486,6 +564,18 @@ module.exports = {
   /** 保存个人资料 */
   updateProfile(payload) {
     return request('updateProfile', payload, () => mockUpdateProfile(payload));
+  },
+
+  /** 通知列表 */
+  listNotifications(params) {
+    const payload = params || {};
+    return request('listNotifications', payload, () => mockListNotifications(payload));
+  },
+
+  /** 标记通知已读；ids 为空时全部已读 */
+  readNotifications(ids) {
+    const payload = { ids: ids || [] };
+    return request('readNotifications', payload, () => mockReadNotifications(payload.ids));
   },
 
   mine() {

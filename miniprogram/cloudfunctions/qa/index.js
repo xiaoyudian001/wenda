@@ -34,6 +34,7 @@ const USER = 'users';
 const VOTE = 'votes';
 const REPORT = 'reports';
 const EVENT = 'events';
+const NOTIFICATION = 'notifications';
 
 const CATEGORIES = {
   eat: { key: 'eat', name: '吃什么', icon: '🍜', color: '#FF7A45' },
@@ -88,6 +89,29 @@ async function getOrCreateUser(openid) {
   };
   await db.collection(USER).add({ data: user });
   return user;
+}
+
+/** 写入站内通知；不通知自己，失败不影响主业务 */
+async function createNotification(payload) {
+  if (!payload || !payload.recipientId || payload.recipientId === payload.actorId) return;
+  try {
+    await db.collection(NOTIFICATION).add({
+      data: {
+        recipientId: payload.recipientId,
+        actorId: payload.actorId || '',
+        actorName: String(payload.actorName || '有人').slice(0, 20),
+        type: payload.type || 'system',
+        questionId: payload.questionId || '',
+        answerId: payload.answerId || '',
+        title: String(payload.title || '').slice(0, 80),
+        content: String(payload.content || '').slice(0, 160),
+        read: false,
+        createdAt: Date.now(),
+      },
+    });
+  } catch (err) {
+    console.warn('[问搭] 写入通知失败:', err.message);
+  }
 }
 
 /** 计算问题热度分 */
@@ -281,6 +305,18 @@ const handlers = {
       data: { points: _.inc(5), answerCount: _.inc(1) },
     });
 
+    // 通知提问者：有人回答了你的问题
+    await createNotification({
+      recipientId: q.asker && q.asker._id,
+      actorId: openid,
+      actorName: user.nickname,
+      type: 'answer',
+      questionId,
+      answerId: ans._id,
+      title: q.title,
+      content: clean,
+    });
+
     return ok({ answer: ans });
   },
 
@@ -356,6 +392,17 @@ const handlers = {
       });
     }
 
+    await createNotification({
+      recipientId: answer.author && answer.author._id,
+      actorId: openid,
+      actorName: q.asker && q.asker.nickname,
+      type: 'adopt',
+      questionId,
+      answerId,
+      title: q.title,
+      content: '采纳了你的回答',
+    });
+
     return ok({ question: { ...q, ...update } });
   },
 
@@ -386,7 +433,41 @@ const handlers = {
     });
     const likes = (ans.likes || 0) + 1;
     await db.collection(ANSWER).where({ _id: answerId }).update({ data: { likes } });
+    await createNotification({
+      recipientId: ans.author && ans.author._id,
+      actorId: openid,
+      actorName: (await getOrCreateUser(openid)).nickname,
+      type: 'like',
+      questionId: ans.questionId,
+      answerId,
+      title: '你的回答收到了一个赞',
+      content: ans.content,
+    });
     return ok({ likes, liked: true });
+  },
+
+  // ---------- 通知中心 ----------
+  async listNotifications(event, openid) {
+    const { page = 1, size = 20 } = event;
+    const skip = (page - 1) * size;
+    const res = await db
+      .collection(NOTIFICATION)
+      .where({ recipientId: openid })
+      .orderBy('createdAt', 'desc')
+      .skip(skip)
+      .limit(size)
+      .get();
+    const totalRes = await db.collection(NOTIFICATION).where({ recipientId: openid }).count();
+    const unreadRes = await db.collection(NOTIFICATION).where({ recipientId: openid, read: false }).count();
+    return ok({ list: res.data, total: totalRes.total, unreadCount: unreadRes.total, hasMore: skip + size < totalRes.total });
+  },
+
+  async readNotifications(event, openid) {
+    const { ids = [] } = event;
+    const where = { recipientId: openid, read: false };
+    if (Array.isArray(ids) && ids.length) where._id = dbCmd.in(ids.slice(0, 100));
+    await db.collection(NOTIFICATION).where(where).update({ data: { read: true, readAt: Date.now() } });
+    return ok({ read: true });
   },
 
   // ---------- 我的 ----------
@@ -394,6 +475,7 @@ const handlers = {
     const user = await getOrCreateUser(openid);
     const qRes = await db.collection(QUESTION).where({ 'asker._id': openid }).limit(100).get();
     const aRes = await db.collection(ANSWER).where({ 'author._id': openid }).limit(100).get();
+    const unreadRes = await db.collection(NOTIFICATION).where({ recipientId: openid, read: false }).count();
     const questionIds = [...new Set(aRes.data.map((a) => a.questionId).filter(Boolean))];
     const answeredQuestions = questionIds.length
       ? await db.collection(QUESTION).where({ _id: dbCmd.in(questionIds) }).get()
@@ -414,6 +496,7 @@ const handlers = {
         questionCount: qRes.data.length,
         answerCount: aRes.data.length,
         adoptCount: aRes.data.filter((a) => a.adopted).length,
+        unreadCount: unreadRes.total,
       },
     });
   },

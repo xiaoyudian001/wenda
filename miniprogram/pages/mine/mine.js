@@ -12,6 +12,7 @@ Page({
     tab: 'questions',
     favoriteCount: 0,
     pendingCount: 0,
+    unreadCount: 0,
   },
 
   onShow() {
@@ -42,6 +43,7 @@ Page({
           myAnswers,
           adoptedAnswers: myAnswers.filter((a) => a.adopted),
           pendingCount: myQuestions.filter((q) => !q.adopted).length,
+          unreadCount: (res.stats && res.stats.unreadCount) || 0,
         });
         this.loadFavoriteCount();
       })
@@ -76,6 +78,10 @@ Page({
 
   onSearch() {
     wx.navigateTo({ url: '/pages/search/search' });
+  },
+
+  onNotifications() {
+    wx.navigateTo({ url: '/pages/notifications/notifications' });
   },
 
   onMenu(e) {
