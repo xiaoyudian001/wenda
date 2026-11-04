@@ -16,6 +16,7 @@ Page({
     replyOpen: false,
     replyText: '',
     favorited: false,
+    favLoaded: false,
     myVote: '',
     reportOpen: false,
     reportReason: 'spam',
@@ -37,7 +38,7 @@ Page({
   },
 
   loadDetail() {
-    api
+    return api
       .getQuestion(this.data.qid)
       .then((res) => {
         if (!res || !res.question) {
@@ -66,7 +67,8 @@ Page({
           createdText: util.timeAgo(q.createdAt),
           canAdopt: q.asker && q.asker._id === myId,
         });
-        this.loadFavoriteState();
+        // 收藏状态要等它加载完，页面上的收藏按钮才可用
+        return this.loadFavoriteState();
       })
       .catch((err) => {
         console.error('[问搭] 加载详情失败:', err);
@@ -96,16 +98,21 @@ Page({
 
   /** 查询收藏状态 */
   loadFavoriteState() {
-    api
+    return api
       .myFavorites()
       .then((res) => {
         const ids = (res.list || []).map((q) => q._id);
-        this.setData({ favorited: ids.indexOf(this.data.qid) > -1 });
+        this.setData({ favorited: ids.indexOf(this.data.qid) > -1, favLoaded: true });
       })
-      .catch(() => {});
+      .catch(() => this.setData({ favLoaded: true }));
   },
 
   onToggleFavorite() {
+    // 收藏状态还没加载完时不要响应，否则用户会误判当前状态
+    if (!this.data.favLoaded) {
+      util.toast('加载中，请稍候');
+      return;
+    }
     api
       .toggleFavorite(this.data.qid)
       .then((res) => {
