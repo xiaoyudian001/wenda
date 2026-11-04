@@ -15,6 +15,7 @@
 wenda/
 ├── seed/                       种子内容包（冷启动核心资产）
 │   ├── questions.src.txt       已采纳问题源文件（可编辑）
+│   ├── questions3.src.txt      已采纳问题源文件（第二批）
 │   ├── answers2.src.txt        补充回答源文件
 │   ├── pending.src.txt         待回答问题源文件
 │   ├── build-seed.js           编译器：源文件 → JSON
@@ -41,7 +42,8 @@ wenda/
 │   ├── components/
 │   │   └── question-card/      问题卡片组件
 │   ├── services/
-│   │   └── api.js              数据层（云函数 + 本地 mock 自动降级）
+│   │   ├── api.js              数据层（云函数 + 本地 mock 自动降级）
+│   │   └── tracker.js          事件埋点（批量上报，失败重试）
 │   ├── utils/index.js          工具函数
 │   ├── data/seed.json          mock 用的种子数据
 │   ├── assets/                 tabBar 图标（脚本生成）
@@ -60,6 +62,7 @@ wenda/
 │   ├── build-single.js         打包单文件 demo
 │   ├── build-site.js           生成静态站点
 │   ├── publish-github.js       一键发布 GitHub Pages
+│   ├── check-devtools.js       开发者工具环境自检
 │   ├── verify.js               项目自检
 │   └── test-api.js             数据层端到端测试
 │
@@ -190,6 +193,7 @@ npm run publish:gh -- <owner> <repo>   # 一键发布到 GitHub Pages
 - [验证指标](docs/METRICS.md)
 - [冷启动手册](docs/COLD-START.md)
 - [本地运行与发布](docs/DEPLOY.md)
+- [开发路线图](docs/ROADMAP.md)
 
 ---
 
@@ -209,11 +213,12 @@ npm run publish:gh -- <owner> <repo>   # 一键发布到 GitHub Pages
 
 | 模块 | 状态 | 验证方式 |
 |---|---|---|
-| 种子内容包 | ✅ 147 问题 / 160 回答 / 115 用户 | `npm run verify` 数据一致性检查 |
-| HTML 原型 | ✅ 四页面全流程可交互 | 浏览器实测：147 卡片渲染、空状态、投票、采纳 |
+| 种子内容包 | ✅ 226 问题 / 239 回答 / 179 用户 | `npm run verify` 数据一致性检查 |
+| HTML 原型 | ✅ 四页面全流程可交互 | 浏览器实测：226 卡片渲染、空状态、投票、采纳 |
 | 小程序前端 | ✅ 4 页面 + 组件 + 数据层 | `npm run test` 38 项断言全部通过 |
-| 云函数 | ✅ qa 11 个 action + seed 导入 | 语法检查通过，待真实环境部署 |
+| 云函数 | ✅ qa 13 个 action + seed 导入 | 语法检查通过，待真实环境部署 |
+| 事件埋点 | ✅ tracker 模块 + 10 事件 | 自检校验事件常量与 4 页面接入情况 |
 | 审核后台 | ✅ 看板/筛选/隐藏恢复 | 浏览器实测通过 |
-| 文档 | ✅ PRD / 数据模型 / 指标 / 冷启动 | — |
+| 文档 | ✅ PRD / 数据模型 / 指标 / 冷启动 / 部署 / 路线图 | — |
 
-**未做（有意留白）**：事件埋点、V2 的位置与评论、支付与商业化、真实云环境部署验证。
+**未做（有意留白）**：真机验证（待装开发者工具）、云环境部署、事件埋点的 `share_enter`（P2）、V2 的位置与评论、支付与商业化。

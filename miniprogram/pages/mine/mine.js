@@ -1,5 +1,6 @@
 const api = require('../../services/api.js');
 const util = require('../../utils/index.js');
+const tracker = require('../../services/tracker.js');
 
 Page({
   data: {
@@ -9,6 +10,7 @@ Page({
   },
 
   onShow() {
+    tracker.track(tracker.EVENTS.APP_OPEN, '', { page: 'mine' });
     this.loadMine();
   },
 

@@ -7,6 +7,8 @@ const CATEGORIES = [
   { key: 'buy', name: '买不买', icon: '🛒', color: '#52C41A' },
 ];
 
+const tracker = require('./services/tracker.js');
+
 const PAGE_SIZE = 10;
 
 App({
@@ -20,6 +22,15 @@ App({
 
   onLaunch() {
     this.initDataLayer();
+  },
+
+  onShow() {
+    tracker.track(tracker.EVENTS.APP_OPEN, '', { source: 'app_show' });
+  },
+
+  onHide() {
+    // 退到后台时把队列里的埋点刷出去，避免丢失
+    tracker.flush();
   },
 
   /**
@@ -73,5 +84,10 @@ App({
   /** 供页面读取分类 */
   getCategories() {
     return CATEGORIES;
+  },
+
+  /** 调试开关：在 app.globalData.debugTrack = true 时打印埋点 */
+  enableTrackDebug() {
+    this.globalData.debugTrack = true;
   },
 });

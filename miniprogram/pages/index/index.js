@@ -1,5 +1,6 @@
 const api = require('../../services/api.js');
 const util = require('../../utils/index.js');
+const tracker = require('../../services/tracker.js');
 
 const CATS = [
   { key: 'all', name: '全部', icon: '✨' },
@@ -25,6 +26,10 @@ Page({
 
   onLoad() {
     this.loadData();
+  },
+
+  onShow() {
+    tracker.track(tracker.EVENTS.APP_OPEN, '', { page: 'index', cat: this.data.cat });
   },
 
   onPullDownRefresh() {
@@ -54,7 +59,9 @@ Page({
   },
 
   onCat(e) {
-    this.setData({ cat: e.currentTarget.dataset.key, page: 1, list: [] });
+    const key = e.currentTarget.dataset.key;
+    this.setData({ cat: key, page: 1, list: [] });
+    tracker.track(tracker.EVENTS.LIST_VIEW, '', { cat: key });
     this.loadData();
   },
 
@@ -69,6 +76,7 @@ Page({
   },
 
   onOpenDetail(e) {
+    tracker.track(tracker.EVENTS.DETAIL_VIEW, e.detail.id, { cat: this.data.cat });
     wx.navigateTo({ url: `/pages/detail/detail?id=${e.detail.id}` });
   },
 
@@ -77,6 +85,7 @@ Page({
   },
 
   onShareAppMessage() {
+    tracker.track(tracker.EVENTS.SHARE_CLICK, '', { page: 'index' });
     return {
       title: '问搭 · 把选择困难交给别人',
       path: '/pages/index/index',

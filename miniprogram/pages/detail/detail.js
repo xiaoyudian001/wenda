@@ -1,5 +1,6 @@
 const api = require('../../services/api.js');
 const util = require('../../utils/index.js');
+const tracker = require('../../services/tracker.js');
 
 Page({
   data: {
@@ -19,6 +20,7 @@ Page({
   onLoad(options) {
     const qid = options.id || '';
     this.setData({ qid });
+    tracker.track(tracker.EVENTS.DETAIL_VIEW, qid, { from: 'deep_link' });
     this.loadDetail();
   },
 
@@ -66,6 +68,7 @@ Page({
 
   onVote(e) {
     const key = e.currentTarget.dataset.key;
+    tracker.track(tracker.EVENTS.OPTION_VOTE, this.data.qid, { optionKey: key });
     api
       .vote(this.data.qid, key)
       .then((res) => {
@@ -82,6 +85,7 @@ Page({
 
   onLike(e) {
     const id = e.currentTarget.dataset.id;
+    tracker.track(tracker.EVENTS.ANSWER_LIKE, id, { questionId: this.data.qid });
     api
       .like(id)
       .then((res) => {
@@ -101,6 +105,7 @@ Page({
       confirmText: '采纳',
       success: (res) => {
         if (!res.confirm) return;
+        tracker.track(tracker.EVENTS.ANSWER_ADOPT, this.data.qid, { answerId: id });
         api
           .adopt(this.data.qid, id)
           .then(() => {
@@ -140,6 +145,7 @@ Page({
     api
       .addAnswer(this.data.qid, content, null)
       .then(() => {
+        tracker.track(tracker.EVENTS.ANSWER_PUBLISH, this.data.qid, { length: content.length });
         this.setData({ replyOpen: false, replyText: '' });
         util.toast('回答成功');
         this.loadDetail();
@@ -155,6 +161,7 @@ Page({
   },
 
   onShare() {
+    tracker.track(tracker.EVENTS.SHARE_CLICK, this.data.qid, { page: 'detail' });
     wx.showShareMenu({ withShareTicket: true });
     const q = this.data.question;
     if (q) {

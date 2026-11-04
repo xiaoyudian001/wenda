@@ -2,10 +2,11 @@
 /**
  * 问搭 · 种子数据编译器
  *
- * 输入（三个纯文本源文件，便于非技术人员直接编辑内容）：
- *   seed/questions.src.txt  已采纳的问题（8 列：cat|title|desc|options|answerer|answerContent|answerOption|city）
- *   seed/answers2.src.txt   补充的第二条回答（6 列：cat|title|answerer|answerContent|answerOption|city）
- *   seed/pending.src.txt    待回答的问题（6 列：cat|title|desc|options|city|askerName）
+ * 输入（多个纯文本源文件，便于非技术人员直接编辑内容）：
+ *   seed/questions.src.txt   已采纳的问题（8 列：cat|title|desc|options|answerer|answerContent|answerOption|city）
+ *   seed/questions3.src.txt  已采纳的问题（第二批，同上格式）
+ *   seed/answers2.src.txt    补充的第二条回答（6 列：cat|title|answerer|answerContent|answerOption|city）
+ *   seed/pending.src.txt     待回答的问题（6 列：cat|title|desc|options|city|askerName）
  *
  * 输出：
  *   seed/questions.json   问题（含选项与统计）
@@ -120,19 +121,31 @@ function build() {
   };
 
   // ---------- 1. 已采纳问题 ----------
-  const qLines = readSrc('questions.src.txt');
+  // 支持多个源文件，按顺序拼接
+  const QUESTION_SOURCES = ['questions.src.txt', 'questions3.src.txt'];
   const parsedQuestions = [];
-  qLines.forEach((line, i) => {
-    try {
-      const [cat, title, desc, optRaw, answerer, answerContent, answerOption, city] = splitCols(
-        line, 8, 'questions.src.txt', i
-      );
-      if (!CATEGORIES[cat]) throw new Error(`questions.src.txt 第 ${i + 1} 行分类非法：${cat}`);
-      if (!answerContent) throw new Error(`questions.src.txt 第 ${i + 1} 行回答为空`);
-      parsedQuestions.push({ cat, title, desc, optionTexts: parseOptions(optRaw), answerer, answerContent, answerOption, city });
-    } catch (e) {
-      errors.push(e.message);
-    }
+  QUESTION_SOURCES.forEach((file) => {
+    readSrc(file).forEach((line, i) => {
+      try {
+        const [cat, title, desc, optRaw, answerer, answerContent, answerOption, city] = splitCols(
+          line, 8, file, i
+        );
+        if (!CATEGORIES[cat]) throw new Error(`${file} 第 ${i + 1} 行分类非法：${cat}`);
+        if (!answerContent) throw new Error(`${file} 第 ${i + 1} 行回答为空`);
+        parsedQuestions.push({
+          cat,
+          title,
+          desc,
+          optionTexts: parseOptions(optRaw),
+          answerer,
+          answerContent,
+          answerOption,
+          city,
+        });
+      } catch (e) {
+        errors.push(e.message);
+      }
+    });
   });
 
   parsedQuestions.forEach((p, i) => {

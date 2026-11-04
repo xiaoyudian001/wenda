@@ -9,6 +9,7 @@
 | `users` | 用户 | `_id`（= openid） |
 | `votes` | 投票与点赞记录 | `openid + questionId + type`、`openid + answerId + type` |
 | `reports` | 举报 | `status`、`createdAt` |
+| `events` | 事件埋点 | `event`、`createdAt` |
 
 ---
 
@@ -154,6 +155,28 @@ pending ──收到回答──→ answered ──被采纳──→ adopted
 
 ---
 
+## events
+
+埋点集合，由 `qa` 云函数的 `track` action 批量写入。
+
+```js
+{
+  _id: 'auto',
+  openid: 'openid',
+  event: 'question_view',        // 事件名，见 docs/METRICS.md
+  targetId: 'q_xxx',
+  params: { cat: 'eat' },
+  createdAt: 1750000000000
+}
+```
+
+**实现要点**：
+- 客户端 `services/tracker.js` 批量攒批，攒够 10 条或超 15 秒发一次
+- 上报失败自动回退队列，最多保留 50 条待重试
+- 单次调用上限 50 条，防止被滥用写入海量数据
+
+---
+
 ## 云函数 action 契约
 
 ### qa
@@ -170,6 +193,7 @@ pending ──收到回答──→ answered ──被采纳──→ adopted
 | `like` | `{ answerId }` | `{ likes, liked }` |
 | `mine` | — | `{ user, myQuestions, myAnswers, stats }` |
 | `report` | `{ targetId, targetType, reason }` | `{ reported }` |
+| `track` | `{ events: [...] }` | `{ tracked }` |
 
 ### admin（需 role = admin / ops）
 

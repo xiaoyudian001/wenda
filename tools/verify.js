@@ -230,6 +230,50 @@ if (!fs.existsSync(protoSeedPath)) {
   else err('prototype/seed.bundle.js 格式异常');
 }
 
+// ---------- 6. 埋点完整性 ----------
+console.log('\n【6】事件埋点');
+const trackerPath = path.join(mp, 'services', 'tracker.js');
+if (!fs.existsSync(trackerPath)) {
+  err('services/tracker.js 缺失，埋点模块不存在');
+} else {
+  ok('埋点模块存在');
+  const trackerSrc = fs.readFileSync(trackerPath, 'utf8');
+  // 事件名常量必须覆盖 METRICS.md 定义的全部事件
+  const REQUIRED_EVENTS = [
+    'APP_OPEN',
+    'LIST_VIEW',
+    'DETAIL_VIEW',
+    'QUESTION_PUBLISH',
+    'OPTION_VOTE',
+    'ANSWER_PUBLISH',
+    'ANSWER_LIKE',
+    'ANSWER_ADOPT',
+    'SHARE_CLICK',
+    'SHARE_ENTER',
+  ];
+  const missingEvents = REQUIRED_EVENTS.filter((e) => !trackerSrc.includes(`${e}:`));
+  if (missingEvents.length) err('埋点缺少事件常量: ' + missingEvents.join(', '));
+  else ok(`${REQUIRED_EVENTS.length} 个事件常量齐全`);
+
+  // 云函数必须有 track action
+  const qaSrc = fs.readFileSync(path.join(mp, 'cloudfunctions', 'qa', 'index.js'), 'utf8');
+  if (!/async track\(/.test(qaSrc)) err('云函数 qa 缺少 track action，埋点无处落地');
+  else ok('云函数 qa 已支持 track action');
+
+  if (!qaSrc.includes("const EVENT = 'events'")) err('云函数 qa 未定义 events 集合');
+  else ok('events 集合已定义');
+
+  // 每个页面都应接入埋点
+  const pageDirs = ['index', 'detail', 'ask', 'mine'];
+  const noTrack = [];
+  pageDirs.forEach((p) => {
+    const src = fs.readFileSync(path.join(mp, 'pages', p, `${p}.js`), 'utf8');
+    if (!src.includes('tracker.track(')) noTrack.push(p);
+  });
+  if (noTrack.length) err('以下页面未接入埋点: ' + noTrack.join(', '));
+  else ok('4 个页面均已接入埋点');
+}
+
 // ---------- 汇总 ----------
 console.log('\n=== 结果 ===');
 console.log(`通过检查项: ${checks}`);

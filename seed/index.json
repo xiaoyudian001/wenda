@@ -1,17 +1,17 @@
 {
   "stats": {
-    "questionCount": 147,
-    "answerCount": 160,
-    "userCount": 115,
+    "questionCount": 226,
+    "answerCount": 239,
+    "userCount": 179,
     "pendingCount": 41,
-    "adoptedCount": 106,
+    "adoptedCount": 185,
     "byCategory": {
-      "eat": 22,
-      "wear": 25,
-      "play": 24,
-      "kid": 30,
-      "gift": 22,
-      "buy": 24
+      "eat": 33,
+      "wear": 37,
+      "play": 36,
+      "kid": 44,
+      "gift": 34,
+      "buy": 42
     }
   },
   "categories": [

@@ -19,6 +19,7 @@
  *   like            回答点赞
  *   mine            我的数据
  *   report          举报
+ *   track           事件埋点（批量）
  */
 const cloud = require('wx-server-sdk');
 
@@ -32,6 +33,7 @@ const ANSWER = 'answers';
 const USER = 'users';
 const VOTE = 'votes';
 const REPORT = 'reports';
+const EVENT = 'events';
 
 const CATEGORIES = {
   eat: { key: 'eat', name: '吃什么', icon: '🍜', color: '#FF7A45' },
@@ -395,6 +397,23 @@ const handlers = {
       },
     });
     return ok({ reported: true });
+  },
+
+  // ---------- 事件埋点（批量） ----------
+  async track(event, openid) {
+    const { events = [] } = event;
+    if (!Array.isArray(events) || !events.length) return ok({ tracked: 0 });
+    // 单次上限，防止被滥用写入海量数据
+    const batch = events.slice(0, 50);
+    const docs = batch.map((e) => ({
+      event: String(e.event || 'unknown').slice(0, 40),
+      targetId: String(e.targetId || '').slice(0, 64),
+      params: e.params && typeof e.params === 'object' ? e.params : {},
+      openid: openid || '',
+      createdAt: e.createdAt || Date.now(),
+    }));
+    await db.collection(EVENT).add({ data: docs });
+    return ok({ tracked: docs.length });
   },
 };
 

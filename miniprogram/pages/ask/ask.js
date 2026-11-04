@@ -1,5 +1,6 @@
 const api = require('../../services/api.js');
 const util = require('../../utils/index.js');
+const tracker = require('../../services/tracker.js');
 
 Page({
   data: {
@@ -79,6 +80,12 @@ Page({
     api
       .createQuestion(payload)
       .then((res) => {
+        const qid = res && res.question && res.question._id;
+        tracker.track(tracker.EVENTS.QUESTION_PUBLISH, qid || '', {
+          cat: payload.cat,
+          hasOptions: (payload.options || []).filter(Boolean).length,
+          anonymous: !!payload.anonymous,
+        });
         this.setData({ title: '', desc: '', options: ['', '', ''], anonymous: false, submitting: false });
         util.toast('发布成功！已推送给附近的人');
         setTimeout(() => {
