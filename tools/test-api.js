@@ -20,13 +20,16 @@ global.getApp = () => ({ globalData: { useMock: true, userInfo: null } });
 global.console = console;
 
 // 拦截 require，让 api.js 里的 require('../../data/seed.json') 能正常解析
+// 不做路径兜底：故意让 require 失败，以暴露真实的小程序运行时路径错误
+// （之前有个 ../../ 路径被这个 hack 掩盖，导致真机运行时报模块找不到）
 const origResolve = Module._resolveFilename;
 Module._resolveFilename = function (request, parent, ...rest) {
   try {
     return origResolve.call(this, request, parent, ...rest);
   } catch (e) {
     if (request.endsWith('.json')) {
-      return path.resolve(__dirname, '..', 'miniprogram', request.replace(/^\.\.\/\.\.\//, ''));
+      // 只把相对路径解析到小程序目录，不改写层级，保证 ../../ 这类错误能暴露
+      return path.resolve(__dirname, '..', 'miniprogram', 'services', request);
     }
     throw e;
   }

@@ -17,16 +17,26 @@ const ROOT = path.join(__dirname, '..');
 const MP = path.join(ROOT, 'miniprogram');
 
 const CANDIDATES = [
+  // 实际安装位置（新版安装器默认装到用户目录）
+  path.join(process.env.LOCALAPPDATA || '', 'Programs', '微信开发者工具'),
+  path.join(process.env.LOCALAPPDATA || '', 'Programs', '微信web开发者工具'),
   'C:\\Program Files (x86)\\Tencent\\微信web开发者工具',
   'C:\\Program Files\\Tencent\\微信web开发者工具',
   'C:\\Program Files (x86)\\微信web开发者工具',
   'C:\\Program Files\\微信开发者工具',
+  // User Data 目录（只有数据时存在，不是安装目录）
   path.join(process.env.LOCALAPPDATA || '', '微信开发者工具'),
-  path.join(process.env.LOCALAPPDATA || '', 'Programs', '微信开发者工具'),
-  path.join(process.env.LOCALAPPDATA || '', 'Programs', '微信web开发者工具'),
 ];
 
 function findDevtools() {
+  // 优先找含 cli.bat 的目录 —— 那才是真正的安装目录
+  for (const c of CANDIDATES) {
+    try {
+      if (!fs.existsSync(c)) continue;
+      if (fs.existsSync(path.join(c, 'cli.bat'))) return c;
+    } catch (e) { /* ignore */ }
+  }
+  // 再退而求其次：任意存在的候选目录
   for (const c of CANDIDATES) {
     try {
       if (fs.existsSync(c)) return c;
@@ -36,6 +46,7 @@ function findDevtools() {
   const roots = [
     'C:\\Program Files (x86)\\Tencent',
     'C:\\Program Files\\Tencent',
+    path.join(process.env.LOCALAPPDATA || '', 'Programs'),
     process.env.LOCALAPPDATA || '',
   ];
   for (const r of roots) {

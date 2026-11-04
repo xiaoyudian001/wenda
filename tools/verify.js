@@ -210,8 +210,8 @@ if (!fs.existsSync(path.join(mp, 'data', 'seed.json'))) {
 } else {
   ok('mock 数据文件存在');
 }
-if (!apiSrc.includes("require('../../data/seed.json')")) {
-  err('api.js 未正确引用 seed.json');
+if (!apiSrc.includes("require('../data/seed.json')")) {
+  err('api.js 未正确引用 seed.json（应为 ../data/seed.json）');
 }
 const mockSeed = JSON.parse(fs.readFileSync(path.join(mp, 'data', 'seed.json'), 'utf8'));
 if (mockSeed.questions.length !== bundle.questions.length) {

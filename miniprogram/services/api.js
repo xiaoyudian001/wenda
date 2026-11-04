@@ -6,7 +6,9 @@
  *
  * 对外 API 全部返回 Promise，页面层不需要关心底层是云还是 mock。
  */
-const seedData = require('../../data/seed.json');
+// 注意：路径是 ../data/seed.json（相对本文件所在目录 miniprogram/services/）
+// 写成 ../../data/seed.json 会解析到项目根的 data/ 目录，导致真机运行报模块找不到
+const seedData = require('../data/seed.json');
 
 const PAGE_SIZE = 10;
 
