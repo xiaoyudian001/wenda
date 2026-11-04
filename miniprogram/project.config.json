@@ -2,8 +2,14 @@
   "description": "项目配置文件",
   "packOptions": {
     "ignore": [
-      { "type": "folder", "value": "cloudfunctions" },
-      { "type": "folder", "value": "admin" }
+      {
+        "value": "cloudfunctions",
+        "type": "folder"
+      },
+      {
+        "value": "admin",
+        "type": "folder"
+      }
     ],
     "include": []
   },
@@ -39,7 +45,18 @@
     "minifyWXSS": true,
     "disableUseStrict": false,
     "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "useCompilerPlugins": false,
+    "compileWorklet": false,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "compileType": "miniprogram",
   "libVersion": "3.0.0",
@@ -48,9 +65,21 @@
   "condition": {
     "miniprogram": {
       "list": [
-        { "name": "问题详情", "pathName": "pages/detail/detail", "query": "id=q_000001", "scene": null },
-        { "name": "提问", "pathName": "pages/ask/ask", "query": "", "scene": null }
+        {
+          "name": "问题详情",
+          "pathName": "pages/detail/detail",
+          "query": "id=q_000001",
+          "scene": null
+        },
+        {
+          "name": "提问",
+          "pathName": "pages/ask/ask",
+          "query": "",
+          "scene": null
+        }
       ]
     }
-  }
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
 }
