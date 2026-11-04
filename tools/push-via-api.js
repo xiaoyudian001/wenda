@@ -132,6 +132,11 @@ function trackedFiles() {
   }
   console.log(`需上传 ${files.length} 个`);
 
+  if (!files.length) {
+    console.log('远端已与本地一致，无需推送');
+    return;
+  }
+
   // 用 blobs + tree + commit 构造提交，以远端 sha 为 base_tree
   const treeItems = [];
   for (const f of files) {
