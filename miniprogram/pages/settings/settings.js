@@ -12,6 +12,7 @@ Page({
   },
 
   onShow(options) {
+    util.guard(this); // 页面卸载后不再 setData
     this.loadSettings();
     // 从「我的」页带 focus 参数进来时，滚动到对应区块
     if (options && options.focus) {

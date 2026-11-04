@@ -284,6 +284,43 @@ function check(name, cond, extra) {
   check('全部已读后未读数为 0', n3.unreadCount === 0);
   check('已读通知仍保留在列表中', n3.list.length >= 1);
 
+  // ---------- 9.6 卸载守卫 ----------
+  console.log('\n【9.6】卸载守卫');
+  const utilMod = require(path.join(__dirname, '..', 'miniprogram', 'utils', 'index.js'));
+  check('utils 导出 guard', typeof utilMod.guard === 'function');
+
+  // 模拟一个页面实例
+  const fakePage = {
+    _data: { a: 1 },
+    setData(patch) {
+      Object.keys(patch).forEach((k) => (this._data[k] = patch[k]));
+      this.setCount = (this.setCount || 0) + 1;
+    },
+    onUnload() {
+      this.unloadCalled = true;
+    },
+  };
+  utilMod.guard(fakePage);
+  check('guard 已标记', fakePage._guarded === true);
+  check('guard 包装了 onUnload', typeof fakePage.onUnload === 'function');
+
+  fakePage.setData({ b: 2 });
+  check('未卸载时 setData 正常生效', fakePage._data.b === 2);
+
+  fakePage.onUnload();
+  check('原 onUnload 被调用', fakePage.unloadCalled === true);
+  check('卸载标记已置位', fakePage._unloaded === true);
+
+  fakePage.setData({ c: 3 });
+  check('卸载后 setData 不生效', fakePage._data.c === undefined);
+  check('卸载后 setData 不抛错', true);
+
+  // 重复 guard 不应叠加包装
+  const setCountBefore = fakePage.setCount;
+  utilMod.guard(fakePage);
+  fakePage.setData({ d: 4 });
+  check('重复 guard 不会叠加', fakePage.setCount === setCountBefore);
+
   // ---------- 10. 埋点 ----------
   console.log('\n【10】事件埋点');
   const tracker = require(path.join(__dirname, '..', 'miniprogram', 'services', 'tracker.js'));

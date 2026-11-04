@@ -14,6 +14,7 @@ Page({
   },
 
   onLoad(options) {
+    util.guard(this); // 页面卸载后不再 setData
     const kw = options.keyword || '';
     if (kw) {
       this.setData({ keyword: kw });

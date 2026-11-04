@@ -28,6 +28,7 @@ Page({
   },
 
   onLoad(options) {
+    util.guard(this); // 页面卸载后不再 setData
     const qid = options.id || '';
     this.setData({ qid });
     tracker.track(tracker.EVENTS.DETAIL_VIEW, qid, { from: 'deep_link' });

@@ -87,20 +87,12 @@ App({
           if (r.code === 0 && user) {
             that.globalData.openid = user.openid || user._id || '';
             that.globalData.userInfo = user;
-          } else {
-            // 云函数可达但没有数据，自动灌入种子数据
-            wx.cloud.callFunction({
-              name: 'seed',
-              data: { action: 'import' },
-              timeout: 30000,
-              success(seedRes) {
-                console.log('[问搭] 种子数据导入:', seedRes.result);
-              },
-              fail(err) {
-                console.error('[问搭] 种子数据导入失败:', err);
-              },
-            });
+            return;
           }
+          // 云函数可达但返回异常（如集合未创建）：降级到 mock，
+          // 否则后续每个页面请求都会失败
+          console.warn('[问搭] 云函数返回异常，降级为本地 mock:', r.message || r);
+          that.globalData.useMock = true;
         },
         fail(err) {
           console.warn('[问搭] 云函数调用失败，降级为本地 mock:', err);

@@ -47,4 +47,46 @@ function toast(title, icon) {
   wx.showToast({ title, icon: icon || 'none', duration: 1800 });
 }
 
-module.exports = { timeAgo, avatarClass, categoryMeta, optionMetrics, toast };
+/**
+ * 给页面加“卸载守卫”。
+ *
+ * 背景：页面 onUnload 后，异步回调里再调 setData 会抛错，
+ *       Promise 变成未处理的 rejected，控制台报 Unhandled promise rejection。
+ *       页面切换时很容易触发。
+ *
+ * 用法：页面 onLoad 里调用一次 util.guard(this);
+ *       之后 setData 在页面卸载后会自动变成空操作。
+ */
+function guard(page) {
+  if (!page || page._guarded) return page;
+  page._guarded = true;
+  page._unloaded = false;
+
+  const rawSetData = page.setData && page.setData.bind(page);
+  if (rawSetData) {
+    page.setData = function (patch, callback) {
+      if (page._unloaded) {
+        if (typeof callback === 'function') callback();
+        return;
+      }
+      return rawSetData(patch, callback);
+    };
+  }
+
+  // 包装已有的 onUnload（如果页面自己定义了）
+  const rawOnUnload = page.onUnload;
+  page.onUnload = function () {
+    page._unloaded = true;
+    if (typeof rawOnUnload === 'function') {
+      try {
+        rawOnUnload.call(page);
+      } catch (e) {
+        console.warn('[问搭] onUnload 执行出错:', e);
+      }
+    }
+  };
+
+  return page;
+}
+
+module.exports = { timeAgo, avatarClass, categoryMeta, optionMetrics, toast, guard };

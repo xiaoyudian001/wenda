@@ -60,7 +60,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.0.0",
-  "appid": "touristappid",
+  "appid": "wx276d7d0e68f0c769",
   "projectname": "wenda",
   "condition": {
     "miniprogram": {
@@ -98,6 +98,12 @@
         {
           "name": "设置",
           "pathName": "pages/settings/settings",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "消息通知",
+          "pathName": "pages/notifications/notifications",
           "query": "",
           "scene": null
         }

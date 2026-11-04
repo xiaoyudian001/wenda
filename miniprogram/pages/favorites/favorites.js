@@ -10,6 +10,7 @@ Page({
   },
 
   onShow() {
+    util.guard(this); // 页面卸载后不再 setData
     tracker.track(tracker.EVENTS.LIST_VIEW, '', { page: 'favorites' });
     this.loadFavorites();
   },
@@ -34,6 +35,10 @@ Page({
 
   onOpenDetail(e) {
     wx.navigateTo({ url: `/pages/detail/detail?id=${e.detail.id}` });
+  },
+
+  onBack() {
+    wx.navigateBack({ delta: 1, fail: () => wx.switchTab({ url: '/pages/index/index' }) });
   },
 
   onUnfavorite(e) {

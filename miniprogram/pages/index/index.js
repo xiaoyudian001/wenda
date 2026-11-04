@@ -25,6 +25,7 @@ Page({
   },
 
   onLoad() {
+    util.guard(this); // 页面卸载后不再 setData
     this.loadData();
   },
 
@@ -34,7 +35,12 @@ Page({
 
   onPullDownRefresh() {
     this.setData({ page: 1 });
-    this.loadData().then(() => wx.stopPullDownRefresh());
+    return this.loadData()
+      .then(() => wx.stopPullDownRefresh())
+      .catch(() => {
+        // loadData 内部已处理错误，这里只保证停止下拉动画
+        wx.stopPullDownRefresh();
+      });
   },
 
   loadData() {

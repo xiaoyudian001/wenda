@@ -14,6 +14,7 @@ Page({
   },
 
   onLoad() {
+    util.guard(this); // 页面卸载后不再 setData
     this.setData({ categories: api.CATEGORIES });
     // 读取用户偏好：设置页里的「默认匿名提问」要真正作用到表单
     return api

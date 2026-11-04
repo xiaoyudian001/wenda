@@ -20,6 +20,7 @@ Page({
   },
 
   onShow() {
+    util.guard(this); // 页面卸载后不再 setData
     tracker.track(tracker.EVENTS.LIST_VIEW, '', { page: 'notifications' });
     this.load();
   },
