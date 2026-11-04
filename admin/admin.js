@@ -19,6 +19,24 @@
     api: getQueryParam('api') || '',
     rows: [],
     online: false,
+    view: 'questions',
+    rPage: 1,
+    rStatus: 'pending',
+    rTotal: 0,
+    rRows: [],
+  };
+
+  var REPORT_REASON = {
+    spam: '垃圾广告',
+    abuse: '辱骂攻击',
+    privacy: '涉及隐私',
+    other: '其他',
+  };
+
+  var REPORT_STATUS = {
+    pending: '待处理',
+    handled: '已处理',
+    dismissed: '已驳回',
   };
 
   var CATS = {
@@ -135,7 +153,102 @@
     $('statA').textContent = s.answerCount != null ? s.answerCount : '—';
     $('statU').textContent = s.userCount != null ? s.userCount : '—';
     $('statP').textContent = s.pendingCount != null ? s.pendingCount : '—';
+    var badge = $('reportBadge');
+    if (s.reportCount != null) {
+      $('statR').textContent = s.reportCount;
+      badge.textContent = s.reportCount;
+      badge.hidden = !s.reportCount;
+    }
   }
+
+  // ---------- 举报处理 ----------
+  function loadReports() {
+    if (!state.online) {
+      // 演示模式：用种子包里的样例举报
+      var all = window.__demoReports || [];
+      var list = all.filter(function (r) {
+        return !state.rStatus || r.status === state.rStatus;
+      });
+      state.rRows = list;
+      state.rTotal = list.length;
+      renderReports();
+      if (!all.length) {
+        $('reportRows').innerHTML =
+          '<tr><td colspan="5" class="empty">演示模式下没有举报数据。<br><br>请用 ?api= 指定线上接口后查看。</td></tr>';
+      }
+      return Promise.resolve();
+    }
+    var url = state.api + (state.api.indexOf('?') > -1 ? '&' : '?') +
+      'action=adminReports&status=' + encodeURIComponent(state.rStatus) +
+      '&page=' + state.rPage + '&size=' + state.size;
+
+    return fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.code !== 0) throw new Error(res.message || '接口返回异常');
+        state.rRows = res.data.list || [];
+        state.rTotal = res.data.total || state.rRows.length;
+        renderReports();
+      })
+      .catch(function (err) {
+        $('reportRows').innerHTML =
+          '<tr><td colspan="5" class="empty">加载举报失败：' + esc(err.message) + '</td></tr>';
+      });
+  }
+
+  function renderReports() {
+    var tbody = $('reportRows');
+    if (!state.rRows.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">没有符合条件的举报</td></tr>';
+    } else {
+      tbody.innerHTML = state.rRows.map(function (r) {
+        var isAnswer = r.targetType === 'answer';
+        var st = r.status || 'pending';
+        var canHandle = st === 'pending';
+        return '<tr>' +
+          '<td><span class="status status-' + st + '">' + (isAnswer ? '回答' : '问题') + '</span></td>' +
+          '<td><div class="q-title">' + esc(r.detail || r.targetId) + '</div>' +
+          '<div class="q-desc">对象 id：' + esc(r.targetId) + '</div></td>' +
+          '<td>' + esc(REPORT_REASON[r.reason] || r.reason || '—') + '</td>' +
+          '<td>' + (r.createdAt ? new Date(r.createdAt).toLocaleString('zh-CN') : '—') + '</td>' +
+          '<td><div class="actions">' +
+          (canHandle
+            ? '<button class="btn btn-mini btn-danger" onclick="adminHideTarget(\'' + r.targetType + '\', \'' + r.targetId + '\', \'' + r._id + '\')">隐藏内容</button>' +
+              '<button class="btn btn-mini" onclick="adminDismissReport(\'' + r._id + '\')">驳回</button>'
+            : '<span class="status status-' + st + '">' + (REPORT_STATUS[st] || st) + '</span>') +
+          '</div></td>' +
+          '</tr>';
+      }).join('');
+    }
+    var maxPage = Math.max(1, Math.ceil(state.rTotal / state.size));
+    $('rPageInfo').textContent = state.rPage + ' / ' + maxPage;
+  }
+
+  window.adminDismissReport = function (reportId) {
+    if (!confirm('驳回这条举报？被举报内容会保留。')) return;
+    fetch(state.api + (state.api.indexOf('?') > -1 ? '&' : '?') +
+      'action=adminHandleReport&reportId=' + encodeURIComponent(reportId) + '&action=dismiss')
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.code !== 0) throw new Error(res.message || '操作失败');
+        loadReports();
+        loadOnline();
+      })
+      .catch(function (err) { alert('操作失败：' + err.message); });
+  };
+
+  window.adminHideTarget = function (targetType, targetId, reportId) {
+    if (!confirm('确定隐藏被举报的' + (targetType === 'answer' ? '回答' : '问题') + '？')) return;
+    fetch(state.api + (state.api.indexOf('?') > -1 ? '&' : '?') +
+      'action=adminHandleReport&reportId=' + encodeURIComponent(reportId) + '&action=hide')
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.code !== 0) throw new Error(res.message || '操作失败');
+        loadReports();
+        loadOnline();
+      })
+      .catch(function (err) { alert('操作失败：' + err.message); });
+  };
 
   function renderRows() {
     var tbody = $('rows');
@@ -223,13 +336,51 @@
       });
     });
 
-    $('refreshBtn').addEventListener('click', refresh);
+    $('refreshBtn').addEventListener('click', function () {
+      if (state.view === 'reports') loadReports();
+      else refresh();
+    });
     $('prevBtn').addEventListener('click', function () {
       if (state.page > 1) { state.page--; refresh(); }
     });
     $('nextBtn').addEventListener('click', function () {
       var maxPage = Math.max(1, Math.ceil(state.total / state.size));
       if (state.page < maxPage) { state.page++; refresh(); }
+    });
+
+    // ---------- 视图切换（内容管理 / 举报处理） ----------
+    Array.prototype.forEach.call(document.querySelectorAll('.view-tab'), function (btn) {
+      btn.addEventListener('click', function () {
+        Array.prototype.forEach.call(document.querySelectorAll('.view-tab'), function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+        state.view = btn.getAttribute('data-view');
+        $('view-questions').hidden = state.view !== 'questions';
+        $('view-reports').hidden = state.view !== 'reports';
+        if (state.view === 'reports') loadReports();
+      });
+    });
+
+    // ---------- 举报状态筛选 ----------
+    Array.prototype.forEach.call(document.querySelectorAll('.rtab'), function (btn) {
+      btn.addEventListener('click', function () {
+        Array.prototype.forEach.call(document.querySelectorAll('.rtab'), function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+        state.rStatus = btn.getAttribute('data-rstatus');
+        state.rPage = 1;
+        loadReports();
+      });
+    });
+
+    $('rPrevBtn').addEventListener('click', function () {
+      if (state.rPage > 1) { state.rPage--; loadReports(); }
+    });
+    $('rNextBtn').addEventListener('click', function () {
+      var maxPage = Math.max(1, Math.ceil(state.rTotal / state.size));
+      if (state.rPage < maxPage) { state.rPage++; loadReports(); }
     });
 
     var timer = null;
@@ -251,10 +402,17 @@
       .then(function (r) { return r.json(); })
       .then(function (bundle) {
         window.__demoAll = bundle.questions;
+        window.__demoReports = bundle.demoReports || [];
         state.online = false;
         setConn('演示模式（本地种子数据）', 'off');
         applyFilter(bundle.questions.slice());
         renderStats(bundle.stats);
+        var pendingReports = (bundle.demoReports || []).filter(function (r) {
+          return r.status === 'pending';
+        }).length;
+        $('statR').textContent = pendingReports;
+        $('reportBadge').textContent = pendingReports;
+        $('reportBadge').hidden = !pendingReports;
       })
       .catch(function (err) {
         $('rows').innerHTML =

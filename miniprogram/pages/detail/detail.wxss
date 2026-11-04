@@ -81,6 +81,17 @@
   border-radius: 36rpx;
 }
 
+/* 回答底部的举报入口 */
+.answer-foot-right {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.report-link {
+  font-size: 23rpx;
+  color: #86909C;
+}
+
 /* 回答时选“我选哪个” */
 .reply-pick {
   margin-bottom: 22rpx;

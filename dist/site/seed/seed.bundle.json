@@ -17431,5 +17431,57 @@
       "buy": 42
     }
   },
-  "generatedAt": "2026-11-04T03:13:30.252Z"
+  "generatedAt": "2026-11-04T03:13:30.252Z",
+  "demoReports": [
+    {
+      "_id": "demo_report_q0",
+      "targetType": "question",
+      "targetId": "q_00017he",
+      "reason": "spam",
+      "detail": "这条内容看起来像广告，重复发了三次",
+      "openid": "demo_user_0",
+      "status": "pending",
+      "createdAt": 1793770308959
+    },
+    {
+      "_id": "demo_report_q1",
+      "targetType": "question",
+      "targetId": "q_0011sia",
+      "reason": "abuse",
+      "detail": "措辞不太友善，有攻击性",
+      "openid": "demo_user_1",
+      "status": "pending",
+      "createdAt": 1793766708959
+    },
+    {
+      "_id": "demo_report_q2",
+      "targetType": "question",
+      "targetId": "q_0021c5w",
+      "reason": "privacy",
+      "detail": "里面有手机号等个人信息",
+      "openid": "demo_user_2",
+      "status": "pending",
+      "createdAt": 1793763108959
+    },
+    {
+      "_id": "demo_report_a0",
+      "targetType": "answer",
+      "targetId": "a_0001dto",
+      "reason": "abuse",
+      "detail": "措辞不太友善，有攻击性",
+      "openid": "demo_user_3",
+      "status": "handled",
+      "createdAt": 1793759508959
+    },
+    {
+      "_id": "demo_report_a1",
+      "targetType": "answer",
+      "targetId": "a_00111r4",
+      "reason": "privacy",
+      "detail": "里面有手机号等个人信息",
+      "openid": "demo_user_4",
+      "status": "dismissed",
+      "createdAt": 1793755908959
+    }
+  ]
 }

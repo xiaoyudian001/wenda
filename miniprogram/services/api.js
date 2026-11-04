@@ -290,13 +290,30 @@ function mockSearchQuestions(params) {
 /** mock 版：举报 */
 function mockReport(payload) {
   const store = getStore();
+  const targetType = payload.targetType === 'answer' ? 'answer' : 'question';
+  const targetId = payload.targetId || '';
+  if (!targetId) throw new Error('缺少举报对象');
+  if (payload.targetType && ['question', 'answer'].indexOf(payload.targetType) === -1) {
+    throw new Error('举报对象类型不合法');
+  }
+  // 校验对象存在
+  const exists =
+    targetType === 'answer'
+      ? store.answers.some((a) => a._id === targetId)
+      : store.questions.some((q) => q._id === targetId);
+  if (!exists) throw new Error(targetType === 'answer' ? '回答不存在' : '问题不存在');
+  // 同一人对同一对象只保留一条待处理举报
   const reports = store.reports || (store.reports = []);
+  if (reports.some((r) => r.targetId === targetId && r.targetType === targetType && r.status === 'pending')) {
+    throw new Error('你已举报过，我们会尽快处理');
+  }
   const rec = {
     _id: 'r_local_' + Date.now(),
-    targetType: payload.targetType || 'question',
-    targetId: payload.targetId || '',
+    targetType,
+    targetId,
     reason: payload.reason || 'other',
     detail: payload.detail || '',
+    status: 'pending',
     createdAt: Date.now(),
   };
   reports.push(rec);

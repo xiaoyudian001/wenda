@@ -214,13 +214,27 @@ check('再次点击后 favorited 为 true', di.data.favorited === true);
 
 // 举报
 di.setData({ reportOpen: false });
-di.onOpenReport();
+di.onOpenReport({ currentTarget: { dataset: { type: 'question', id: target._id } } });
 check('举报面板已打开', di.data.reportOpen === true);
 check('举报理由有默认值', di.data.reportReason === 'spam');
+check('举报目标默认为问题', di.data.reportTargetType === 'question');
+check('举报目标 id 正确', di.data.reportTargetId === target._id);
 di.onPickReason({ currentTarget: { dataset: { key: 'abuse' } } });
 check('举报理由可切换', di.data.reportReason === 'abuse');
 await di.onSubmitReport();
 check('举报提交后面板关闭', di.data.reportOpen === false);
+
+// 举报回答
+const firstAnswer = di.data.answers[0];
+if (firstAnswer) {
+  di.onOpenReport({ currentTarget: { dataset: { type: 'answer', id: firstAnswer._id } } });
+  check('举报回答时目标类型为 answer', di.data.reportTargetType === 'answer');
+  check('举报回答时目标 id 正确', di.data.reportTargetId === firstAnswer._id);
+  await di.onSubmitReport();
+  check('举报回答后面板关闭', di.data.reportOpen === false);
+} else {
+  check('有可举报的回答', false, '详情页无回答数据');
+}
 
 // 选“我选：X”
 di.setData({ replyOption: '' });

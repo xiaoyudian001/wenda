@@ -386,6 +386,21 @@ const handlers = {
   async report(event, openid) {
     const { targetId, targetType = 'question', reason = '', detail = '' } = event;
     if (!targetId) return fail('缺少举报对象');
+    if (['question', 'answer'].indexOf(targetType) === -1) return fail('举报对象类型不合法');
+
+    // 同一个人对同一对象只保留一条待处理举报，避免刷单
+    const exist = await db
+      .collection(REPORT)
+      .where({ openid, targetId, targetType, status: 'pending' })
+      .limit(1)
+      .get();
+    if (exist.data.length) return fail('你已举报过，我们会尽快处理');
+
+    // 校验被举报对象确实存在
+    const coll = targetType === 'answer' ? ANSWER : QUESTION;
+    const target = await db.collection(coll).where({ _id: targetId }).limit(1).get();
+    if (!target.data.length) return fail(targetType === 'answer' ? '回答不存在' : '问题不存在');
+
     await db.collection(REPORT).add({
       data: {
         targetId,
@@ -547,7 +562,14 @@ exports.main = async (event, context) => {
   if (!action) return fail('缺少 action');
 
   // 审核后台专用 action：需要 openid 在运营白名单内
-  if (action === 'adminList' || action === 'adminHide' || action === 'adminStats') {
+  const adminActions = [
+    'adminList',
+    'adminHide',
+    'adminStats',
+    'adminReports',
+    'adminHandleReport',
+  ];
+  if (adminActions.indexOf(action) > -1) {
     const user = await getOrCreateUser(OPENID);
     if (user.role !== 'admin' && user.role !== 'ops') {
       return fail('无权限');
@@ -590,18 +612,71 @@ const adminHandlers = {
   },
 
   async adminStats() {
-    const [q, a, u, pending] = await Promise.all([
+    const [q, a, u, pending, reports] = await Promise.all([
       db.collection(QUESTION).count(),
       db.collection(ANSWER).count(),
       db.collection(USER).count(),
       db.collection(QUESTION).where({ status: 'pending' }).count(),
+      db.collection(REPORT).where({ status: 'pending' }).count(),
     ]);
     return ok({
       questionCount: q.total,
       answerCount: a.total,
       userCount: u.total,
       pendingCount: pending.total,
+      reportCount: reports.total,
     });
+  },
+
+  // ---------- 举报列表 ----------
+  async adminReports(event) {
+    const { status = 'pending', page = 1, size = 20 } = event;
+    const where = {};
+    if (status) where.status = status;
+    const res = await db
+      .collection(REPORT)
+      .where(where)
+      .orderBy('createdAt', 'desc')
+      .skip((page - 1) * size)
+      .limit(size)
+      .get();
+    const totalRes = await db.collection(REPORT).where(where).count();
+    return ok({ list: res.data, total: totalRes.total });
+  },
+
+  // ---------- 处理举报（隐藏内容 / 驳回举报） ----------
+  async adminHandleReport(event) {
+    const { reportId, action = 'dismiss' } = event;
+    if (!reportId) return fail('缺少举报 id');
+
+    const rRes = await db.collection(REPORT).where({ _id: reportId }).limit(1).get();
+    if (!rRes.data.length) return fail('举报记录不存在');
+    const report = rRes.data[0];
+
+    if (action === 'dismiss') {
+      // 驳回举报：举报不成立，内容保留
+      await db
+        .collection(REPORT)
+        .where({ _id: reportId })
+        .update({ data: { status: 'dismissed', handledAt: Date.now() } });
+      return ok({ reportId, action: 'dismiss' });
+    }
+
+    if (action === 'hide') {
+      // 举报成立：隐藏被举报内容
+      const coll = report.targetType === 'answer' ? ANSWER : QUESTION;
+      await db
+        .collection(coll)
+        .where({ _id: report.targetId })
+        .update({ data: { status: 'hidden', updatedAt: Date.now() } });
+      await db
+        .collection(REPORT)
+        .where({ _id: reportId })
+        .update({ data: { status: 'handled', handledAt: Date.now() } });
+      return ok({ reportId, action: 'hide', targetId: report.targetId });
+    }
+
+    return fail('未知的处理动作');
   },
 };
 

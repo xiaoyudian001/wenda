@@ -44,7 +44,7 @@
 
     <view class="detail-actions">
       <view class="dact" bindtap="onToggleFavorite">{{favorited ? '已收藏' : '收藏'}}</view>
-      <view class="dact" bindtap="onOpenReport">举报</view>
+      <view class="dact" bindtap="onOpenReport" data-type="question" data-id="{{question._id}}">举报问题</view>
     </view>
   </view>
 
@@ -66,12 +66,20 @@
         <view class="like {{item.liked ? 'on' : ''}}" catchtap="onLike" data-id="{{item._id}}">
           {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
         </view>
-        <text
-          class="adopt-btn"
-          wx:if="{{canAdopt && !question.adopted}}"
-          catchtap="onAdopt"
-          data-id="{{item._id}}"
-        >采纳这条</text>
+        <view class="answer-foot-right">
+          <text
+            class="report-link"
+            catchtap="onOpenReport"
+            data-type="answer"
+            data-id="{{item._id}}"
+          >举报</text>
+          <text
+            class="adopt-btn"
+            wx:if="{{canAdopt && !question.adopted}}"
+            catchtap="onAdopt"
+            data-id="{{item._id}}"
+          >采纳这条</text>
+        </view>
       </view>
     </view>
   </view>
@@ -124,7 +132,7 @@
 <!-- 举报面板 -->
 <view class="reply-mask" wx:if="{{reportOpen}}" bindtap="onCloseReport">
   <view class="reply-panel" catchtap="onReportPanelTap">
-    <view class="reply-title">举报这个问题</view>
+    <view class="reply-title">{{reportTargetType === 'answer' ? '举报这条回答' : '举报这个问题'}}</view>
     <view class="report-list">
       <view
         class="report-item {{reportReason === 'spam' ? 'on' : ''}}"

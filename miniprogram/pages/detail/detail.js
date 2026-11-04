@@ -18,6 +18,8 @@ Page({
     favorited: false,
     favLoaded: false,
     myVote: '',
+    reportTargetType: 'question',
+    reportTargetId: '',
     reportOpen: false,
     reportReason: 'spam',
     reportDetail: '',
@@ -125,9 +127,18 @@ Page({
       });
   },
 
-  // ---------- 举报 ----------
-  onOpenReport() {
-    this.setData({ reportOpen: true, reportReason: 'spam', reportDetail: '' });
+  // ---------- 举报（支持问题与回答两种对象） ----------
+  onOpenReport(e) {
+    const ds = (e && e.currentTarget && e.currentTarget.dataset) || {};
+    const targetType = ds.type === 'answer' ? 'answer' : 'question';
+    const targetId = ds.id || this.data.qid;
+    this.setData({
+      reportOpen: true,
+      reportTargetType: targetType,
+      reportTargetId: targetId,
+      reportReason: 'spam',
+      reportDetail: '',
+    });
   },
 
   onCloseReport() {
@@ -147,10 +158,12 @@ Page({
   },
 
   onSubmitReport() {
+    const targetType = this.data.reportTargetType || 'question';
+    const targetId = this.data.reportTargetId || this.data.qid;
     api
       .report({
-        targetType: 'question',
-        targetId: this.data.qid,
+        targetType,
+        targetId,
         reason: this.data.reportReason,
         detail: this.data.reportDetail,
       })

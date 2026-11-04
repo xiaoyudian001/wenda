@@ -40,8 +40,20 @@
       <div class="stat-num" id="statP">—</div>
       <div class="stat-label">待回答</div>
     </div>
+    <div class="stat-card danger">
+      <div class="stat-num" id="statR">—</div>
+      <div class="stat-label">待处理举报</div>
+    </div>
   </section>
 
+  <!-- 主视图切换 -->
+  <div class="view-tabs">
+    <button class="view-tab active" data-view="questions">内容管理</button>
+    <button class="view-tab" data-view="reports">举报处理 <span class="badge" id="reportBadge" hidden>0</span></button>
+  </div>
+
+  <!-- 内容管理视图 -->
+  <div class="view" id="view-questions">
   <!-- 筛选 -->
   <section class="toolbar">
     <div class="tabs">
@@ -77,6 +89,40 @@
       <button class="btn btn-mini" id="nextBtn">下一页</button>
     </div>
   </section>
+  </div>
+
+  <!-- 举报处理视图 -->
+  <div class="view" id="view-reports" hidden>
+    <section class="toolbar">
+      <div class="tabs">
+        <button class="rtab active" data-rstatus="pending">待处理</button>
+        <button class="rtab" data-rstatus="handled">已处理</button>
+        <button class="rtab" data-rstatus="dismissed">已驳回</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:80px">类型</th>
+            <th>被举报内容</th>
+            <th style="width:130px">理由</th>
+            <th style="width:120px">时间</th>
+            <th style="width:180px">操作</th>
+          </tr>
+        </thead>
+        <tbody id="reportRows">
+          <tr><td colspan="5" class="empty">加载中…</td></tr>
+        </tbody>
+      </table>
+      <div class="pager">
+        <button class="btn btn-mini" id="rPrevBtn">上一页</button>
+        <span id="rPageInfo">1 / 1</span>
+        <button class="btn btn-mini" id="rNextBtn">下一页</button>
+      </div>
+    </section>
+  </div>
 </main>
 
 <script src="admin.js"></script>

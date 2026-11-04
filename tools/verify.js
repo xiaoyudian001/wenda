@@ -313,6 +313,50 @@ ok(`${tabNames.size} 个 tab 均有内容区块`);
 });
 ok('列表型新页面均有空态处理');
 
+// ---------- 4.6 审核后台举报闭环 ----------
+console.log('\n【4.6】审核后台举报闭环');
+const qaHandlerSrc = fs.readFileSync(path.join(mp, 'cloudfunctions', 'qa', 'index.js'), 'utf8');
+['adminReports', 'adminHandleReport'].forEach((h) => {
+  if (qaHandlerSrc.indexOf('async ' + h + '(') === -1) {
+    err(`云函数 qa 缺少举报处理 handler: ${h}`);
+  }
+});
+ok('云函数支持举报查询与处理');
+
+const adminActionMatch = qaHandlerSrc.match(/const adminActions = \[([\s\S]*?)\]/);
+if (!adminActionMatch) {
+  err('云函数 qa 缺少 adminActions 白名单');
+} else {
+  ['adminReports', 'adminHandleReport'].forEach((a) => {
+    if (adminActionMatch[1].indexOf("'" + a + "'") === -1) {
+      err(`adminActions 白名单缺少: ${a}`);
+    }
+  });
+  ok('adminActions 白名单已包含举报相关 action');
+}
+
+const adminHtmlPath = path.join(ROOT, 'admin', 'index.html');
+if (!fs.existsSync(adminHtmlPath)) {
+  err('缺少 admin/index.html');
+} else {
+  const adminHtml = fs.readFileSync(adminHtmlPath, 'utf8');
+  const adminJs = fs.readFileSync(path.join(ROOT, 'admin', 'admin.js'), 'utf8');
+  if (adminHtml.indexOf('view-reports') === -1) err('审核后台缺少举报处理视图');
+  if (adminJs.indexOf('adminHandleReport') === -1) err('审核后台 JS 未调用举报处理接口');
+  if (adminJs.indexOf('adminReports') === -1) err('审核后台 JS 未调用举报列表接口');
+  if (adminHtml.indexOf('reportRows') === -1) err('审核后台缺少举报表格');
+  ok('审核后台已接入举报查询与处理');
+}
+
+const detailWxml2 = fs.readFileSync(path.join(mp, 'pages', 'detail', 'detail.wxml'), 'utf8');
+if (!/data-type="answer"/.test(detailWxml2)) {
+  err('详情页缺少回答的举报入口');
+}
+if (!/data-type="question"/.test(detailWxml2)) {
+  err('详情页缺少问题的举报入口');
+}
+ok('问题与回答均有举报入口');
+
 // ---------- 5. 数据层引用 ----------
 console.log('\n【5】数据层引用');
 const apiSrc = fs.readFileSync(path.join(mp, 'services', 'api.js'), 'utf8');

@@ -67,6 +67,8 @@ body {
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
 }
 .stat-card.warn { border-left: 3px solid var(--orange); }
+.stat-card.danger { border-left: 3px solid var(--red); }
+.stat-card.danger .stat-num { color: var(--red); }
 .stat-num { font-size: 30px; font-weight: 700; color: var(--primary); }
 .stat-label { font-size: 13px; color: var(--sub); margin-top: 4px; }
 
@@ -128,3 +130,57 @@ body {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .search { width: 100%; }
 }
+
+/* ---------- 视图切换（内容管理 / 举报处理） ---------- */
+.view-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.view-tab {
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: var(--sub);
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+}
+.view-tab:hover { color: var(--primary); }
+.view-tab.active {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--primary);
+  font-weight: 600;
+}
+.view-tab .badge {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 6px;
+  margin-left: 4px;
+  border-radius: 9px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* ---------- 举报处理 ---------- */
+.rtab {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--sub);
+  font-size: 13px;
+  cursor: pointer;
+}
+.rtab.active { background: #FFF1ED; color: var(--primary); border-color: var(--primary); font-weight: 600; }
+.status-handled { background: #E8FFEA; color: var(--green); }
+.status-dismissed { background: #F2F3F5; color: var(--sub); }

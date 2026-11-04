@@ -195,6 +195,27 @@ function check(name, cond, extra) {
   // 举报
   const rp = await api.report({ targetType: 'question', targetId: baseQ._id, reason: 'spam', detail: '测试' });
   check('举报提交成功', !!rp.reportId);
+  let threw = false;
+  try {
+    await api.report({ targetType: 'question', targetId: baseQ._id, reason: 'spam' });
+  } catch (e) {
+    threw = true;
+  }
+  check('重复举报被拦截', threw);
+  threw = false;
+  try {
+    await api.report({ targetType: 'answer', targetId: 'a_not_exist_xxx', reason: 'spam' });
+  } catch (e) {
+    threw = true;
+  }
+  check('举报不存在的回答被拦截', threw);
+  threw = false;
+  try {
+    await api.report({ targetType: 'comment', targetId: baseQ._id, reason: 'spam' });
+  } catch (e) {
+    threw = true;
+  }
+  check('非法举报类型被拦截', threw);
 
   // 决策复盘
   const dr = await api.myDecisions();
