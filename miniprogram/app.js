@@ -83,9 +83,10 @@ App({
         timeout: 8000,
         success(res) {
           const r = res.result || {};
-          if (r.code === 0 && r.user) {
-            that.globalData.openid = r.user.openid || '';
-            that.globalData.userInfo = r.user;
+          const user = r.data && r.data.user;
+          if (r.code === 0 && user) {
+            that.globalData.openid = user.openid || user._id || '';
+            that.globalData.userInfo = user;
           } else {
             // 云函数可达但没有数据，自动灌入种子数据
             wx.cloud.callFunction({

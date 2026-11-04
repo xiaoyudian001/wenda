@@ -102,6 +102,55 @@ function makeInstance(opts) {
 
 console.log('\n=== 问搭 · 新页面逻辑验证 ===\n');
 
+(async () => {
+// ---------- 0. 广场筛选 / 分页 / 刷新 ----------
+console.log('【0】广场筛选、分页与刷新');
+const indexPage = loadPage('index');
+check('广场页面配置加载成功', !!indexPage);
+check('有 onReachBottom', typeof indexPage.onReachBottom === 'function');
+check('有 onPullDownRefresh', typeof indexPage.onPullDownRefresh === 'function');
+
+const ii = makeInstance(indexPage);
+await ii.loadData();
+check('首屏加载到问题', ii.data.list.length > 0, `${ii.data.list.length} 条`);
+check('首屏 page 递增', ii.data.page === 2, `${ii.data.page}`);
+if (ii.data.hasMore) {
+  const firstLen = ii.data.list.length;
+  await ii.onReachBottom();
+  check('触底加载追加数据', ii.data.list.length > firstLen, `${firstLen} -> ${ii.data.list.length}`);
+} else {
+  check('触底无更多时安全返回', true);
+}
+
+// 排序栏「待回答」必须过滤出 status=pending，而不是继续加载热榜
+await ii.onSort({ currentTarget: { dataset: { sort: 'pending' } } });
+check('待回答筛选结果非空', ii.data.list.length > 0, `${ii.data.list.length} 条`);
+check('待回答筛选只返回 pending', ii.data.list.every((q) => q.status === 'pending'));
+
+// 从待回答切到普通分类，应退出 pending 排序
+await ii.onCat({ currentTarget: { dataset: { key: 'eat' } } });
+check('切普通分类后退出待回答排序', ii.data.sort === 'hot', ii.data.sort);
+check('分类筛选只返回 eat', ii.data.list.every((q) => q.cat === 'eat'));
+
+// 下拉刷新：重置 page 后重新拿首屏
+wx.stopPullDownRefresh = function () {};
+ii.setData({ page: 5 });
+await ii.onPullDownRefresh();
+check('下拉刷新后 page 回到 2', ii.data.page === 2, `${ii.data.page}`);
+
+// ---------- 0.5 提问页设置联动 ----------
+console.log('\n【0.5】提问页设置联动');
+const api0 = require(path.join(MP, 'services', 'api.js'));
+await api0.saveSettings({ anonymousDefault: true });
+const askPage = loadPage('ask');
+const ai = makeInstance(askPage);
+await ai.onLoad();
+check('提问页读取默认匿名设置', ai.data.anonymous === true);
+ai.setData({ title: '临时标题', anonymous: false });
+await ai.onReset();
+check('清空表单后仍恢复默认匿名', ai.data.anonymous === true);
+check('清空表单标题为空', ai.data.title === '');
+
 // ---------- 1. 搜索页 ----------
 console.log('【1】搜索页');
 const searchPage = loadPage('search');
@@ -109,7 +158,6 @@ check('页面配置加载成功', !!searchPage);
 check('有 doSearch 处理函数', typeof searchPage.doSearch === 'function');
 check('有 onLoad 处理函数', typeof searchPage.onLoad === 'function');
 
-(async () => {
 const si = makeInstance(searchPage);
 si.setData({ keyword: '咖啡' });
 await si.doSearch();
@@ -191,6 +239,16 @@ await seti.onToggle({ currentTarget: { dataset: { key: 'notifyHot' } }, detail: 
 const after = await api.getSettings();
 check('开关切换已保存', after.notifyHot === true);
 
+// 资料编辑必须持久化
+seti.setData({ nickname: '测试昵称', city: '苏州', editingProfile: true });
+await seti.onSaveProfile();
+check('保存资料后退出编辑态', seti.data.editingProfile === false);
+check('页面昵称已更新', seti.data.nickname === '测试昵称');
+const afterProfile = await api.updateProfile({ nickname: '测试昵称2', city: '杭州' });
+check('资料接口返回新昵称', afterProfile.user.nickname === '测试昵称2');
+const mineAfterProfile = await api.mine();
+check('资料持久化后 mine 可读到', mineAfterProfile.user.nickname === '测试昵称2');
+
 // ---------- 5. 详情页新功能 ----------
 console.log('\n【5】详情页新功能');
 const detPage = loadPage('detail');
@@ -256,6 +314,7 @@ await mi.loadMine();
 check('加载了我的提问', mi.data.myQuestions.length >= 1, `${mi.data.myQuestions.length}`);
 check('加载了我的回答', mi.data.myAnswers.length >= 1, `${mi.data.myAnswers.length}`);
 check('回答带上了问题标题', !!mi.data.myAnswers[0].title, mi.data.myAnswers[0].title);
+check('API 原始回答带 questionTitle', !!mi.data.myAnswers[0].questionTitle, mi.data.myAnswers[0].questionTitle);
 check('回答带上了时间文本', !!mi.data.myAnswers[0].timeText);
 check('adoptedAnswers 已预计算', Array.isArray(mi.data.adoptedAnswers));
 check('pendingCount 已计算', typeof mi.data.pendingCount === 'number');

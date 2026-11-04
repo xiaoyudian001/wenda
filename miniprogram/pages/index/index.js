@@ -41,8 +41,10 @@ Page({
     if (this.data.loading) return Promise.resolve();
     this.setData({ loading: true });
     const { cat, sort, page } = this.data;
+    // 「待回答」是状态筛选，不是排序方式；选中后全局查看待回答问题
+    const effectiveCat = sort === 'pending' ? 'pending' : cat;
     return api
-      .listQuestions({ cat, sort: sort === 'pending' ? 'hot' : sort, page, size: 10 })
+      .listQuestions({ cat: effectiveCat, sort: sort === 'pending' ? 'hot' : sort, page, size: 10 })
       .then((res) => {
         const list = res.list || [];
         this.setData({
@@ -60,19 +62,26 @@ Page({
 
   onCat(e) {
     const key = e.currentTarget.dataset.key;
-    this.setData({ cat: key, page: 1, list: [] });
+    // 点普通分类时退出「待回答」状态筛选，避免分类点击看起来无效
+    const nextSort = key === 'pending' || this.data.sort === 'pending' ? 'hot' : this.data.sort;
+    this.setData({ cat: key, sort: nextSort, page: 1, list: [] });
     tracker.track(tracker.EVENTS.LIST_VIEW, '', { cat: key });
-    this.loadData();
+    return this.loadData();
   },
 
   onSort(e) {
     const sort = e.currentTarget.dataset.sort;
     this.setData({ sort, page: 1, list: [] });
-    this.loadData();
+    return this.loadData();
   },
 
   onLoadMore() {
-    this.loadData();
+    if (this.data.hasMore && !this.data.loading) return this.loadData();
+    return Promise.resolve();
+  },
+
+  onReachBottom() {
+    return this.onLoadMore();
   },
 
   onOpenDetail(e) {

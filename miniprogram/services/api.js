@@ -119,20 +119,24 @@ function mockGetQuestion(id) {
       if (!!a.adopted !== !!b.adopted) return a.adopted ? -1 : 1;
       return (b.likes || 0) - (a.likes || 0);
     });
-  return { question: q, answers };
+  const optionVotes = store.optionVotes || {};
+  return { question: q, answers, myVote: optionVotes[id] || '' };
 }
 
-/** mock 版：投票 */
+/** mock 版：投票（与云端一致：同一用户同一问题只能投一次） */
 function mockVote(questionId, optionKey) {
   const store = getStore();
   const q = store.questions.find((x) => x._id === questionId);
   if (!q) throw new Error('问题不存在');
   const opt = (q.options || []).find((o) => o.key === optionKey);
   if (!opt) throw new Error('选项不存在');
+  const optionVotes = store.optionVotes || (store.optionVotes = {});
+  if (optionVotes[questionId]) throw new Error('你已经投过票了');
   opt.votes = (opt.votes || 0) + 1;
   q.totalVotes = (q.totalVotes || 0) + 1;
+  optionVotes[questionId] = optionKey;
   saveMockStore(store);
-  return { question: q };
+  return { question: q, myVote: optionKey };
 }
 
 /** mock 版：提交回答 */
@@ -217,7 +221,13 @@ function mockMine() {
   const store = getStore();
   const u = me();
   const myQuestions = store.questions.filter((q) => q.asker && q.asker._id === u._id);
-  const myAnswers = store.answers.filter((a) => a.author && a.author._id === u._id);
+  const questionMap = {};
+  store.questions.forEach((q) => {
+    questionMap[q._id] = q.title;
+  });
+  const myAnswers = store.answers
+    .filter((a) => a.author && a.author._id === u._id)
+    .map((a) => ({ ...a, questionTitle: questionMap[a.questionId] || '' }));
   return {
     user: u,
     myQuestions,
@@ -371,6 +381,21 @@ function mockSaveSettings(patch) {
   return store.settings;
 }
 
+/** mock 版：个人资料保存 */
+function mockUpdateProfile(payload) {
+  const store = getStore();
+  const u = me();
+  const nickname = String(payload.nickname || '').trim().slice(0, 20);
+  const city = String(payload.city || '').trim().slice(0, 16);
+  if (!nickname) throw new Error('昵称不能为空');
+  u.nickname = nickname;
+  u.avatarText = nickname.slice(0, 1) || '我';
+  u.city = city || '未知';
+  store.me = u;
+  saveMockStore(store);
+  return { user: u };
+}
+
 /**
  * 统一入口：优先云函数，失败自动降级 mock。
  * @param {string} action 云函数 action
@@ -456,6 +481,11 @@ module.exports = {
   /** 保存设置 */
   saveSettings(patch) {
     return request('saveSettings', patch, () => mockSaveSettings(patch));
+  },
+
+  /** 保存个人资料 */
+  updateProfile(payload) {
+    return request('updateProfile', payload, () => mockUpdateProfile(payload));
   },
 
   mine() {

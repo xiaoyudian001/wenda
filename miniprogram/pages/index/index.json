@@ -2,5 +2,7 @@
   "usingComponents": {
     "question-card": "/components/question-card/question-card"
   },
-  "navigationBarTitleText": "问搭"
+  "navigationBarTitleText": "问搭",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120
 }

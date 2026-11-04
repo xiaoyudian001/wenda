@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const TMP = path.join(ROOT, '.cowork-temp', 'gh-pages-publish');
+// 用带时间戳的临时目录，避免与上一次发布残留或被浏览器占用冲突
+const TMP = path.join(ROOT, '.cowork-temp', 'gh-pages-publish-' + Date.now());
 
 const GIT_OPTS = [
   '-c', 'http.sslBackend=openssl',

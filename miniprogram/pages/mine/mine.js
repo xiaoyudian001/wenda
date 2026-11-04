@@ -27,10 +27,12 @@ Page({
           ...q,
           catName: q.catName || util.categoryMeta(q.cat, api.CATEGORIES).name,
         }));
+        const localTitleMap = this.answerTitleMap(res);
         const myAnswers = (res.myAnswers || []).map((a) => ({
           ...a,
           timeText: util.timeAgo(a.createdAt),
-          title: (this.answerTitleMap(res)[a.questionId] || ''),
+          // 云端/m​​ock 统一返回 questionTitle；旧数据仍用本地提问映射兜底
+          title: a.questionTitle || localTitleMap[a.questionId] || '',
           avatarCls: util.avatarClass(a.author && a.author._id),
         }));
         this.setData({

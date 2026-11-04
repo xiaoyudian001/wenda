@@ -15,6 +15,13 @@ Page({
 
   onLoad() {
     this.setData({ categories: api.CATEGORIES });
+    // 读取用户偏好：设置页里的「默认匿名提问」要真正作用到表单
+    return api
+      .getSettings()
+      .then((settings) => {
+        this.setData({ anonymous: !!settings.anonymousDefault });
+      })
+      .catch(() => {});
   },
 
   onCat(e) {
@@ -56,7 +63,19 @@ Page({
   },
 
   onReset() {
-    this.setData({ title: '', desc: '', options: ['', '', ''], anonymous: false });
+    return api
+      .getSettings()
+      .then((settings) => {
+        this.setData({
+          title: '',
+          desc: '',
+          options: ['', '', ''],
+          anonymous: !!settings.anonymousDefault,
+        });
+      })
+      .catch(() => {
+        this.setData({ title: '', desc: '', options: ['', '', ''], anonymous: false });
+      });
   },
 
   onSubmit() {
@@ -86,7 +105,7 @@ Page({
           hasOptions: (payload.options || []).filter(Boolean).length,
           anonymous: !!payload.anonymous,
         });
-        this.setData({ title: '', desc: '', options: ['', '', ''], anonymous: false, submitting: false });
+        this.setData({ title: '', desc: '', options: ['', '', ''], submitting: false });
         util.toast('发布成功！已推送给附近的人');
         setTimeout(() => {
           wx.switchTab({ url: '/pages/index/index' });

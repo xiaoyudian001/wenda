@@ -65,19 +65,30 @@ Page({
 
   onSaveProfile() {
     const nickname = (this.data.nickname || '').trim();
+    const city = (this.data.city || '').trim();
     if (!nickname) {
       util.toast('昵称不能为空');
-      return;
+      return Promise.resolve();
     }
-    const app = getApp();
-    if (app && app.globalData) {
-      app.globalData.userInfo = Object.assign({}, app.globalData.userInfo || {}, {
-        nickname,
-        city: (this.data.city || '').trim(),
+    return api
+      .updateProfile({ nickname, city })
+      .then((res) => {
+        const user = (res && res.user) || { nickname, city };
+        const app = getApp();
+        if (app && app.globalData) {
+          app.globalData.userInfo = Object.assign({}, app.globalData.userInfo || {}, user);
+        }
+        this.setData({
+          nickname: user.nickname || nickname,
+          city: user.city || city,
+          editingProfile: false,
+        });
+        util.toast('已保存');
+      })
+      .catch((err) => {
+        console.error('[问搭] 保存资料失败:', err);
+        util.toast(err.message || '保存失败');
       });
-    }
-    this.setData({ editingProfile: false });
-    util.toast('已保存');
   },
 
   onCancelEdit() {

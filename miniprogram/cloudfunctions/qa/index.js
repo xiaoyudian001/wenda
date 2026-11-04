@@ -105,6 +105,24 @@ const handlers = {
     return ok({ user });
   },
 
+  // ---------- 更新个人资料 ----------
+  async updateProfile(event, openid) {
+    const nickname = String(event.nickname || '').trim().slice(0, 20);
+    const city = String(event.city || '').trim().slice(0, 16);
+    if (!nickname) return fail('昵称不能为空');
+    const sec = await checkText(nickname + city, openid);
+    if (!sec.ok) return fail(sec.reason);
+    const update = {
+      nickname,
+      avatarText: nickname.slice(0, 1) || '我',
+      city: city || '未知',
+      updatedAt: Date.now(),
+    };
+    await getOrCreateUser(openid);
+    await db.collection(USER).where({ _id: openid }).update({ data: update });
+    return ok({ user: { _id: openid, openid, ...update } });
+  },
+
   // ---------- 问题列表 ----------
   async listQuestions(event, openid) {
     const { cat = 'all', sort = 'hot', page = 1, size = 10 } = event;
@@ -146,7 +164,7 @@ const handlers = {
       .limit(50)
       .get();
 
-    // 标记当前用户是否点过赞
+    // 标记当前用户是否点过赞、投过哪个选项
     const answerIds = aRes.data.map((a) => a._id);
     let likedIds = [];
     if (answerIds.length) {
@@ -156,10 +174,16 @@ const handlers = {
         .get();
       likedIds = lRes.data.map((v) => v.answerId);
     }
+    const vRes = await db
+      .collection(VOTE)
+      .where({ openid, questionId: id, type: 'option' })
+      .limit(1)
+      .get();
 
     return ok({
       question: qRes.data[0],
       answers: aRes.data.map((a) => ({ ...a, liked: likedIds.includes(a._id) })),
+      myVote: vRes.data.length ? vRes.data[0].optionKey : '',
     });
   },
 
@@ -370,10 +394,22 @@ const handlers = {
     const user = await getOrCreateUser(openid);
     const qRes = await db.collection(QUESTION).where({ 'asker._id': openid }).limit(100).get();
     const aRes = await db.collection(ANSWER).where({ 'author._id': openid }).limit(100).get();
+    const questionIds = [...new Set(aRes.data.map((a) => a.questionId).filter(Boolean))];
+    const answeredQuestions = questionIds.length
+      ? await db.collection(QUESTION).where({ _id: dbCmd.in(questionIds) }).get()
+      : { data: [] };
+    const titleMap = {};
+    answeredQuestions.data.forEach((q) => {
+      titleMap[q._id] = q.title;
+    });
+    const myAnswers = aRes.data.map((a) => ({
+      ...a,
+      questionTitle: titleMap[a.questionId] || '',
+    }));
     return ok({
       user,
       myQuestions: qRes.data,
-      myAnswers: aRes.data,
+      myAnswers,
       stats: {
         questionCount: qRes.data.length,
         answerCount: aRes.data.length,

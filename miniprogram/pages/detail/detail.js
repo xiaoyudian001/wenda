@@ -68,6 +68,7 @@ Page({
           avatarCls: util.avatarClass(q.asker && q.asker._id),
           createdText: util.timeAgo(q.createdAt),
           canAdopt: q.asker && q.asker._id === myId,
+          myVote: res.myVote || '',
         });
         // 收藏状态要等它加载完，页面上的收藏按钮才可用
         return this.loadFavoriteState();
@@ -87,7 +88,7 @@ Page({
         if (res && res.question) {
           this.setData({
             options: util.optionMetrics(res.question.options),
-            myVote: key,
+            myVote: res.myVote || key,
           });
           util.toast('已投票');
         }

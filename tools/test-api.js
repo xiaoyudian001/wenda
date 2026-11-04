@@ -95,7 +95,13 @@ function check(name, cond, extra) {
   check('总票数 +1', v1.question.totalVotes === totalBefore + 1);
   check('对应选项票数 +1',
     v1.question.options.find((o) => o.key === optKey).votes === votesBefore + 1);
+  check('投票返回 myVote', v1.myVote === optKey, v1.myVote);
+  const afterVoteDetail = await api.getQuestion(voteTarget._id);
+  check('重新打开详情仍恢复 myVote', afterVoteDetail.myVote === optKey, afterVoteDetail.myVote);
   let voteErr = null;
+  try { await api.vote(voteTarget._id, voteTarget.options[1].key); } catch (e) { voteErr = e.message; }
+  check('同一问题重复投票被拦截', /已经投过/.test(voteErr || ''), voteErr);
+  voteErr = null;
   try { await api.vote('not_exist', 'o1'); } catch (e) { voteErr = e.message; }
   check('对不存在的问题投票会报错', !!voteErr, voteErr);
 
@@ -154,6 +160,7 @@ function check(name, cond, extra) {
   check('我的提问包含刚发布的问题',
     m1.myQuestions.some((q) => q._id === c1.question._id));
   check('我的回答包含刚提交的回答', m1.myAnswers.length >= 1);
+  check('我的回答带 questionTitle', m1.myAnswers.some((a) => !!a.questionTitle));
   check('被采纳数 >= 1', m1.stats.adoptCount >= 1);
 
   // 9. 重置
@@ -234,6 +241,16 @@ function check(name, cond, extra) {
   check('未改动的项保留', s2.notifyAnswer === true);
   const s3 = await api.getSettings();
   check('重新读取设置一致', s3.notifyHot === true);
+
+  // 个人资料
+  const up = await api.updateProfile({ nickname: '小雨点', city: '上海' });
+  check('个人资料保存成功', up.user.nickname === '小雨点');
+  check('城市保存成功', up.user.city === '上海');
+  const mProfile = await api.mine();
+  check('重新读取资料一致', mProfile.user.nickname === '小雨点' && mProfile.user.city === '上海');
+  let profileErr = null;
+  try { await api.updateProfile({ nickname: '   ', city: '北京' }); } catch (e) { profileErr = e.message; }
+  check('空昵称被拦截', !!profileErr, profileErr);
 
   // ---------- 10. 埋点 ----------
   console.log('\n【10】事件埋点');

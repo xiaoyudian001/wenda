@@ -231,7 +231,7 @@ const apiExports = new Set(
 const requiredApi = [
   'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
   'adopt', 'like', 'mine', 'toggleFavorite', 'searchQuestions',
-  'report', 'myFavorites', 'myDecisions', 'getSettings', 'saveSettings',
+  'report', 'myFavorites', 'myDecisions', 'getSettings', 'saveSettings', 'updateProfile',
 ];
 requiredApi.forEach((m) => {
   if (!apiExports.has(m)) err(`api.js 缺少对外方法: ${m}`);
@@ -264,12 +264,20 @@ const handlerNames = new Set(
 const cloudActions = [
   'listQuestions', 'getQuestion', 'vote', 'addAnswer', 'createQuestion',
   'adopt', 'like', 'mine', 'report', 'toggleFavorite', 'searchQuestions',
-  'myFavorites', 'myDecisions', 'getSettings', 'saveSettings',
+  'myFavorites', 'myDecisions', 'getSettings', 'saveSettings', 'updateProfile',
 ];
 cloudActions.forEach((a) => {
   if (!handlerNames.has(a)) err(`云函数 qa 缺少 handler: ${a}`);
 });
 ok(`云函数 handler 齐全 (${cloudActions.length} 个)`);
+
+// bootstrap 的返回值必须按统一 ok({ user }) 结构读取：result.data.user
+const appSrc = fs.readFileSync(path.join(mp, 'app.js'), 'utf8');
+if (!/r\.data\s*&&\s*r\.data\.user/.test(appSrc)) {
+  err('app.js bootstrap 未按 result.data.user 读取用户，真实云环境会初始化失败');
+} else {
+  ok('app.js 正确读取 bootstrap 的 result.data.user');
+}
 
 // 「我的」页不能有占位菜单
 // （合法防御：toast 兜底分支允许，但不能再出现 'V2 规划中' 这种未实现标记）
